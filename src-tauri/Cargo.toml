@@ -1,0 +1,27 @@
+[package]
+name = "prompt-code"
+version = "0.1.0"
+description = "A markdown editor and snippet manager for AI prompts"
+license = "MIT"
+edition = "2021"
+
+[lib]
+name = "prompt_code_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# 既定の feature のうち、同梱の画面の圧縮（splash だけで 2 KB）、実行時の権限の組み立て、
+# Linux 向けの x11 / dbus は要らないので外す
+tauri = { version = "2", default-features = false, features = ["wry", "common-controls-v6"] }
+serde_json = "1"
+url = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
+panic = "abort"

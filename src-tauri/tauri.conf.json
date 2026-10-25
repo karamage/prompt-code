@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Prompt Code",
+  "version": "0.1.0",
+  "identifier": "dev.prompt-code.desktop",
+  "build": {
+    "frontendDist": "./splash"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Prompt Code",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 560,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "trafficLightPosition": { "x": 18, "y": 22 },
+        "backgroundColor": "#16132a"
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app", "dmg"],
+    "category": "Productivity",
+    "shortDescription": "A markdown editor and snippet manager for AI prompts",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.png"],
+    "externalBin": ["binaries/prompt-code-server"],
+    "resources": {
+      "../dist/client/": "client/",
+      "../dist/server/server.js": "server.js"
+    },
+    "macOS": {
+      "minimumSystemVersion": "11.0",
+      "entitlements": "./Entitlements.plist",
+      "hardenedRuntime": true
+    }
+  }
+}

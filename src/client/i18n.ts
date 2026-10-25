@@ -1,0 +1,373 @@
+import { DEFAULT_LANG, type Lang } from "../shared/i18n.ts";
+
+let current: Lang = DEFAULT_LANG;
+const listeners = new Set<() => void>();
+
+export function getLang(): Lang {
+  return current;
+}
+
+export function setLang(lang: Lang): void {
+  if (lang === current) return;
+  current = lang;
+  document.documentElement.lang = lang;
+  for (const listener of listeners) listener();
+}
+
+export function subscribeLang(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+const en = {
+  library: {
+    all: "All notes",
+    favorites: "Favorites",
+    recent: "Recently edited",
+    variables: "With variables",
+    trash: "Trash",
+    folders: "Folders",
+    tags: "Tags",
+    newFolder: "New folder",
+    noTags: "Tags you add to notes show up here.",
+  },
+  list: {
+    filter: "Filter",
+    empty: "No notes here yet.",
+    emptyHint: "Press ⌘N to write one.",
+    noMatch: (query: string) => `Nothing matches “${query}”.`,
+    newNote: "New note",
+    sort: { updated: "Last edited", created: "Created", title: "Title" },
+    copy: "Copy prompt",
+    copied: "Copied",
+    vars: (n: number) => `${n} variable${n === 1 ? "" : "s"}`,
+    count: (n: number) => `${n} note${n === 1 ? "" : "s"}`,
+    trashCount: (n: number) => `${n} in trash`,
+    emptyTrash: "Empty trash",
+    restore: "Restore",
+    deleteForever: "Delete forever",
+    trashEmpty: "Trash is empty.",
+    trashHint: "Deleted notes wait here until you empty the trash.",
+  },
+  note: {
+    untitled: "Untitled",
+    descriptionPlaceholder: "Add a one-line description",
+    addTag: "Add tag",
+    favorite: "Add to favorites",
+    unfavorite: "Remove from favorites",
+    modes: { write: "Write", split: "Split", read: "Read" },
+    more: "More",
+    duplicate: "Duplicate",
+    reveal: "Show in Finder",
+    moveToTrash: "Move to trash",
+    saved: "Saved",
+    saving: "Saving…",
+    unsaved: "Edited",
+    tokens: (n: string) => `≈ ${n} tokens`,
+    chars: (n: string) => `${n} characters`,
+    emptyTitle: "Nothing open",
+    emptyBody: "Pick a note from the list, or start a new one.",
+    emptyNew: "New note",
+    emptySearch: "Open a note",
+    vault: "Vault",
+    editorPlaceholder: "Write your prompt. Type {{ for a variable, [[ to link a note.",
+    rootFolder: "Vault",
+    renameFailed: "Could not rename the note",
+    saveFailed: "Could not save the note",
+    changedOutside: "Updated from disk",
+    missing: "This note was moved or deleted outside the app.",
+  },
+  inspector: {
+    use: "Use",
+    outline: "Outline",
+    links: "Links",
+    noVariables: "This prompt has no variables.",
+    noVariablesHint: "Type {{name}} in the note to add a field you can fill in here.",
+    result: "Result",
+    copy: "Copy prompt",
+    copied: "Copied to clipboard",
+    reset: "Clear values",
+    unfilled: (n: number) => `${n} left to fill`,
+    ready: "Ready to copy",
+    embeds: (n: number) => `${n} embedded note${n === 1 ? "" : "s"}`,
+    noHeadings: "Headings in the note appear here.",
+    backlinks: "Linked from",
+    outgoing: "Links to",
+    noBacklinks: "No other note links here.",
+    noOutgoing: "This note does not link anywhere.",
+    missingNote: "not created yet",
+    valuePlaceholder: "Value",
+  },
+  palette: {
+    placeholder: "Jump to a note or type > for commands",
+    searchPlaceholder: "Search inside every note",
+    noResults: "No results",
+    create: (title: string) => `Create “${title}”`,
+    commands: "Commands",
+    notes: "Notes",
+    hint: { open: "open", navigate: "move", close: "close" },
+  },
+  commands: {
+    newNote: "New note",
+    newFolder: "New folder",
+    search: "Search in all notes",
+    graph: "Open graph",
+    settings: "Settings",
+    toggleSidebar: "Toggle sidebars",
+    toggleMode: "Switch write / read",
+    copyPrompt: "Copy prompt",
+    usePrompt: "Fill variables",
+    duplicate: "Duplicate note",
+    trash: "Move note to trash",
+    reveal: "Show note in Finder",
+    theme: "Switch light / dark",
+  },
+  graph: {
+    title: "Graph",
+    hint: "Drag to pan, scroll to zoom, click a note to open it.",
+    tags: "Show tags",
+    close: "Close",
+    stats: (notes: number, links: number) => `${notes} notes, ${links} links`,
+  },
+  settings: {
+    title: "Settings",
+    vault: "Vault folder",
+    vaultHint: "Prompt Code reads and writes Markdown files in this folder.",
+    change: "Change…",
+    useDefault: "Use default",
+    appearance: "Appearance",
+    theme: "Theme",
+    themes: { system: "System", dark: "Dark", light: "Light" },
+    accent: "Accent",
+    language: "Language",
+    languages: { auto: "System", ja: "日本語", en: "English" },
+    editor: "Editor",
+    fontSize: "Text size",
+    readableWidth: "Keep lines at a readable width",
+    lineNumbers: "Show line numbers",
+    copying: "Copying",
+    stripComments: "Remove <!-- comments --> when copying",
+    close: "Done",
+    about: "Prompt Code keeps everything on this Mac. Nothing is sent anywhere.",
+  },
+  toast: {
+    trashed: (title: string) => `Moved “${title}” to trash`,
+    undo: "Undo",
+    restored: (title: string) => `Restored “${title}”`,
+    copied: (tokens: string) => `Copied about ${tokens} tokens`,
+    copyFailed: "Could not copy to the clipboard",
+    moved: (title: string, folder: string) => `Moved “${title}” to ${folder}`,
+    error: "Something went wrong",
+    folderCreated: (name: string) => `Created folder “${name}”`,
+  },
+  menu: {
+    newNote: "New note here",
+    newFolder: "New folder here",
+    rename: "Rename",
+    reveal: "Show in Finder",
+    trash: "Move to trash",
+    copy: "Copy prompt",
+    openNote: "Open",
+    duplicate: "Duplicate",
+    favorite: "Add to favorites",
+    unfavorite: "Remove from favorites",
+  },
+  confirm: {
+    emptyTrash: "Delete every note in the trash? This cannot be undone.",
+    deleteForever: (title: string) => `Delete “${title}” forever? This cannot be undone.`,
+    cancel: "Cancel",
+  },
+  connection: "Lost connection to the local server. Retrying…",
+};
+
+export type Messages = typeof en;
+
+const ja: Messages = {
+  library: {
+    all: "すべてのノート",
+    favorites: "お気に入り",
+    recent: "最近の編集",
+    variables: "変数あり",
+    trash: "ゴミ箱",
+    folders: "フォルダ",
+    tags: "タグ",
+    newFolder: "新しいフォルダ",
+    noTags: "ノートに付けたタグがここに並びます。",
+  },
+  list: {
+    filter: "絞り込む",
+    empty: "まだノートがありません。",
+    emptyHint: "⌘N で書きはじめられます。",
+    noMatch: (query) => `「${query}」に合うノートはありません。`,
+    newNote: "新しいノート",
+    sort: { updated: "編集日時", created: "作成日時", title: "タイトル" },
+    copy: "プロンプトをコピー",
+    copied: "コピーしました",
+    vars: (n) => `変数 ${n} 個`,
+    count: (n) => `${n} 件`,
+    trashCount: (n) => `ゴミ箱に ${n} 件`,
+    emptyTrash: "ゴミ箱を空にする",
+    restore: "元に戻す",
+    deleteForever: "完全に削除",
+    trashEmpty: "ゴミ箱は空です。",
+    trashHint: "削除したノートは、ゴミ箱を空にするまでここに残ります。",
+  },
+  note: {
+    untitled: "無題",
+    descriptionPlaceholder: "1 行の説明を追加",
+    addTag: "タグを追加",
+    favorite: "お気に入りに追加",
+    unfavorite: "お気に入りから外す",
+    modes: { write: "書く", split: "並べる", read: "読む" },
+    more: "その他",
+    duplicate: "複製",
+    reveal: "Finder で表示",
+    moveToTrash: "ゴミ箱に移す",
+    saved: "保存済み",
+    saving: "保存中…",
+    unsaved: "編集中",
+    tokens: (n) => `約 ${n} トークン`,
+    chars: (n) => `${n} 文字`,
+    emptyTitle: "ノートが開かれていません",
+    emptyBody: "一覧からノートを選ぶか、新しく書きはじめましょう。",
+    emptyNew: "新しいノート",
+    emptySearch: "ノートを開く",
+    vault: "保管庫",
+    editorPlaceholder: "プロンプトを書きましょう。{{ で変数、[[ でノートへのリンク。",
+    rootFolder: "保管庫",
+    renameFailed: "ノートの名前を変えられませんでした",
+    saveFailed: "ノートを保存できませんでした",
+    changedOutside: "ディスク上の変更を読み込みました",
+    missing: "このノートはアプリの外で移動または削除されました。",
+  },
+  inspector: {
+    use: "使う",
+    outline: "目次",
+    links: "リンク",
+    noVariables: "このプロンプトには変数がありません。",
+    noVariablesHint: "ノートに {{名前}} と書くと、ここで埋める欄になります。",
+    result: "できあがり",
+    copy: "プロンプトをコピー",
+    copied: "クリップボードにコピーしました",
+    reset: "値を消す",
+    unfilled: (n) => `あと ${n} 個`,
+    ready: "コピーできます",
+    embeds: (n) => `埋め込み ${n} 件`,
+    noHeadings: "ノートの見出しがここに並びます。",
+    backlinks: "このノートへのリンク",
+    outgoing: "このノートからのリンク",
+    noBacklinks: "ほかのノートからのリンクはありません。",
+    noOutgoing: "このノートはどこにもリンクしていません。",
+    missingNote: "まだありません",
+    valuePlaceholder: "値",
+  },
+  palette: {
+    placeholder: "ノートを開く。> でコマンド",
+    searchPlaceholder: "すべてのノートの中身を検索",
+    noResults: "見つかりません",
+    create: (title) => `「${title}」を作る`,
+    commands: "コマンド",
+    notes: "ノート",
+    hint: { open: "開く", navigate: "移動", close: "閉じる" },
+  },
+  commands: {
+    newNote: "新しいノート",
+    newFolder: "新しいフォルダ",
+    search: "すべてのノートを検索",
+    graph: "グラフを開く",
+    settings: "設定",
+    toggleSidebar: "サイドバーの表示を切り替え",
+    toggleMode: "書く・読むを切り替え",
+    copyPrompt: "プロンプトをコピー",
+    usePrompt: "変数を埋める",
+    duplicate: "ノートを複製",
+    trash: "ノートをゴミ箱に移す",
+    reveal: "ノートを Finder で表示",
+    theme: "ライト・ダークを切り替え",
+  },
+  graph: {
+    title: "グラフ",
+    hint: "ドラッグで移動、スクロールで拡大縮小、ノートをクリックで開きます。",
+    tags: "タグも表示",
+    close: "閉じる",
+    stats: (notes, links) => `ノート ${notes} 件、リンク ${links} 本`,
+  },
+  settings: {
+    title: "設定",
+    vault: "保管庫のフォルダ",
+    vaultHint: "このフォルダの Markdown ファイルを読み書きします。",
+    change: "変更…",
+    useDefault: "既定に戻す",
+    appearance: "見た目",
+    theme: "テーマ",
+    themes: { system: "システム", dark: "ダーク", light: "ライト" },
+    accent: "アクセント",
+    language: "言語",
+    languages: { auto: "システム", ja: "日本語", en: "English" },
+    editor: "エディタ",
+    fontSize: "文字の大きさ",
+    readableWidth: "行を読みやすい幅に収める",
+    lineNumbers: "行番号を表示",
+    copying: "コピー",
+    stripComments: "コピーするときに <!-- コメント --> を消す",
+    close: "完了",
+    about: "Prompt Code はすべてをこの Mac の中に保存します。外部には何も送りません。",
+  },
+  toast: {
+    trashed: (title) => `「${title}」をゴミ箱に移しました`,
+    undo: "取り消す",
+    restored: (title) => `「${title}」を元に戻しました`,
+    copied: (tokens) => `約 ${tokens} トークンをコピーしました`,
+    copyFailed: "クリップボードにコピーできませんでした",
+    moved: (title, folder) => `「${title}」を ${folder} に移しました`,
+    error: "エラーが発生しました",
+    folderCreated: (name) => `フォルダ「${name}」を作りました`,
+  },
+  menu: {
+    newNote: "ここに新しいノート",
+    newFolder: "ここに新しいフォルダ",
+    rename: "名前を変更",
+    reveal: "Finder で表示",
+    trash: "ゴミ箱に移す",
+    copy: "プロンプトをコピー",
+    openNote: "開く",
+    duplicate: "複製",
+    favorite: "お気に入りに追加",
+    unfavorite: "お気に入りから外す",
+  },
+  confirm: {
+    emptyTrash: "ゴミ箱のノートをすべて削除しますか？元に戻せません。",
+    deleteForever: (title) => `「${title}」を完全に削除しますか？元に戻せません。`,
+    cancel: "キャンセル",
+  },
+  connection: "ローカルサーバとの接続が切れました。再接続しています…",
+};
+
+const messages: Record<Lang, Messages> = { en, ja };
+
+export function t(): Messages {
+  return messages[current];
+}
+
+/** 数を言語に合わせて区切る */
+export function formatNumber(n: number): string {
+  return new Intl.NumberFormat(current).format(n);
+}
+
+/** 「3 分前」のような相対時刻。1 週間より前は日付 */
+export function formatRelative(ms: number, now = Date.now()): string {
+  const diff = Math.round((ms - now) / 1000);
+  const abs = Math.abs(diff);
+  const rtf = new Intl.RelativeTimeFormat(current, { numeric: "auto", style: "short" });
+  if (abs < 45) return rtf.format(0, "second");
+  if (abs < 3600) return rtf.format(Math.round(diff / 60), "minute");
+  if (abs < 86400) return rtf.format(Math.round(diff / 3600), "hour");
+  if (abs < 604800) return rtf.format(Math.round(diff / 86400), "day");
+  const date = new Date(ms);
+  const sameYear = date.getFullYear() === new Date(now).getFullYear();
+  return new Intl.DateTimeFormat(current, {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+  }).format(date);
+}

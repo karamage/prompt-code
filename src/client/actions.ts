@@ -7,13 +7,13 @@ import {
   parseNote,
   serializeNote,
 } from "../shared/frontmatter.ts";
-import { langFromLocale } from "../shared/i18n.ts";
 import { type NoteMeta, resolveLink, titleOf } from "../shared/notes.ts";
 import { compilePrompt, estimateTokens, type NoteLookup } from "../shared/prompt.ts";
 import type { Settings } from "../shared/settings.ts";
 import { api, ApiError } from "./api.ts";
+import { applyAppearance, followSystemTheme } from "./appearance.ts";
 import { copyText } from "./desktop.ts";
-import { formatNumber, setLang, t } from "./i18n.ts";
+import { formatNumber, t } from "./i18n.ts";
 import {
   type ContextMenuItem,
   defaultUi,
@@ -53,21 +53,7 @@ function reportError(error: unknown, fallback = t().toast.error): void {
 
 // ---------------------------------------------------------------- 設定と見た目
 
-const darkQuery =
-  typeof window === "undefined" ? null : window.matchMedia("(prefers-color-scheme: dark)");
-
-function applyAppearance(settings: Settings): void {
-  const root = document.documentElement;
-  const dark =
-    settings.theme === "dark" || (settings.theme === "system" && (darkQuery?.matches ?? true));
-  root.dataset.theme = dark ? "dark" : "light";
-  root.dataset.accent = settings.accent;
-  root.style.setProperty("--editor-size", `${settings.editorFontSize}px`);
-  root.classList.toggle("readable", settings.readableWidth);
-  setLang(settings.lang ?? langFromLocale(navigator.language));
-}
-
-darkQuery?.addEventListener("change", () => applyAppearance(getState().settings));
+followSystemTheme(() => getState().settings);
 
 export async function updateSettings(patch: Partial<Settings>): Promise<void> {
   const next = { ...getState().settings, ...patch };
@@ -104,6 +90,7 @@ export function setView(view: View): void {
   setUi({ view });
   setState({ filter: "" });
   if (view.kind === "trash") void loadTrash();
+  if (view.kind === "clipboard") void loadClipboard();
 }
 
 export function setMode(mode: Mode): void {
@@ -376,7 +363,7 @@ export async function createNote(
       initial = serializeNote({ frontmatter: { ...emptyFrontmatter(), favorite: true }, body: "" });
     const meta = await api.createNote(folder, title, initial);
     replaceMeta(meta);
-    if (view.kind === "trash") setView({ kind: "all" });
+    if (view.kind === "trash" || view.kind === "clipboard") setView({ kind: "all" });
     await openNote(meta.path, { focus: "title" });
   } catch (error) {
     reportError(error);
@@ -475,6 +462,35 @@ export async function restoreNote(path: string, open = false): Promise<void> {
   } catch (error) {
     reportError(error);
   }
+}
+
+export async function loadClipboard(): Promise<void> {
+  try {
+    setState({ clipboard: await api.clipboard() });
+  } catch (error) {
+    reportError(error);
+  }
+}
+
+export async function removeClip(id: string): Promise<void> {
+  setState((s) => ({ clipboard: s.clipboard?.filter((item) => item.id !== id) ?? null }));
+  await api.removeClip(id).catch(reportError);
+}
+
+export async function clearClipboard(): Promise<void> {
+  setState({ clipboard: [] });
+  await api.clearClipboard().catch(reportError);
+}
+
+/** 履歴の 1 件を、そのままノートにする。タイトルは最初の行から作る */
+export async function saveClipAsNote(text: string): Promise<void> {
+  const first = text.split("\n").find((line) => line.trim() !== "") ?? "";
+  const title =
+    first
+      .replace(/^[#>*\-\s]+/, "")
+      .trim()
+      .slice(0, 48) || t().clipboard.savedTitle;
+  await createNote("", title, text.endsWith("\n") ? text : `${text}\n`);
 }
 
 export async function loadTrash(): Promise<void> {
@@ -623,6 +639,8 @@ export function viewTitle(view: View): string {
       return text.recent;
     case "variables":
       return text.variables;
+    case "clipboard":
+      return text.clipboard;
     case "trash":
       return text.trash;
     case "folder":

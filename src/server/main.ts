@@ -1,6 +1,8 @@
 import { join } from "node:path";
 import { type Lang, langFromLocale } from "../shared/i18n.ts";
 import { createApp } from "./app.ts";
+import { ClipboardHistory } from "./clipboard.ts";
+import { DesktopChannel, setOpenAtLogin } from "./desktop.ts";
 import { parseCliArgs, type RunOptions, USAGE } from "./cli.ts";
 import { AppError } from "./errors.ts";
 import type { CommandRunner } from "./exec.ts";
@@ -14,6 +16,32 @@ const DEFAULT_PORT = 4721;
 
 /** デスクトップアプリが起動のたびに作って渡す、API の合言葉 */
 const ENV_TOKEN = "PROMPT_CODE_TOKEN";
+
+/** デスクトップアプリが渡す、アプリ本体（.app）の場所。ログイン時に起動する設定に使う */
+const ENV_APP_BUNDLE = "PROMPT_CODE_APP_BUNDLE";
+
+/** メニューバーのメニューの文言 */
+function trayLabels(lang: Lang): Record<string, string> {
+  return lang === "ja"
+    ? {
+        open: "Prompt Code を開く",
+        quickPaste: "クイックペースト",
+        history: "クリップボードの履歴",
+        prompts: "お気に入りのプロンプト",
+        empty: "（まだありません）",
+        clear: "履歴を消す",
+        quit: "Prompt Code を終了",
+      }
+    : {
+        open: "Open Prompt Code",
+        quickPaste: "Quick Paste",
+        history: "Clipboard History",
+        prompts: "Favorite Prompts",
+        empty: "(Nothing yet)",
+        clear: "Clear History",
+        quit: "Quit Prompt Code",
+      };
+}
 
 /** デスクトップアプリがこの行を読んで、画面を開く URL を知る */
 const READY_PREFIX = "PROMPT_CODE_READY ";
@@ -55,17 +83,57 @@ async function main(runtime: Runtime, options: RunOptions): Promise<void> {
   };
 
   let vault = await openVault(vaultPathOf((await settings.get()).vaultPath));
+  const osLang = await systemLang(runtime.runner);
+  const desktop = new DesktopChannel(options.desktop);
+
+  /** メニューバーのメニューを、いまの履歴とお気に入りのプロンプトで作り直してもらう */
+  const updateTray = async (): Promise<void> => {
+    if (!desktop.enabled) return;
+    const favorites = vault
+      .index()
+      .notes.filter((note) => note.favorite)
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .slice(0, 20);
+    desktop.setTray(
+      await clipboard.list(),
+      favorites,
+      trayLabels((await settings.get()).lang ?? osLang),
+    );
+  };
+  const clipboard = new ClipboardHistory(
+    runtime.fs,
+    join(configDir, "clipboard.json"),
+    () => void updateTray(),
+  );
+
+  // お気に入りが変わったらメニューも変える。保管庫を替えたら、新しい保管庫を見る
+  void (async () => {
+    let version = vault.index().version;
+    for (;;) {
+      // eslint-disable-next-line no-await-in-loop -- 変化を 1 つずつ待つ
+      const next = await vault.waitForChange(version);
+      if (next !== version) void updateTray();
+      version = vault.index().version;
+    }
+  })();
 
   const app = createApp({
     vault: () => vault,
     settings,
     async onSettingsSaved(saved) {
+      desktop.setShortcut(saved.quickPasteShortcut);
+      await setOpenAtLogin(runtime.fs, home, process.env[ENV_APP_BUNDLE], saved.openAtLogin);
+      await clipboard.trim(saved.historyLimit);
       const path = vaultPathOf(saved.vaultPath);
-      if (path === vault.root) return;
-      const next = await openVault(path);
-      vault.close();
-      vault = next;
+      if (path !== vault.root) {
+        const next = await openVault(path);
+        vault.close();
+        vault = next;
+      }
+      await updateTray();
     },
+    clipboard,
+    desktop,
     state: new StateStore(runtime.fs, join(configDir, "state")),
     system: new MacSystemActions(runtime.runner),
     fs: runtime.fs,
@@ -90,6 +158,8 @@ async function main(runtime: Runtime, options: RunOptions): Promise<void> {
 
   if (options.desktop) {
     console.log(`${READY_PREFIX}${url}`);
+    desktop.setShortcut((await settings.get()).quickPasteShortcut);
+    await updateTray();
     return;
   }
   console.log(`prompt-code is running: ${url}\nVault: ${vault.root}`);

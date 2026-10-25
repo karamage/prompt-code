@@ -28,3 +28,26 @@ export interface ApiErrorBody {
   message: string;
   detail: string | null;
 }
+
+export interface ClipboardItem {
+  id: string;
+  text: string;
+  /** コピーした時刻（ミリ秒） */
+  at: number;
+}
+
+/** デスクトップアプリとして動いているときだけ使える機能の状態 */
+export interface DesktopStatus {
+  /** デスクトップアプリから起動されたか。ブラウザで開発しているときは false */
+  desktop: boolean;
+  /** 元のアプリへ貼り付けるのに要る「アクセシビリティ」の許可。まだ分からなければ null */
+  accessibility: boolean | null;
+  /** 登録できなかったショートカット。ほかのアプリが使っているときなど */
+  shortcutError: string | null;
+}
+
+/** ノートをプロンプトとして組み立てた結果 */
+export interface CompiledNote {
+  text: string;
+  variables: { name: string; defaultValue: string; options: string[] }[];
+}

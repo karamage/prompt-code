@@ -14,10 +14,14 @@ Prompt Code takes the parts of Obsidian that make writing pleasant — plain Mar
 - **Links and tags.** `[[Note]]` links with autocomplete, backlinks, `#tags`, and a graph view (`⌘G`). Renaming a note rewrites links to it.
 - **Fast navigation.** `⌘K` jumps to any note, `>` runs commands, `⇧⌘F` searches every note's text.
 - **Your files, as they are.** The vault is a folder of `.md` files with YAML frontmatter (`tags`, `favorite`, `description`). Edit them with any other app — Prompt Code picks up the changes live. Deleted notes go to `.trash/` inside the vault.
+- **Quick paste from anywhere.** Press `⌃⌘V` in any app to open a small window with your clipboard history and your prompts. Pick one and it is pasted straight into the app you were using. Prompts with variables let you fill them in right there first.
+- **Clipboard history in the menu bar.** Prompt Code stays in the menu bar and keeps the text you copy (200 items by default). Copies that password managers mark as concealed are never recorded. Recent clips and favorite prompts are one click away in the menu bar menu.
 - **Write, split, read.** A Markdown editor with syntax highlighting for code blocks, and a reading view.
 - Light and dark themes, five accent colors, English and Japanese.
 
 Nothing leaves your Mac. Prompt Code has no account, no telemetry, and makes no network requests.
+
+To paste into other apps, macOS asks you to allow Prompt Code under **System Settings › Privacy & Security › Accessibility** the first time. Without it, quick paste still copies the text for you to paste with `⌘V`. Closing the window keeps Prompt Code in the menu bar; quit it from the menu bar menu or with `⌘Q`.
 
 ## Keys
 
@@ -34,6 +38,8 @@ Nothing leaves your Mac. Prompt Code has no account, no telemetry, and makes no 
 | `⌘D` | Duplicate note |
 | `⌘⌫` | Move note to trash (undo from the toast) |
 | `⌘,` | Settings |
+| `⌃⌘V` (anywhere) | Quick paste — change it in Settings |
+| `↵` / `⌘↵` / `⌘1`–`⌘9` | In quick paste: paste / copy only / paste that row |
 | `⌘`-click | Follow a `[[link]]` in the editor |
 
 ## Build

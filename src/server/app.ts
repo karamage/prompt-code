@@ -1,8 +1,14 @@
 import { Hono, type Context } from "hono";
 import { serveStatic } from "hono/serve-static";
 import { join } from "node:path";
+import type { CompiledNote } from "../shared/api.ts";
+import { parseNote } from "../shared/frontmatter.ts";
 import type { Lang } from "../shared/i18n.ts";
+import { resolveLink } from "../shared/notes.ts";
+import { compilePrompt, extractVariables, resolveEmbeds } from "../shared/prompt.ts";
 import type { Settings } from "../shared/settings.ts";
+import type { ClipboardHistory } from "./clipboard.ts";
+import type { DesktopChannel } from "./desktop.ts";
 import { AppError } from "./errors.ts";
 import { requestLang } from "./lang.ts";
 import type { FileSystem } from "./runtime/types.ts";
@@ -21,6 +27,10 @@ export interface AppDeps {
     save(key: StateKey, data: string): Promise<void>;
   };
   system: SystemActions;
+  /** コピーしたものの履歴 */
+  clipboard: ClipboardHistory;
+  /** デスクトップアプリの殻への合図 */
+  desktop: DesktopChannel;
   fs: FileSystem;
   clientDir: string;
   /**
@@ -181,6 +191,106 @@ export function createApp(deps: AppDeps): Hono {
     const key = c.req.param("key");
     if (!isStateKey(key)) return c.json({ message: "Unknown key", detail: null }, 400);
     await deps.state.save(key, str(await body(c), "data"));
+    return c.body(null, 204);
+  });
+
+  // ---- プロンプトとして使う（クイックペースト、メニューバー） ----
+
+  /** ノートを、値を埋めた送る直前の形にする。埋め込み先は保管庫から引く */
+  const compile = async (path: string, values: Record<string, string>): Promise<CompiledNote> => {
+    const vault = deps.vault();
+    const { content } = await vault.read(path);
+    const { body } = parseNote(content);
+    const sources = vault.sources();
+    const lookup = (target: string) => {
+      const found = resolveLink(target, sources);
+      return found === null ? null : parseNote(found.source).body;
+    };
+    const settings = await deps.settings.get();
+    return {
+      text: compilePrompt(body, values, lookup, { keepComments: !settings.stripComments }),
+      variables: extractVariables(resolveEmbeds(body, lookup)),
+    };
+  };
+
+  /** クリップボードに書いてから、元のアプリへの貼り付けを殻に頼む。貼り付けない設定なら閉じるだけ */
+  const deliver = async (text: string, paste: boolean): Promise<void> => {
+    await deps.system.copy(text);
+    if (paste && (await deps.settings.get()).autoPaste) deps.desktop.paste();
+    else deps.desktop.hidePicker();
+  };
+
+  const valuesOf = (data: Record<string, unknown>): Record<string, string> => {
+    const raw = data.values;
+    if (typeof raw !== "object" || raw === null) return {};
+    return Object.fromEntries(
+      Object.entries(raw as Record<string, unknown>).filter(
+        (entry): entry is [string, string] => typeof entry[1] === "string",
+      ),
+    );
+  };
+
+  app.post("/api/notes/compile", async (c) => {
+    const data = await body(c);
+    return c.json(await compile(str(data, "path"), valuesOf(data)));
+  });
+
+  app.post("/api/notes/use", async (c) => {
+    const data = await body(c);
+    const { text } = await compile(str(data, "path"), valuesOf(data));
+    await deliver(text, data.paste !== false);
+    return c.body(null, 204);
+  });
+
+  app.post("/api/paste", async (c) => {
+    const data = await body(c);
+    await deliver(str(data, "text"), data.paste !== false);
+    return c.body(null, 204);
+  });
+
+  app.get("/api/clipboard", async (c) => c.json(await deps.clipboard.list()));
+
+  /** 殻がクリップボードの変化を見つけたら送ってくる */
+  app.post("/api/clipboard", async (c) => {
+    const text = str(await body(c), "text");
+    const settings = await deps.settings.get();
+    if (settings.clipboardHistory) await deps.clipboard.add(text, settings.historyLimit);
+    return c.body(null, 204);
+  });
+
+  app.post("/api/clipboard/use", async (c) => {
+    const data = await body(c);
+    const item = await deps.clipboard.get(str(data, "id"));
+    if (item === undefined)
+      throw new AppError({ ja: "履歴にありません", en: "Not in the history" }, undefined, 404);
+    await deliver(item.text, data.paste !== false);
+    return c.body(null, 204);
+  });
+
+  app.post("/api/clipboard/remove", async (c) => {
+    await deps.clipboard.remove(str(await body(c), "id"));
+    return c.body(null, 204);
+  });
+
+  app.post("/api/clipboard/clear", async (c) => {
+    await deps.clipboard.clear();
+    return c.body(null, 204);
+  });
+
+  app.get("/api/desktop", (c) => c.json(deps.desktop.status));
+
+  app.post("/api/desktop/status", async (c) => {
+    const data = await body(c);
+    if (typeof data.accessibility === "boolean")
+      deps.desktop.status.accessibility = data.accessibility;
+    if (typeof data.shortcutError === "string" || data.shortcutError === null) {
+      deps.desktop.status.shortcutError = data.shortcutError;
+    }
+    return c.body(null, 204);
+  });
+
+  app.post("/api/desktop/hide-picker", (c) => {
+    deps.desktop.hidePicker();
     return c.body(null, 204);
   });
 

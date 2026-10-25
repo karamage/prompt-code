@@ -278,6 +278,7 @@ export function Sidebar() {
             view={{ kind: "variables" }}
             className="is-var"
           />
+          <Row icon="copy" label={text.clipboard} view={{ kind: "clipboard" }} />
         </div>
 
         <div className="nav-group">

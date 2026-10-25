@@ -2,10 +2,12 @@
  * 画面の脇役たち。設定、通知、右クリックのメニュー、確認、ペインの幅の調整
  */
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { DesktopStatus } from "../../shared/api.ts";
 import {
   type Accent,
   ACCENTS,
   FONT_SIZE_RANGE,
+  HISTORY_LIMITS,
   type Settings,
   THEMES,
 } from "../../shared/settings.ts";
@@ -65,6 +67,165 @@ function Toggle({
       <span className="switch-track" aria-hidden="true" />
       {label}
     </label>
+  );
+}
+
+/** アクセラレータ（Shift+Command+V）を、Mac のキーの記号（⇧⌘V）で見せる */
+export function shortcutLabel(accelerator: string): string {
+  const symbols: Record<string, string> = {
+    Control: "⌃",
+    Alt: "⌥",
+    Option: "⌥",
+    Shift: "⇧",
+    Command: "⌘",
+    Super: "⌘",
+    CmdOrCtrl: "⌘",
+    Space: "Space",
+  };
+  const order = ["Control", "Alt", "Option", "Shift", "Command", "Super", "CmdOrCtrl"];
+  const parts = accelerator.split("+");
+  const key = parts.pop() ?? "";
+  const mods = parts
+    .sort((a, b) => order.indexOf(a) - order.indexOf(b))
+    .map((part) => symbols[part] ?? part);
+  return `${mods.join("")}${symbols[key] ?? key}`;
+}
+
+/** 押したキーをアクセラレータにする。修飾キーだけ、または ⌘⌃⌥ の無い組み合わせは null */
+function acceleratorFrom(event: KeyboardEvent): string | null {
+  const code = event.code;
+  let key: string | null = null;
+  if (/^Key[A-Z]$/.test(code)) key = code.slice(3);
+  else if (/^Digit\d$/.test(code)) key = code.slice(5);
+  else if (/^F\d{1,2}$/.test(code)) key = code;
+  else if (
+    [
+      "Space",
+      "Backquote",
+      "Minus",
+      "Equal",
+      "Comma",
+      "Period",
+      "Slash",
+      "Semicolon",
+      "Quote",
+      "BracketLeft",
+      "BracketRight",
+      "Backslash",
+    ].includes(code)
+  )
+    key = code;
+  if (key === null || !(event.metaKey || event.ctrlKey || event.altKey)) return null;
+  const mods = [
+    event.ctrlKey ? "Control" : null,
+    event.altKey ? "Alt" : null,
+    event.shiftKey ? "Shift" : null,
+    event.metaKey ? "Command" : null,
+  ].filter((mod) => mod !== null);
+  return [...mods, key].join("+");
+}
+
+function ShortcutRecorder({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [recording, setRecording] = useState(false);
+  const text = t().settings;
+  useEffect(() => {
+    if (!recording) return;
+    const onKey = (event: KeyboardEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.key === "Escape") {
+        setRecording(false);
+        return;
+      }
+      const accelerator = acceleratorFrom(event);
+      if (accelerator !== null) {
+        onChange(accelerator);
+        setRecording(false);
+      }
+    };
+    // コマンドのキー操作より先に拾う
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [recording, onChange]);
+  return (
+    <button
+      type="button"
+      className={`shortcut-recorder${recording ? " is-recording" : ""}`}
+      onClick={() => setRecording((on) => !on)}
+      title={text.shortcutHint}
+    >
+      {recording ? text.shortcutRecording : <kbd>{shortcutLabel(value)}</kbd>}
+    </button>
+  );
+}
+
+function QuickPasteSettings({
+  settings,
+  set,
+}: {
+  settings: Settings;
+  set: (patch: Partial<Settings>) => void;
+}) {
+  const text = t().settings;
+  const [status, setStatus] = useState<DesktopStatus | null>(null);
+  useEffect(() => {
+    void api.desktop().then(setStatus, () => setStatus(null));
+  }, []);
+  return (
+    <section className="settings-section">
+      <h3>{text.quickPaste}</h3>
+      <div className="settings-row">
+        <span>{text.shortcut}</span>
+        <ShortcutRecorder
+          value={settings.quickPasteShortcut}
+          onChange={(quickPasteShortcut) => {
+            set({ quickPasteShortcut });
+            // 登録できたかは殻が少し後に知らせてくる
+            setTimeout(() => void api.desktop().then(setStatus, () => {}), 600);
+          }}
+        />
+      </div>
+      {status?.shortcutError === settings.quickPasteShortcut && (
+        <p className="muted small settings-note is-warning">{text.shortcutTaken}</p>
+      )}
+      <Toggle
+        checked={settings.autoPaste}
+        label={text.autoPaste}
+        onChange={(autoPaste) => set({ autoPaste })}
+      />
+      {status?.desktop === true && settings.autoPaste && status.accessibility !== null && (
+        <p className={`muted small settings-note${status.accessibility ? "" : " is-warning"}`}>
+          {status.accessibility ? text.accessibilityOk : text.accessibilityMissing}
+        </p>
+      )}
+      <Toggle
+        checked={settings.clipboardHistory}
+        label={text.clipboardHistory}
+        onChange={(clipboardHistory) => set({ clipboardHistory })}
+      />
+      <div className="settings-row">
+        <span>{text.historyLimit}</span>
+        <Choice
+          value={String(settings.historyLimit)}
+          options={HISTORY_LIMITS.map(String)}
+          label={(limit) => text.historyItems(Number(limit))}
+          onChange={(limit) => set({ historyLimit: Number(limit) })}
+        />
+      </div>
+      {status?.desktop === true && (
+        <Toggle
+          checked={settings.openAtLogin}
+          label={text.openAtLogin}
+          onChange={(openAtLogin) => set({ openAtLogin })}
+        />
+      )}
+    </section>
   );
 }
 
@@ -190,6 +351,8 @@ export function SettingsDialog() {
             onChange={(lineNumbers) => set({ lineNumbers })}
           />
         </section>
+
+        <QuickPasteSettings settings={settings} set={set} />
 
         <section className="settings-section">
           <h3>{text.copying}</h3>

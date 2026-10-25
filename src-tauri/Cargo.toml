@@ -15,9 +15,20 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 # 既定の feature のうち、同梱の画面の圧縮（splash だけで 2 KB）、実行時の権限の組み立て、
 # Linux 向けの x11 / dbus は要らないので外す
-tauri = { version = "2", default-features = false, features = ["wry", "common-controls-v6"] }
+# tray-icon と image-png はメニューバーのアイコン、macos-private-api はクイックペーストの透明なウィンドウに使う
+tauri = { version = "2", default-features = false, features = ["wry", "common-controls-v6", "tray-icon", "image-png", "macos-private-api"] }
+tauri-plugin-global-shortcut = "2"
+serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 url = "2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# どれも Tauri がすでに引き込んでいる版に合わせ、アプリを大きくしない
+objc2 = "0.6"
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSString", "NSArray"] }
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSPasteboard"] }
+core-graphics = "0.25"
+core-foundation = "0.10"
 
 [profile.release]
 codegen-units = 1

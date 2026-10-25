@@ -2530,3 +2530,218 @@ body.is-resizing * {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---- クイックペースト ----
+ * ウィンドウ自体は透明で、角を丸めた板をここで描く。区切りはほかと同じく面の明るさの差だけ */
+html.picker-root,
+html.picker-root body {
+  background: transparent;
+}
+.picker {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  border-radius: 14px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.picker-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 58px;
+  padding: 0 14px 0 16px;
+  flex: none;
+}
+.picker-search {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font-size: 17px;
+  color: var(--text);
+}
+.picker-search::placeholder {
+  color: var(--text-3);
+}
+.picker-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+}
+.picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  background: var(--bg-list);
+}
+.picker-empty {
+  padding: 24px 14px;
+  color: var(--text-3);
+  text-align: center;
+}
+.picker-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--radius-m);
+  color: var(--text-2);
+}
+.picker-row.is-active {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.picker-no {
+  width: 24px;
+  flex: none;
+  color: var(--text-3);
+  font: 500 10.5px var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.picker-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.picker-text mark {
+  color: var(--var);
+}
+.picker-fav {
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: -1px;
+  color: var(--accent);
+}
+.picker-meta {
+  flex: none;
+  color: var(--text-3);
+  font-size: 11.5px;
+}
+.picker-preview {
+  min-width: 0;
+  padding: 16px 20px;
+  overflow-y: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.picker-preview h2 {
+  margin: 0 0 4px;
+  font: 500 20px/1.25 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.picker-description {
+  margin: 0 0 10px;
+  color: var(--text-2);
+  font: italic 14px/1.4 var(--font-serif);
+}
+.picker-pre {
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: 12px/1.65 var(--font-mono);
+  color: var(--text-2);
+}
+.picker-preview-meta {
+  margin: 10px 0 0;
+  color: var(--text-3);
+  font-size: 11.5px;
+}
+.picker-fill .var-fields {
+  padding: 8px 0 4px;
+}
+.picker-fill .picker-pre {
+  padding: 10px 12px;
+  border-radius: var(--radius-m);
+  background: var(--code-bg);
+}
+.picker-hint {
+  margin: 0;
+  padding: 8px 16px;
+  background: var(--var-soft);
+  color: var(--var);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.picker-foot {
+  display: flex;
+  gap: 16px;
+  padding: 9px 16px;
+  flex: none;
+  background: var(--bg-list);
+  color: var(--text-3);
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.picker-foot kbd {
+  margin-right: 3px;
+}
+
+/* 設定: ショートカットを押して決める欄 */
+.shortcut-recorder {
+  min-width: 120px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-m);
+  background: var(--fill);
+  color: var(--text-2);
+  transition: background 0.15s;
+}
+.shortcut-recorder kbd {
+  font-size: 13px;
+  padding: 2px 6px;
+  color: var(--text);
+  background: none;
+  letter-spacing: 0.08em;
+}
+.shortcut-recorder:hover {
+  background: var(--fill-strong);
+}
+.shortcut-recorder.is-recording {
+  background: var(--var-soft);
+  color: var(--var);
+}
+.settings-note {
+  margin: -2px 0 6px 40px;
+  line-height: 1.45;
+}
+.settings-note.is-warning {
+  color: var(--var);
+}
+
+/* クリップボードの履歴 */
+.clip-text {
+  margin: 0;
+  font: 12px/1.6 var(--font-mono);
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.clip-item .trash-actions {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  margin: 0;
+  padding: 2px;
+  border-radius: var(--radius-m);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.clip-item:hover .trash-actions,
+.clip-item:focus-within .trash-actions {
+  opacity: 1;
+}

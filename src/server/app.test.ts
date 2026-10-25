@@ -4,12 +4,16 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { defaultSettings, type Settings } from "../shared/settings.ts";
 import { createApp, TOKEN_HEADER } from "./app.ts";
+import { ClipboardHistory } from "./clipboard.ts";
+import { DesktopChannel } from "./desktop.ts";
 import { bunFileSystem } from "./runtime/bun.ts";
 import type { SystemActions } from "./system.ts";
 import { Vault } from "./vault/vault.ts";
 
 let dir: string;
 let vault: Vault;
+let clipboard: ClipboardHistory;
+let signals: string[];
 const copied: string[] = [];
 
 const system: SystemActions = {
@@ -22,7 +26,12 @@ const system: SystemActions = {
 beforeEach(async () => {
   dir = await mkdtemp(join(tmpdir(), "prompt-code-app-"));
   vault = new Vault(bunFileSystem, join(dir, "vault"));
-  await vault.open(() => ({ "A.md": "hello" }));
+  await vault.open(() => ({
+    "A.md": "hello",
+    "P.md": "Hi {{name: you}} in {{tone: calm | loud}}\n<!-- note -->\n![[A]]",
+  }));
+  clipboard = new ClipboardHistory(bunFileSystem, join(dir, "clipboard.json"));
+  signals = [];
 });
 
 afterEach(async () => {
@@ -38,6 +47,8 @@ function app(token: string | null = null) {
     onSettingsSaved: async () => {},
     state: { load: async () => null, save: async () => {} },
     system,
+    clipboard,
+    desktop: new DesktopChannel(true, (line) => signals.push(line)),
     fs: bunFileSystem,
     clientDir: join(dir, "client"),
     token,
@@ -96,4 +107,31 @@ test("only opens http and https URLs", async () => {
 
 test("serves only images from the vault", async () => {
   expect((await app().request("/api/file?path=A.md")).status).toBe(404);
+});
+
+test("compiles a note with values, defaults and embeds", async () => {
+  const res = await app().request(
+    "/api/notes/compile",
+    json({ path: "P.md", values: { tone: "loud" } }),
+  );
+  const compiled = await res.json();
+  expect(compiled.text).toBe("Hi you in loud\n\nhello");
+  expect(compiled.variables.map((v: { name: string }) => v.name)).toEqual(["name", "tone"]);
+});
+
+test("records clipboard history and pastes an item back", async () => {
+  const server = app();
+  await server.request("/api/clipboard", json({ text: "first" }));
+  await server.request("/api/clipboard", json({ text: "second" }));
+  await server.request("/api/clipboard", json({ text: "first" }));
+  const items = await (await server.request("/api/clipboard")).json();
+  expect(items.map((item: { text: string }) => item.text)).toEqual(["first", "second"]);
+  expect((await server.request("/api/clipboard/use", json({ id: items[1].id }))).status).toBe(204);
+  expect(copied.at(-1)).toBe("second");
+  expect(signals.at(-1)).toBe("PROMPT_CODE_PASTE");
+});
+
+test("only closes the picker when asked not to paste", async () => {
+  await app().request("/api/paste", json({ text: "x", paste: false }));
+  expect(signals.at(-1)).toBe("PROMPT_CODE_HIDE_PICKER");
 });

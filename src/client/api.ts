@@ -1,4 +1,11 @@
-import type { NoteResponse, SearchHit, TrashEntry } from "../shared/api.ts";
+import type {
+  ClipboardItem,
+  CompiledNote,
+  DesktopStatus,
+  NoteResponse,
+  SearchHit,
+  TrashEntry,
+} from "../shared/api.ts";
 import type { NoteMeta, VaultIndex } from "../shared/notes.ts";
 import type { Settings } from "../shared/settings.ts";
 import { apiToken } from "./desktop.ts";
@@ -76,6 +83,19 @@ export const api = {
   chooseFolder: async () =>
     (await request<{ path: string | null }>("/api/system/choose-folder", { body: {} })).path,
   post: (path: string, body: unknown) => request<unknown>(path, { body }),
+  clipboard: () => request<ClipboardItem[]>("/api/clipboard"),
+  removeClip: (id: string) => request<void>("/api/clipboard/remove", { body: { id } }),
+  clearClipboard: () => request<void>("/api/clipboard/clear", { body: {} }),
+  /** 履歴の 1 件をクリップボードに戻す。paste なら元のアプリへ貼り付けまでする */
+  useClip: (id: string, paste: boolean) =>
+    request<void>("/api/clipboard/use", { body: { id, paste } }),
+  compile: (path: string, values: Record<string, string>) =>
+    request<CompiledNote>("/api/notes/compile", { body: { path, values } }),
+  useNote: (path: string, values: Record<string, string>, paste: boolean) =>
+    request<void>("/api/notes/use", { body: { path, values, paste } }),
+  paste: (text: string, paste: boolean) => request<void>("/api/paste", { body: { text, paste } }),
+  desktop: () => request<DesktopStatus>("/api/desktop"),
+  hidePicker: () => request<void>("/api/desktop/hide-picker", { body: {} }),
 };
 
 /** 本文の画像を <img> で読む URL。ヘッダを付けられないので合言葉を URL に載せる */

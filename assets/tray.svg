@@ -1,0 +1,5 @@
+<svg width="44" height="44" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+  <!-- メニューバー用のテンプレート画像。macOS が明るさに合わせて色を付けるので、黒一色で描く -->
+  <path d="M9 12 L19 22 L9 32" fill="none" stroke="#000" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="22" y="28" width="14" height="4.4" rx="1.6" fill="#000"/>
+</svg>

@@ -2,7 +2,7 @@
  * 画面全体の状態。React の外に 1 つだけ置き、useApp で必要な部分だけを読む
  */
 import { useSyncExternalStore } from "react";
-import type { TrashEntry } from "../shared/api.ts";
+import type { ClipboardItem, TrashEntry } from "../shared/api.ts";
 import type { Frontmatter } from "../shared/frontmatter.ts";
 import type { VaultIndex } from "../shared/notes.ts";
 import { defaultSettings, type Settings } from "../shared/settings.ts";
@@ -13,6 +13,7 @@ export type View =
   | { kind: "recent" }
   | { kind: "variables" }
   | { kind: "trash" }
+  | { kind: "clipboard" }
   | { kind: "folder"; path: string }
   | { kind: "tag"; tag: string };
 
@@ -75,6 +76,8 @@ export interface AppState {
   /** ノートごとに、使うパネルで入れた値。アプリを閉じたら消える */
   values: Record<string, Record<string, string>>;
   trash: TrashEntry[] | null;
+  /** クリップボードの履歴。表示しているときだけ読む */
+  clipboard: ClipboardItem[] | null;
   /** 名前を書き換え中のノートかフォルダ */
   renaming: { kind: "note" | "folder"; path: string } | null;
   menu: { x: number; y: number; items: ContextMenuItem[] } | null;
@@ -114,6 +117,7 @@ let state: AppState = {
   toasts: [],
   values: {},
   trash: null,
+  clipboard: null,
   renaming: null,
   menu: null,
   filter: "",

@@ -7,6 +7,13 @@ export default defineConfig({
   build: {
     outDir: "../../dist/client",
     emptyOutDir: true,
+    // メインの画面と、グローバルショートカットで出すクイックペースト
+    rolldownOptions: {
+      input: {
+        main: new URL("src/client/index.html", import.meta.url).pathname,
+        picker: new URL("src/client/picker.html", import.meta.url).pathname,
+      },
+    },
     // WKWebView（macOS 11 以降の Safari 14 相当）で動けばよい
     target: "safari14",
     reportCompressedSize: false,

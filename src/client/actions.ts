@@ -167,9 +167,17 @@ async function watchVault(): Promise<void> {
       if (version !== since) await refreshIndex();
       if (!getState().online) setState({ online: true });
     } catch {
-      setState({ online: false });
+      // 待っている間に接続が切れただけのこともある。サーバに届くかを確かめてから、切れたと出す
       // eslint-disable-next-line no-await-in-loop
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const reachable = await refreshIndex().then(
+        () => true,
+        () => false,
+      );
+      if (!reachable) {
+        setState({ online: false });
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
     }
   }
 }

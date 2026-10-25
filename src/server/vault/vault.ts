@@ -17,8 +17,11 @@ import type { SearchHit, TrashEntry } from "../../shared/api.ts";
 const IGNORED_DIRS = new Set([".trash", ".git", ".obsidian", "node_modules", ".DS_Store"]);
 export const TRASH_DIR = ".trash";
 
-/** 変更を待つリクエストを、変わらなくてもこの時間で返す */
-const WAIT_TIMEOUT_MS = 25_000;
+/**
+ * 変更を待つリクエストを、変わらなくてもこの時間で返す。
+ * txiki.js の HTTP サーバは、15 秒応答しない接続を切るので、それより短くする
+ */
+const WAIT_TIMEOUT_MS = 10_000;
 
 interface CachedNote {
   meta: NoteMeta;

@@ -22,7 +22,7 @@ export interface Settings {
   clipboardHistory: boolean;
   /** 履歴に残す件数 */
   historyLimit: number;
-  /** クイックペーストを開くキー。Tauri のアクセラレータの書き方（例: Control+Command+V） */
+  /** クイックペーストを開くキー。Tauri のアクセラレータの書き方（例: Alt+Command+V） */
   quickPasteShortcut: string;
   /** クイックペーストで選んだら、元のアプリにそのまま貼り付けるか */
   autoPaste: boolean;
@@ -36,8 +36,8 @@ const SORTS: readonly SortKey[] = ["updated", "created", "title"];
 
 export const FONT_SIZE_RANGE = { min: 12, max: 22 } as const;
 export const HISTORY_LIMITS: readonly number[] = [50, 100, 200, 500, 1000];
-/** ⇧⌘V は Clipy の既定と重なるので避ける。⌃⌘V は主なアプリで使われていない */
-export const DEFAULT_SHORTCUT = "Control+Command+V";
+/** ⇧⌘V と ⌃⌘V は Clipy と重なるので避ける */
+export const DEFAULT_SHORTCUT = "Alt+Command+V";
 
 /** アクセラレータとして読めそうか。修飾キーを 1 つ以上と、ふつうのキーを 1 つ */
 export function isShortcut(value: unknown): value is string {

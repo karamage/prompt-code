@@ -268,7 +268,7 @@ fn build_tray_menu(app: &AppHandle, data: &TrayMenu, shortcut: &str) -> tauri::R
     Ok(menu)
 }
 
-/// アクセラレータ（Control+Command+V）を、Mac のキーの記号（⌃⌘V）にする
+/// アクセラレータ（Alt+Command+V）を、Mac のキーの記号（⌥⌘V）にする
 fn key_symbols(accelerator: &str) -> String {
     let mut parts: Vec<&str> = accelerator.split('+').collect();
     let key = parts.pop().unwrap_or_default();

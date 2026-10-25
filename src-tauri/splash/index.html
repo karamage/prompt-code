@@ -22,8 +22,9 @@
         user-select: none;
       }
       main { width: min(560px, calc(100% - 48px)); text-align: center; }
-      .glyph { display: flex; justify-content: center; align-items: center; gap: 6px; font: 300 64px/1 "Hiragino Mincho ProN", Georgia, serif; color: var(--muted); }
-      .caret { width: 3px; height: 44px; border-radius: 2px; background: var(--var); animation: blink 1.1s steps(2, jump-none) infinite; }
+      .glyph { display: block; width: 90px; height: 48px; margin: 0 auto; overflow: visible; }
+      .glyph path { fill: none; stroke: var(--muted); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+      .caret { fill: var(--var); animation: blink 1.1s steps(2, jump-none) infinite; }
       @keyframes blink { 50% { opacity: 0; } }
       p { margin: 18px 0 0; color: var(--muted); }
       pre {
@@ -37,7 +38,7 @@
   </head>
   <body>
     <main data-tauri-drag-region>
-      <div class="glyph" aria-hidden="true"><span>{{</span><span class="caret" id="caret"></span><span>}}</span></div>
+      <svg class="glyph" viewBox="0 0 120 64" aria-hidden="true"><path d="M8 8 34 32 8 56" /><rect class="caret" id="caret" x="48" y="50" width="40" height="7" rx="2" /></svg>
       <p id="status">Opening your vault…</p>
       <pre id="error" hidden></pre>
     </main>

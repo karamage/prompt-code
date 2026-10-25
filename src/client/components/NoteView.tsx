@@ -348,11 +348,10 @@ function EmptyNote() {
         )}
       </header>
       <div className="empty-state">
-        <div className="empty-glyph" aria-hidden="true">
-          <span>{"{{"}</span>
-          <span className="empty-caret" />
-          <span>{"}}"}</span>
-        </div>
+        <svg className="empty-glyph" viewBox="0 0 120 64" aria-hidden="true">
+          <path d="M8 8 34 32 8 56" />
+          <rect className="empty-caret" x="48" y="50" width="40" height="7" rx="2" />
+        </svg>
         <h2>{text.emptyTitle}</h2>
         <p>{text.emptyBody}</p>
         <div className="empty-actions">

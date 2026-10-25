@@ -355,8 +355,8 @@ function LinksPanel() {
   );
 }
 
-const TABS: { id: InspectorTab; icon: "braces" | "outline" | "link" }[] = [
-  { id: "use", icon: "braces" },
+const TABS: { id: InspectorTab; icon: "slot" | "outline" | "link" }[] = [
+  { id: "use", icon: "slot" },
   { id: "outline", icon: "outline" },
   { id: "links", icon: "link" },
 ];

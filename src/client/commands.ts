@@ -86,7 +86,7 @@ export const COMMANDS: Command[] = [
   {
     id: "use",
     label: () => t().commands.usePrompt,
-    icon: "braces",
+    icon: "slot",
     keys: "⌘↵",
     needsNote: true,
     matches: (e) => mod(e) && !e.shiftKey && e.key === "Enter",

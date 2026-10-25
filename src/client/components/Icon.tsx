@@ -5,8 +5,7 @@ const PATHS = {
   all: "M3.5 3.5h9v9h-9zM6 6.5h4M6 9.5h2.5",
   star: "M8 2.6l1.6 3.4 3.7.5-2.7 2.6.7 3.7L8 11l-3.3 1.8.7-3.7-2.7-2.6 3.7-.5z",
   clock: "M8 2.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM8 5v3.2l2 1.3",
-  braces:
-    "M6 2.75c-1.5 0-2 .6-2 2v1.5c0 .9-.5 1.5-1.25 1.75.75.25 1.25.85 1.25 1.75v1.5c0 1.4.5 2 2 2M10 2.75c1.5 0 2 .6 2 2v1.5c0 .9.5 1.5 1.25 1.75-.75.25-1.25.85-1.25 1.75v1.5c0 1.4-.5 2-2 2",
+  slot: "M2.5 5.25c0-.4.35-.75.75-.75h9.5c.4 0 .75.35.75.75v5.5c0 .4-.35.75-.75.75h-9.5a.75.75 0 0 1-.75-.75zM5.5 6.5v3",
   trash: "M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5",
   folder: "M2.5 4.5c0-.6.4-1 1-1h3l1.3 1.5h4.7c.6 0 1 .4 1 1v6c0 .6-.4 1-1 1h-9c-.6 0-1-.4-1-1z",
   hash: "M6.2 2.5l-1.4 11M11.2 2.5l-1.4 11M3 6h10.5M2.5 10h10.5",
@@ -41,6 +40,34 @@ const PATHS = {
   arrowRight: "M3 8h10M9 4l4 4-4 4",
   theme: "M8 2.75a5.25 5.25 0 1 0 0 10.5zM8 2.75a5.25 5.25 0 0 1 0 10.5",
 } as const;
+
+/**
+ * アプリの印。シェルのプロンプト「❯ _」で、カーソルだけを変数の色で灯す。
+ * 地の色を持つ小さな札として描くので、明るいテーマでも暗いまま置く
+ */
+export function Mark({ size = 24, blink = false }: { size?: number; blink?: boolean }) {
+  return (
+    <svg className="mark" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <rect width="24" height="24" rx="6.5" fill="#141414" />
+      <path
+        d="M7 7.5 10.5 12 7 16.5"
+        fill="none"
+        stroke="#e6e6e6"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect
+        className={blink ? "mark-cursor is-blinking" : "mark-cursor"}
+        x="12.5"
+        y="14.6"
+        width="5"
+        height="1.9"
+        rx="0.5"
+      />
+    </svg>
+  );
+}
 
 export type IconName = keyof typeof PATHS;
 

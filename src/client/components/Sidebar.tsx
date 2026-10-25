@@ -14,7 +14,7 @@ import {
 } from "../actions.ts";
 import { t } from "../i18n.ts";
 import { setState, useApp, type View } from "../store.ts";
-import { Icon, type IconName } from "./Icon.tsx";
+import { Icon, type IconName, Mark } from "./Icon.tsx";
 
 export const DRAG_TYPE = "application/x-prompt-code-path";
 
@@ -256,9 +256,7 @@ export function Sidebar() {
       <div className="titlebar-space" data-tauri-drag-region />
       <div className="vault-head" data-tauri-drag-region>
         <button type="button" className="vault-name" onClick={() => reveal("")} title={index?.root}>
-          <span className="vault-mark" aria-hidden="true">
-            {"{}"}
-          </span>
+          <Mark />
           <span>{vaultName}</span>
         </button>
       </div>
@@ -274,7 +272,7 @@ export function Sidebar() {
           <Row icon="star" label={text.favorites} count={favorites} view={{ kind: "favorites" }} />
           <Row icon="clock" label={text.recent} count={recent} view={{ kind: "recent" }} />
           <Row
-            icon="braces"
+            icon="slot"
             label={text.variables}
             count={withVariables}
             view={{ kind: "variables" }}

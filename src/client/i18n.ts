@@ -19,6 +19,14 @@ export function subscribeLang(listener: () => void): () => void {
   return () => listeners.delete(listener);
 }
 
+export interface GuideStep {
+  title: string;
+  lead: string;
+  /** keys は記法かキー操作。text はその説明 */
+  points: { keys: string; text: string }[];
+  note?: string;
+}
+
 const en = {
   library: {
     all: "All notes",
@@ -122,6 +130,7 @@ const en = {
     trash: "Move note to trash",
     reveal: "Show note in Finder",
     theme: "Switch light / dark",
+    guide: "Guide: how to use Prompt Code",
   },
   graph: {
     title: "Graph",
@@ -222,6 +231,75 @@ const en = {
     clearConfirm: "Delete the whole clipboard history? This cannot be undone.",
     savedTitle: "Clipped",
     count: (n: number) => `${n} item${n === 1 ? "" : "s"}`,
+  },
+  guide: {
+    title: "Getting started",
+    back: "Back",
+    next: "Next",
+    done: "Start writing",
+    skip: "Skip",
+    step: (n: number, total: number) => `${n} / ${total}`,
+    reopen:
+      "Open this guide again from the ? button at the bottom of the sidebar, or ⌘K then > Guide.",
+    steps: (shortcut: string): GuideStep[] => [
+      {
+        title: "Welcome to Prompt Code",
+        lead: "A place to write, keep and reuse the prompts you give AI. Every note is a plain Markdown file in a folder on your Mac.",
+        points: [
+          { keys: "⌘N", text: "Write a new prompt. It saves as you type." },
+          { keys: "⌘K", text: "Jump to any note by name." },
+          { keys: "Sidebar", text: "Sort prompts into folders, tags and favorites." },
+        ],
+      },
+      {
+        title: "Leave blanks to fill later",
+        lead: "Write the parts that change each time as variables. You fill them in just before copying.",
+        points: [
+          { keys: "{{topic}}", text: "An empty field." },
+          { keys: "{{reader: engineer}}", text: "A field with a default value." },
+          { keys: "{{tone: polite | casual}}", text: "A choice. The first one is the default." },
+          {
+            keys: "![[Answer format]]",
+            text: "Inserts another note when you copy, so shared rules live in one place.",
+          },
+          { keys: "<!-- memo -->", text: "A note to yourself. Removed when you copy." },
+        ],
+      },
+      {
+        title: "Fill in and copy",
+        lead: "The Use panel on the right builds a field for every variable and shows the finished prompt.",
+        points: [
+          { keys: "⌘↵", text: "Jump to the first field. Press it again inside the panel to copy." },
+          { keys: "⇧⌘C", text: "Copy the prompt with the current values." },
+          { keys: "⌘E", text: "Switch between writing and reading." },
+        ],
+      },
+      {
+        title: `Paste from any app with ${shortcut}`,
+        lead: "You do not need to switch back to this window. In ChatGPT, Claude, your editor or anywhere else, press the shortcut and a small picker opens.",
+        points: [
+          { keys: shortcut, text: "Open the quick paste picker from any app." },
+          {
+            keys: "↵",
+            text: "Paste the selected item into the app you were in. Prompts with variables ask for values first.",
+          },
+          { keys: "⌘1–⌘9", text: "Paste that row right away." },
+          { keys: "Tab", text: "Switch between clipboard history and prompts." },
+        ],
+        note: "The first paste asks for permission in System Settings › Privacy & Security › Accessibility. Without it, the picker copies and you press ⌘V. Closing the window keeps Prompt Code in the menu bar; quit from there or with ⌘Q.",
+      },
+      {
+        title: "Tips",
+        lead: "A few keys that make daily use faster.",
+        points: [
+          { keys: "⌘K  >", text: "Type > in the palette to run any command." },
+          { keys: "⇧⌘F", text: "Search inside every note." },
+          { keys: "[[", text: "Link to another note. ⌘-click a link to open it." },
+          { keys: "⌘G", text: "See how notes link together." },
+          { keys: "⌘,", text: "Change the shortcut, theme, language and vault folder." },
+        ],
+      },
+    ],
   },
   connection: "Lost connection to the local server. Retrying…",
 };
@@ -331,6 +409,7 @@ const ja: Messages = {
     trash: "ノートをゴミ箱に移す",
     reveal: "ノートを Finder で表示",
     theme: "ライト・ダークを切り替え",
+    guide: "使い方ガイドを開く",
   },
   graph: {
     title: "グラフ",
@@ -431,6 +510,74 @@ const ja: Messages = {
     clearConfirm: "クリップボードの履歴をすべて消しますか？元に戻せません。",
     savedTitle: "クリップ",
     count: (n) => `${n} 件`,
+  },
+  guide: {
+    title: "使い方",
+    back: "戻る",
+    next: "次へ",
+    done: "書きはじめる",
+    skip: "スキップ",
+    step: (n, total) => `${n} / ${total}`,
+    reopen: "このガイドは、サイドバーの下の ? ボタンか、⌘K で > 使い方 と打つといつでも開けます。",
+    steps: (shortcut) => [
+      {
+        title: "Prompt Code へようこそ",
+        lead: "AI に渡すプロンプトを書いて、ためて、使い回すためのアプリです。ノートはどれも、Mac のフォルダに置くただの Markdown ファイルです。",
+        points: [
+          { keys: "⌘N", text: "新しいプロンプトを書きます。入力するそばから保存されます。" },
+          { keys: "⌘K", text: "ノートを名前で探して開きます。" },
+          { keys: "サイドバー", text: "フォルダ、タグ、お気に入りでプロンプトを整理します。" },
+        ],
+      },
+      {
+        title: "毎回変わるところは空欄にする",
+        lead: "使うたびに書き換える部分は変数にしておきます。コピーする直前に値を埋められます。",
+        points: [
+          { keys: "{{テーマ}}", text: "空の入力欄になります。" },
+          { keys: "{{読み手: エンジニア}}", text: "既定値つきの入力欄になります。" },
+          { keys: "{{口調: 丁寧 | くだけた}}", text: "選択肢になります。最初のものが既定値です。" },
+          {
+            keys: "![[回答の形式]]",
+            text: "コピーするときに別のノートの中身を差し込みます。共通の決まりを 1 か所にまとめられます。",
+          },
+          { keys: "<!-- メモ -->", text: "自分用のメモです。コピーするときには消えます。" },
+        ],
+      },
+      {
+        title: "値を埋めてコピーする",
+        lead: "右の「使う」パネルに変数ごとの入力欄が並び、できあがったプロンプトが表示されます。",
+        points: [
+          { keys: "⌘↵", text: "最初の入力欄へ移ります。パネルの中でもう一度押すとコピーします。" },
+          { keys: "⇧⌘C", text: "いまの値でプロンプトをコピーします。" },
+          { keys: "⌘E", text: "書く画面と読む画面を切り替えます。" },
+        ],
+      },
+      {
+        title: `どのアプリからでも ${shortcut} で貼り付け`,
+        lead: "このウィンドウに戻る必要はありません。ChatGPT でも Claude でもエディタでも、このキーを押すと小さなウィンドウが開きます。",
+        points: [
+          { keys: shortcut, text: "どのアプリからでもクイックペーストを開きます。" },
+          {
+            keys: "↵",
+            text: "選んだものを、使っていたアプリに貼り付けます。変数のあるプロンプトは、先に値を聞かれます。",
+          },
+          { keys: "⌘1〜⌘9", text: "その行をすぐに貼り付けます。" },
+          { keys: "Tab", text: "クリップボードの履歴とプロンプトを切り替えます。" },
+        ],
+        note: "最初に貼り付けるとき、システム設定 › プライバシーとセキュリティ › アクセシビリティ での許可を求められます。許可しなくてもコピーまではするので、⌘V で貼り付けられます。ウィンドウを閉じてもメニューバーに残ります。終了はメニューバーか ⌘Q から行います。",
+      },
+      {
+        title: "TIPS",
+        lead: "覚えておくと毎日の操作が速くなるキーです。",
+        points: [
+          { keys: "⌘K  >", text: "パレットで > と打つと、コマンドを名前で実行できます。" },
+          { keys: "⇧⌘F", text: "すべてのノートの中身を検索します。" },
+          { keys: "[[", text: "ほかのノートへリンクします。⌘ + クリックで開きます。" },
+          { keys: "⌘G", text: "ノートのつながりをグラフで見ます。" },
+          { keys: "⌘,", text: "ショートカット、テーマ、言語、保管庫のフォルダを変えます。" },
+        ],
+      },
+    ],
   },
   connection: "ローカルサーバとの接続が切れました。再接続しています…",
 };

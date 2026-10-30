@@ -2344,6 +2344,82 @@ body.is-resizing * {
   gap: 8px;
 }
 
+/* 使い方のガイド */
+.dialog.guide {
+  width: min(600px, 100%);
+  max-height: 80vh;
+}
+.guide-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+}
+.guide-body {
+  min-height: 340px;
+  padding: 6px 24px 20px;
+  overflow-y: auto;
+  animation: fade 0.2s ease-out;
+}
+.guide-body h2 {
+  margin: 0 0 8px;
+  font: 500 26px/1.25 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.guide-lead {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+.guide-points {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+.guide-point {
+  display: grid;
+  grid-template-columns: minmax(120px, 40%) 1fr;
+  align-items: baseline;
+  gap: 14px;
+  padding: 9px 12px;
+  border-radius: var(--radius-m);
+  background: var(--fill);
+}
+.guide-point dt code {
+  font: 12.5px var(--font-mono);
+  color: var(--var);
+  overflow-wrap: anywhere;
+}
+.guide-point dd {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-note {
+  margin: 14px 0 0;
+  line-height: 1.6;
+}
+.guide-dots {
+  display: flex;
+  gap: 6px;
+}
+.guide-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--fill-strong);
+  transition: width 0.2s var(--ease-out), background 0.2s;
+}
+.guide-dots button.is-on {
+  width: 20px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
 /* グラフ */
 .graph-overlay {
   padding: 28px;

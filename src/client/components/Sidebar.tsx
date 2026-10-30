@@ -337,6 +337,14 @@ export function Sidebar() {
           <button
             type="button"
             className="icon-button"
+            onClick={() => openOverlay("guide")}
+            title={t().commands.guide}
+          >
+            <Icon name="help" />
+          </button>
+          <button
+            type="button"
+            className="icon-button"
             onClick={() => openOverlay("graph")}
             title={`${t().commands.graph}  ⌘G`}
           >

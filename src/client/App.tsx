@@ -6,6 +6,7 @@ import {
   Toasts,
 } from "./components/Chrome.tsx";
 import { Graph } from "./components/Graph.tsx";
+import { Guide } from "./components/Guide.tsx";
 import { Inspector } from "./components/Inspector.tsx";
 import { NoteList } from "./components/NoteList.tsx";
 import { NoteView } from "./components/NoteView.tsx";
@@ -57,6 +58,7 @@ export function App() {
       )}
       {overlay === "graph" && <Graph />}
       {overlay === "settings" && <SettingsDialog />}
+      {overlay === "guide" && <Guide />}
       <ConfirmDialog />
       <ContextMenu />
       <Toasts />

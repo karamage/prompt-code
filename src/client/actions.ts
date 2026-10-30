@@ -835,6 +835,11 @@ export async function bootstrap(): Promise<void> {
   const first = openPath ?? visibleNotes()[0]?.path ?? null;
   if (first !== null) await openNote(first);
   if (getState().ui.view.kind === "trash") void loadTrash();
+  // 初めての起動では使い方を見せる。閉じ方を問わず、一度出したら次からは出さない
+  if (!getState().ui.guideSeen) {
+    openOverlay("guide");
+    setUi({ guideSeen: true });
+  }
   void watchVault();
   // 閉じる前に書きかけを保存する
   window.addEventListener("pagehide", () => void flushSave());

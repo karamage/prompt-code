@@ -179,6 +179,12 @@ export const COMMANDS: Command[] = [
       }),
   },
   {
+    id: "guide",
+    label: () => t().commands.guide,
+    icon: "help",
+    run: () => openOverlay("guide"),
+  },
+  {
     id: "settings",
     label: () => t().commands.settings,
     icon: "settings",

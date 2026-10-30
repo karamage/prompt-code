@@ -19,7 +19,7 @@ export type View =
 
 export type Mode = "write" | "split" | "read";
 export type InspectorTab = "use" | "outline" | "links";
-export type Overlay = null | "palette" | "commands" | "search" | "graph" | "settings";
+export type Overlay = null | "palette" | "commands" | "search" | "graph" | "settings" | "guide";
 
 /** アプリを閉じても覚えておく画面の状態 */
 export interface UiState {
@@ -35,6 +35,8 @@ export interface UiState {
   /** 開いているフォルダ */
   expanded: string[];
   graphTags: boolean;
+  /** 使い方のガイドを一度見たか */
+  guideSeen: boolean;
 }
 
 export type SaveStatus = "saved" | "dirty" | "saving" | "error";
@@ -105,6 +107,7 @@ export function defaultUi(): UiState {
     inspectorWidth: 340,
     expanded: [],
     graphTags: false,
+    guideSeen: false,
   };
 }
 

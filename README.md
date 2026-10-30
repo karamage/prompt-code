@@ -6,6 +6,8 @@ Prompt Code takes the parts of Obsidian that make writing pleasant — plain Mar
 
 [日本語の README](README.ja.md)
 
+![Prompt Code: the note list, a prompt with variables, and the Use panel showing the finished prompt](docs/screenshots/main-en.png)
+
 ## What you can do
 
 - **Variables.** Write `{{topic}}`, `{{audience: engineers}}` (default value) or `{{tone: friendly | formal}}` (choices). The **Use** panel turns them into fields and shows the finished prompt as you type. `⌘↵` copies it.
@@ -18,6 +20,8 @@ Prompt Code takes the parts of Obsidian that make writing pleasant — plain Mar
 - **Clipboard history in the menu bar.** Prompt Code stays in the menu bar and keeps the text you copy (200 items by default). Copies that password managers mark as concealed are never recorded. Recent clips and favorite prompts are one click away in the menu bar menu.
 - **Write, split, read.** A Markdown editor with syntax highlighting for code blocks, and a reading view.
 - Light and dark themes, five accent colors, English and Japanese.
+
+<p align="center"><img src="docs/screenshots/quick-paste-en.png" width="600" alt="Quick paste: pick a prompt from any app and paste it where you were typing"></p>
 
 Nothing leaves your Mac. Prompt Code has no account, no telemetry, and makes no network requests.
 

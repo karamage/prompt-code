@@ -4,7 +4,7 @@ A Markdown editor and snippet manager for AI prompts, for macOS.
 
 Prompt Code takes the parts of Obsidian that make writing pleasant — plain Markdown files in a folder you own, `[[links]]`, backlinks, a graph, a command palette — and the parts of massCode that make reuse fast — folders, tags, favorites, one-click copy. On top of both it adds what prompts need: fill-in variables, reusable embedded fragments, and notes to yourself that never reach the model.
 
-[日本語の README](README.ja.md)
+[Website](https://karamage.github.io/prompt-code/) · [Download](https://github.com/karamage/prompt-code/releases/latest) · [日本語の README](README.ja.md)
 
 ![Prompt Code: the note list, a prompt with variables, and the Use panel showing the finished prompt](docs/screenshots/main-en.png)
 

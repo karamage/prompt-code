@@ -1,0 +1,23 @@
+<svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b2142"/>
+      <stop offset="1" stop-color="#030a16"/>
+    </linearGradient>
+    <linearGradient id="cursor" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8ff6ff"/>
+      <stop offset="1" stop-color="#2ee9ff"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2ee9ff" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2ee9ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- macOS のアイコンの格子: 824 の角丸四角を中央に置く -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+  <rect x="100.5" y="100.5" width="823" height="823" rx="184.5" fill="none" stroke="#2ee9ff" stroke-opacity="0.12"/>
+  <!-- シェルのプロンプト「❯ _」。プロンプトを書くアプリの印 -->
+  <ellipse cx="626" cy="624" rx="210" ry="150" fill="url(#halo)"/>
+  <path d="M318 372 L470 512 L318 652" fill="none" stroke="#e6f3ff" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="528" y="592" width="196" height="60" rx="14" fill="url(#cursor)"/>
+</svg>

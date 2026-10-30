@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Code — macOS のプロンプトエディタ</title>
+<meta name="description" content="AI へのプロンプトを書いて、整理して、使い回すための macOS アプリ。埋める変数、部品の埋め込み、どのアプリからでも ⌥⌘V で貼り付け。ただの .md ファイルで、すべて手元の Mac で動きます。">
+<link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
+<link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
+<meta property="og:title" content="Prompt Code">
+<meta property="og:description" content="AI へのプロンプトを書いて、整理して、使い回すための macOS アプリ。">
+<meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/main-ja.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<link rel="stylesheet" href="../style.css">
+<script src="../download.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <nav class="nav">
+      <a href="#features">機能</a>
+      <a href="#keys">キー操作</a>
+      <a href="#faq">よくある質問</a>
+      <a class="gh" href="https://github.com/karamage/prompt-code">GitHub ↗</a>
+      <a class="lang" href="../" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap">
+      <img class="hero-icon" src="../icon.svg" alt="">
+      <p class="eyebrow">Prompt Code for macOS</p>
+      <h1><span class="nw">プロンプトは一度書いて、</span><br><span class="nw">どこでも使う。</span></h1>
+      <p class="lede">AI へのプロンプトを書いて、整理して、使い回すための Markdown エディタです。埋める変数、使い回す部品、どのアプリからでも呼び出せる貼り付けウィンドウを備えています。プロンプトは Mac の中に、ただの <code>.md</code> ファイルとして残ります。</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple シリコン版をダウンロード</a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel 版をダウンロード</a>
+      </div>
+      <p class="meta"><span data-version>最新版</span> · macOS 11 以降 · 署名・公証済み · 無料のオープンソース（MIT）</p>
+      <div class="shot">
+        <img src="../screenshots/main-ja.png" width="2880" height="1800" alt="Prompt Code の画面。ノートの一覧、変数を含むプロンプト、できあがったプロンプトを見せる「使う」パネル">
+      </div>
+    </div>
+  </div>
+
+  <section id="syntax">
+    <div class="wrap">
+      <p class="label">01 / プロンプトの書き方</p>
+      <h2>毎回打ち直さず、<br>ひな形として持っておく。</h2>
+      <p class="intro">Markdown に 3 つの書き方を足すだけで、ノートが「埋めてコピーするもの」になります。それ以外はふつうの Markdown です。</p>
+      <div class="syntax">
+        <div class="card">
+          <pre><span class="v">{{テーマ}}</span>について
+<span class="v">{{読み手: エンジニア}}</span>向けに
+<span class="v">{{口調: 丁寧 | くだけた}}</span>口調で説明して。</pre>
+          <h3>変数</h3>
+          <p>入力欄、既定値つき、選択肢の 3 種類です。「使う」パネルが入力欄を作り、できあがったプロンプトを入力に合わせて表示します。<kbd>⌘↵</kbd> でコピーできます。</p>
+        </div>
+        <div class="card">
+          <pre>このプルリクエストをレビューして。
+
+<span class="v">![[回答の形式]]</span></pre>
+          <h3>埋め込み</h3>
+          <p>人格の設定や出力の決まりを 1 つのノートにまとめ、どのプロンプトにも埋め込めます。中身はコピーするときに入ります。</p>
+        </div>
+        <div class="card">
+          <pre>会議の内容を要約して。
+<span class="m">&lt;!-- 文字起こしを先に
+     貼るとうまくいく --&gt;</span></pre>
+          <h3>自分用のメモ</h3>
+          <p>HTML コメントはファイルに残り、コピーするときに消えます。モデルには届きません。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quick-paste">
+    <div class="wrap split">
+      <div>
+        <p class="label">02 / クイックペースト</p>
+        <h2>いま入力しているアプリに、<br>そのまま貼る。</h2>
+        <p class="intro" style="margin-bottom:0">どのアプリにいても <kbd>⌥⌘V</kbd> を押すと、小さなウィンドウにクリップボードの履歴とプロンプトが並びます。選ぶと、入力していた場所に貼り付けます。</p>
+        <ul class="points">
+          <li><strong>先に値を埋める。</strong>変数のあるプロンプトは、その場で値を入れてから貼り付けられます。</li>
+          <li><strong>メニューバーにクリップボード履歴。</strong>直近 200 件のコピーを残します。パスワードマネージャが「隠す」印を付けたコピーは記録しません。</li>
+          <li><strong>キーボードだけで完結。</strong><kbd>↵</kbd> で貼り付け、<kbd>⌘↵</kbd> でコピーのみ、<kbd>⌘1</kbd>〜<kbd>⌘9</kbd> でその行を貼り付けます。</li>
+        </ul>
+      </div>
+      <div class="shot">
+        <img src="../screenshots/quick-paste-ja.png" width="1520" height="960" alt="クイックペースト。どのアプリからでもプロンプトを選んで、入力中の場所に貼り付けられる" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="label">03 / 機能</p>
+      <h2>ノートアプリとスニペット管理の、<br>いいところを 1 つに。</h2>
+      <p class="intro">書くためのリンク、バックリンク、グラフ、コマンドパレット。使い回すためのフォルダ、タグ、お気に入り、ワンクリックのコピー。</p>
+      <div class="grid">
+        <div><h3>リンクとタグ</h3><p>補完つきの <code>[[ノート]]</code> リンク、バックリンク、<code>#タグ</code>、グラフ表示。ノートの名前を変えると、リンクも書き換わります。</p></div>
+        <div><h3>すばやい移動</h3><p><kbd>⌘K</kbd> でノートを開き、<code>&gt;</code> でコマンドを実行し、<kbd>⇧⌘F</kbd> ですべてのノートの中身を検索します。</p></div>
+        <div><h3>ファイルはそのまま</h3><p>保管庫は YAML の frontmatter つき <code>.md</code> ファイルを入れたフォルダです。ほかのアプリで編集しても、すぐに反映されます。</p></div>
+        <div><h3>書く・読む</h3><p>コードブロックに色が付く Markdown エディタと、<kbd>⌘E</kbd> で切り替える読むための表示。</p></div>
+        <div><h3>データは Mac の外に出ない</h3><p>アカウントも利用状況の送信も無く、ネットワークにも接続しません。削除したノートは保管庫の <code>.trash/</code> に移ります。</p></div>
+        <div><h3>小さくてネイティブ</h3><p>ディスク上は約 12 MB。システムの WebKit を使う Tauri で作っています。ライト・ダーク、5 色のアクセント、日本語と英語に対応。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keys">
+    <div class="wrap">
+      <p class="label">04 / キー操作</p>
+      <h2>手をキーボードから離さずに。</h2>
+      <div class="keys-cols">
+        <table class="keys">
+          <tr><td><kbd>⌥⌘V</kbd>（どこでも）</td><td>クイックペースト（設定で変更可）</td></tr>
+          <tr><td><kbd>⌘K</kbd></td><td>ノートを開く（<code>&gt;</code> でコマンド）</td></tr>
+          <tr><td><kbd>⌘N</kbd> / <kbd>⇧⌘N</kbd></td><td>新しいノート / 新しいフォルダ</td></tr>
+          <tr><td><kbd>⇧⌘F</kbd></td><td>すべてのノートを検索</td></tr>
+          <tr><td><kbd>⌘↵</kbd></td><td>変数を埋める。パネルの中ではコピー</td></tr>
+          <tr><td><kbd>⇧⌘C</kbd></td><td>いまの値でプロンプトをコピー</td></tr>
+        </table>
+        <table class="keys">
+          <tr><td><kbd>⌘E</kbd></td><td>書く・読むを切り替え</td></tr>
+          <tr><td><kbd>⌘\</kbd></td><td>サイドバーの表示を切り替え</td></tr>
+          <tr><td><kbd>⌘G</kbd></td><td>グラフ</td></tr>
+          <tr><td><kbd>⌘D</kbd></td><td>ノートを複製</td></tr>
+          <tr><td><kbd>⌘⌫</kbd></td><td>ノートをゴミ箱へ（トーストから取り消し）</td></tr>
+          <tr><td><kbd>⌘,</kbd></td><td>設定</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="download">
+    <div class="wrap">
+      <p class="label">05 / ダウンロード</p>
+      <h2>Prompt Code を入手する。</h2>
+      <p class="intro">お使いの Mac に合う DMG を開き、Prompt Code を「アプリケーション」フォルダへドラッグしてください。初めて起動すると使い方のガイドが開きます。</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple シリコン <small>M1 以降</small></a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel</a>
+      </div>
+      <p class="meta"><span data-version>最新版</span> · <a href="https://github.com/karamage/prompt-code/releases">すべてのリリースとチェックサム</a></p>
+      <ul class="notes">
+        <li>Developer ID で署名し、Apple の公証を通してあるので、警告なしで開けます。macOS 11 以降で動きます。</li>
+        <li>ほかのアプリに貼り付けるには、初回に「システム設定 › プライバシーとセキュリティ › アクセシビリティ」での許可が要ります。許可しなくても、クイックペーストはコピーまで行うので <kbd>⌘V</kbd> で貼り付けられます。</li>
+        <li>ウィンドウを閉じてもメニューバーに残ります。終了はメニューバーのメニューか <kbd>⌘Q</kbd> から行います。</li>
+      </ul>
+      <details>
+        <summary>ソースコードからビルドする</summary>
+        <pre>git clone https://github.com/karamage/prompt-code.git
+cd prompt-code
+bun install
+bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
+      </details>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="label">06 / よくある質問</p>
+      <h2>よくある質問。</h2>
+      <dl class="faq">
+        <dt>プロンプトはどこに保存されますか？</dt>
+        <dd>Markdown ファイルを入れたフォルダに保存します。既定は <code>~/PromptCode</code> で、設定から別のフォルダを選べます。ふつうのフォルダなので、バックアップや同期、git での管理もそのままできます。</dd>
+        <dt>プロンプトがどこかに送られることはありますか？</dt>
+        <dd>ありません。アカウントも利用状況の送信も無く、ネットワークにも接続しません。内部のサーバーは <code>127.0.0.1</code> でだけ待ち受け、起動時に作るトークンが無いと応答しません。</dd>
+        <dt>Obsidian の保管庫で使えますか？</dt>
+        <dd>YAML の frontmatter と <code>[[リンク]]</code> を使ったただの <code>.md</code> ファイルを読むので、Markdown のノートが入ったフォルダなら、設定（<kbd>⌘,</kbd>）で保管庫に選べます。</dd>
+        <dt>どの AI ツールで使えますか？</dt>
+        <dd>どれでも使えます。できあがった文章をコピーするか貼り付けるだけなので、チャットアプリ、IDE、ターミナル、ブラウザを問いません。</dd>
+        <dt>料金はかかりますか？</dt>
+        <dd>かかりません。MIT ライセンスのオープンソースです。</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <span>書く → 埋める → 貼る</span>
+    <nav>
+      <a href="https://github.com/karamage/prompt-code">GitHub</a>
+      <a href="https://github.com/karamage/prompt-code/blob/main/LICENSE">MIT License</a>
+      <a href="../" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -2614,6 +2614,13 @@ html.picker-root,
 html.picker-root body {
   background: transparent;
 }
+html.picker-native,
+html.picker-native body {
+  background: var(--bg);
+}
+html.picker-native .picker {
+  border-radius: 0;
+}
 .picker {
   display: flex;
   flex-direction: column;

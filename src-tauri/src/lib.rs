@@ -38,6 +38,8 @@ const SIGNAL_PASTE: &str = "PROMPT_CODE_PASTE";
 const SIGNAL_HIDE_PICKER: &str = "PROMPT_CODE_HIDE_PICKER";
 const SIGNAL_SHORTCUT: &str = "PROMPT_CODE_SHORTCUT ";
 const SIGNAL_TRAY: &str = "PROMPT_CODE_TRAY ";
+const SIGNAL_CHOOSE_FOLDER: &str = "PROMPT_CODE_CHOOSE_FOLDER ";
+const SIGNAL_OPEN_AT_LOGIN: &str = "PROMPT_CODE_OPEN_AT_LOGIN ";
 
 /// sidecar の名前。Tauri はアプリの実行ファイルと同じディレクトリに、ターゲットの triple を外して置く
 const SIDECAR: &str = "prompt-code-server";
@@ -189,18 +191,23 @@ fn paste(app: &AppHandle) {
 
 fn create_picker(app: &AppHandle, url: &str) -> tauri::Result<()> {
     let target = url::Url::parse(url).map_err(|e| tauri::Error::Anyhow(e.into()))?;
-    let picker = WebviewWindowBuilder::new(app, PICKER, WebviewUrl::External(target))
+    let builder = WebviewWindowBuilder::new(app, PICKER, WebviewUrl::External(target))
         .title("Quick Paste")
         .inner_size(760.0, 480.0)
         .resizable(false)
-        .decorations(false)
-        .transparent(true)
         .shadow(true)
         .always_on_top(true)
         .visible_on_all_workspaces(true)
         .skip_taskbar(true)
-        .visible(false)
-        .build()?;
+        .visible(false);
+    // 透明なウィンドウは非公開 API を使うので、App Store 版では枠ありのウィンドウにして、題とボタンを隠す
+    #[cfg(not(feature = "app-store"))]
+    let builder = builder.decorations(false).transparent(true);
+    #[cfg(feature = "app-store")]
+    let builder = builder.title_bar_style(tauri::TitleBarStyle::Overlay).hidden_title(true);
+    let picker = builder.build()?;
+    #[cfg(feature = "app-store")]
+    macos::hide_window_buttons(&picker);
     let handle = app.clone();
     picker.on_window_event(move |event| {
         // ほかの場所をクリックしたら閉じる。前に戻すアプリはもう選ばれている
@@ -355,7 +362,11 @@ fn start_server(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
         .map(|path| path.to_string_lossy().into_owned())
         .unwrap_or_default();
 
-    let mut child = Command::new(&sidecar)
+    let mut command = Command::new(&sidecar);
+    // App Store 版のログイン項目は、サーバではなく殻が SMAppService で入れる
+    #[cfg(feature = "app-store")]
+    command.env("PROMPT_CODE_LOGIN_ITEM_BY_SHELL", "1");
+    let mut child = command
         .arg("run")
         .arg(&server_js)
         .args(["--desktop", "--port", "0", "--client-dir"])
@@ -401,6 +412,17 @@ fn start_server(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
                 let handle = app.clone();
                 let accelerator = accelerator.to_string();
                 let _ = app.run_on_main_thread(move || set_shortcut(&handle, &accelerator));
+            } else if let Some(json) = line.strip_prefix(SIGNAL_CHOOSE_FOLDER) {
+                if let Ok(request) = serde_json::from_str::<FolderRequest>(json) {
+                    let handle = app.clone();
+                    let _ = app.run_on_main_thread(move || choose_folder(&handle, request));
+                }
+            } else if let Some(state) = line.strip_prefix(SIGNAL_OPEN_AT_LOGIN) {
+                // App Store 版のサーバだけが送る
+                #[cfg(feature = "app-store")]
+                macos::set_open_at_login(state == "on");
+                #[cfg(not(feature = "app-store"))]
+                let _ = state;
             } else if let Some(json) = line.strip_prefix(SIGNAL_TRAY) {
                 if let Ok(data) = serde_json::from_str::<TrayMenu>(json) {
                     let handle = app.clone();
@@ -424,6 +446,32 @@ fn start_server(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+// ------------------------------------------------------------------ フォルダの選択
+
+/// 選んだフォルダの bookmark を置く、アプリのデータの中のディレクトリ
+const BOOKMARKS: &str = "bookmarks";
+
+#[derive(Deserialize)]
+struct FolderRequest {
+    id: u64,
+    prompt: String,
+}
+
+/// フォルダを選ぶパネルを出し、結果をサーバへ返す。osascript ではなく殻で出すのは、
+/// App Sandbox ではパネルを出したプロセスにしかフォルダを使う許可が付かないから
+fn choose_folder(app: &AppHandle, request: FolderRequest) {
+    #[cfg(target_os = "macos")]
+    let path = app
+        .path()
+        .app_data_dir()
+        .ok()
+        .and_then(|dir| macos::choose_folder(&request.prompt, &dir.join(BOOKMARKS)));
+    #[cfg(not(target_os = "macos"))]
+    let path: Option<String> = None;
+    app.state::<Backend>()
+        .post("/api/desktop/folder", serde_json::json!({ "id": request.id, "path": path }));
+}
+
 /// サーバの準備ができた。画面を開き、クイックペーストを用意し、クリップボードを見張りはじめる
 fn on_ready(app: &AppHandle, window: &WebviewWindow, url: &str, token: &str) {
     let backend = app.state::<Backend>().inner().clone();
@@ -436,6 +484,8 @@ fn on_ready(app: &AppHandle, window: &WebviewWindow, url: &str, token: &str) {
     }
     let handle = app.clone();
     let picker_url = format!("{url}/picker.html?token={token}");
+    #[cfg(feature = "app-store")]
+    let picker_url = format!("{picker_url}&frame=native");
     let _ = app.run_on_main_thread(move || {
         if let Err(error) = create_picker(&handle, &picker_url) {
             eprintln!("Could not create the quick paste window: {error}");
@@ -501,6 +551,12 @@ pub fn run() {
                         }
                     }
                 });
+            }
+
+            // 前に選ばれた保管庫を、sidecar を起動する前にまた使えるようにする（App Sandbox の中で要る）
+            #[cfg(target_os = "macos")]
+            if let Ok(dir) = handle.path().app_data_dir() {
+                macos::restore_folder_access(&dir.join(BOOKMARKS));
             }
 
             if let Err(error) = start_server(handle) {

@@ -437,6 +437,11 @@ function Picker() {
   );
 }
 
+// App Store 版は透明なウィンドウを作れない（非公開 API が要る）ので、角はウィンドウが丸める
+if (new URLSearchParams(location.search).get("frame") === "native") {
+  document.documentElement.classList.add("picker-native");
+}
+
 const container = document.getElementById("root");
 if (container !== null) {
   createRoot(container).render(

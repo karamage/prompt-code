@@ -9,6 +9,11 @@ edition = "2021"
 name = "prompt_code_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
+[features]
+# Mac App Store 向けのビルド（scripts/release-appstore.ts）。
+# 非公開 API を使う透明なウィンドウをやめ、ログイン項目を SMAppService で入れる
+app-store = ["dep:objc2-service-management"]
+
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
@@ -25,8 +30,9 @@ url = "2"
 [target.'cfg(target_os = "macos")'.dependencies]
 # どれも Tauri がすでに引き込んでいる版に合わせ、アプリを大きくしない
 objc2 = "0.6"
-objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSString", "NSArray"] }
-objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSPasteboard"] }
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSString", "NSArray", "NSURL", "NSData", "NSError"] }
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSPasteboard", "NSOpenPanel", "NSSavePanel", "NSPanel", "NSWindow", "NSResponder", "NSApplication", "NSButton", "NSControl", "NSView"] }
+objc2-service-management = { version = "0.3", default-features = false, features = ["std", "SMAppService", "objc2", "objc2-foundation"], optional = true }
 core-graphics = "0.25"
 core-foundation = "0.10"
 

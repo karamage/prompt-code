@@ -135,3 +135,15 @@ test("only closes the picker when asked not to paste", async () => {
   await app().request("/api/paste", json({ text: "x", paste: false }));
   expect(signals.at(-1)).toBe("PROMPT_CODE_HIDE_PICKER");
 });
+
+test("asks the shell to choose a folder and waits for its answer", async () => {
+  const desktop = new DesktopChannel(true, (line) => signals.push(line));
+  const chosen = desktop.chooseFolder("Pick one");
+  expect(signals).toEqual(['PROMPT_CODE_CHOOSE_FOLDER {"id":1,"prompt":"Pick one"}']);
+  desktop.folderChosen(1, "/Users/me/Vault");
+  expect(await chosen).toBe("/Users/me/Vault");
+
+  const cancelled = desktop.chooseFolder("Again");
+  desktop.folderChosen(2, null);
+  expect(await cancelled).toBeNull();
+});

@@ -10,3 +10,6 @@ src-tauri/binaries
 
 # 配布用の DMG（scripts/release-mac.ts）
 release
+
+# App Store 版のプロビジョニングプロファイル（scripts/release-appstore.ts）
+src-tauri/*.provisionprofile

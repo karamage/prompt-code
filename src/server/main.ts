@@ -20,6 +20,9 @@ const ENV_TOKEN = "PROMPT_CODE_TOKEN";
 /** デスクトップアプリが渡す、アプリ本体（.app）の場所。ログイン時に起動する設定に使う */
 const ENV_APP_BUNDLE = "PROMPT_CODE_APP_BUNDLE";
 
+/** App Store 版の殻が立てる。ログイン項目は LaunchAgents を書かず、殻に SMAppService で入れてもらう */
+const ENV_LOGIN_ITEM_BY_SHELL = "PROMPT_CODE_LOGIN_ITEM_BY_SHELL";
+
 /** メニューバーのメニューの文言 */
 function trayLabels(lang: Lang): Record<string, string> {
   return lang === "ja"
@@ -122,7 +125,8 @@ async function main(runtime: Runtime, options: RunOptions): Promise<void> {
     settings,
     async onSettingsSaved(saved) {
       desktop.setShortcut(saved.quickPasteShortcut);
-      await setOpenAtLogin(runtime.fs, home, process.env[ENV_APP_BUNDLE], saved.openAtLogin);
+      if (process.env[ENV_LOGIN_ITEM_BY_SHELL] === "1") desktop.setOpenAtLogin(saved.openAtLogin);
+      else await setOpenAtLogin(runtime.fs, home, process.env[ENV_APP_BUNDLE], saved.openAtLogin);
       await clipboard.trim(saved.historyLimit);
       const path = vaultPathOf(saved.vaultPath);
       if (path !== vault.root) {
@@ -135,7 +139,11 @@ async function main(runtime: Runtime, options: RunOptions): Promise<void> {
     clipboard,
     desktop,
     state: new StateStore(runtime.fs, join(configDir, "state")),
-    system: new MacSystemActions(runtime.runner),
+    system: desktop.enabled
+      ? Object.assign(new MacSystemActions(runtime.runner), {
+          chooseFolder: (prompt: string) => desktop.chooseFolder(prompt),
+        })
+      : new MacSystemActions(runtime.runner),
     fs: runtime.fs,
     clientDir: options.clientDir ?? DEV_CLIENT_DIR,
     token: process.env[ENV_TOKEN] ?? null,

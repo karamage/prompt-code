@@ -289,6 +289,14 @@ export function createApp(deps: AppDeps): Hono {
     return c.body(null, 204);
   });
 
+  app.post("/api/desktop/folder", async (c) => {
+    const data = await body(c);
+    if (typeof data.id === "number") {
+      deps.desktop.folderChosen(data.id, typeof data.path === "string" ? data.path : null);
+    }
+    return c.body(null, 204);
+  });
+
   app.post("/api/desktop/hide-picker", (c) => {
     deps.desktop.hidePicker();
     return c.body(null, 204);

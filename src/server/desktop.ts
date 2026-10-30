@@ -18,6 +18,10 @@ export const SIGNAL = {
   shortcut: "PROMPT_CODE_SHORTCUT",
   /** メニューバーのメニューを、続く JSON で作り直してほしい */
   tray: "PROMPT_CODE_TRAY",
+  /** フォルダを選ぶパネルを出してほしい。続く JSON は { id, prompt }。結果は /api/desktop/folder で返ってくる */
+  chooseFolder: "PROMPT_CODE_CHOOSE_FOLDER",
+  /** ログイン項目に入れるか外してほしい。続くのは on か off（App Store 版だけ。SMAppService を使う） */
+  openAtLogin: "PROMPT_CODE_OPEN_AT_LOGIN",
 } as const;
 
 /** メニューバーのメニューに載せるもの */
@@ -38,6 +42,9 @@ export function menuLabel(text: string): string {
 
 export class DesktopChannel {
   status: DesktopStatus;
+  /** 殻に出してもらっているフォルダ選択。id → 結果を待つ関数 */
+  private readonly folderRequests = new Map<number, (path: string | null) => void>();
+  private nextFolderRequest = 1;
 
   constructor(
     readonly enabled: boolean,
@@ -56,6 +63,28 @@ export class DesktopChannel {
 
   hidePicker(): void {
     this.send(SIGNAL.hidePicker);
+  }
+
+  /**
+   * フォルダを選ぶパネルを殻に出してもらう。取り消されたら null。
+   * App Sandbox の中では、パネルを出したプロセス（殻）にしかフォルダを使う許可が付かないので、osascript では選べない
+   */
+  chooseFolder(prompt: string): Promise<string | null> {
+    const id = this.nextFolderRequest++;
+    return new Promise((resolve) => {
+      this.folderRequests.set(id, resolve);
+      this.send(`${SIGNAL.chooseFolder} ${JSON.stringify({ id, prompt })}`);
+    });
+  }
+
+  /** 殻が選び終えたフォルダを受け取る */
+  folderChosen(id: number, path: string | null): void {
+    this.folderRequests.get(id)?.(path);
+    this.folderRequests.delete(id);
+  }
+
+  setOpenAtLogin(enabled: boolean): void {
+    this.send(`${SIGNAL.openAtLogin} ${enabled ? "on" : "off"}`);
   }
 
   setShortcut(accelerator: string): void {

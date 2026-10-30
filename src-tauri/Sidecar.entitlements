@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- App Store 版の sidecar（txiki.js）。アプリの Sandbox と、アプリが得たフォルダの許可をそのまま引き継ぐ。
+       App Store は、この 2 つ以外の entitlement を子の実行ファイルに付けることを認めない -->
+  <key>com.apple.security.app-sandbox</key>
+  <true/>
+  <key>com.apple.security.inherit</key>
+  <true/>
+</dict>
+</plist>

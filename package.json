@@ -18,6 +18,7 @@
     "app:dmg": "bun run build && tauri build --bundles dmg",
     "app:build:universal": "bun run build:client && bun scripts/build-server.ts universal-apple-darwin && tauri build --target universal-apple-darwin --bundles app",
     "release:mac": "bun scripts/release-mac.ts",
+    "release:appstore": "bun scripts/release-appstore.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint .",

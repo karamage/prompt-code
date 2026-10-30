@@ -1,5 +1,7 @@
-//! macOS の機能。クリップボードの監視と、ほかのアプリへの ⌘V。
+//! macOS の機能。クリップボードの監視、ほかのアプリへの ⌘V、フォルダを使う許可。
 
+use std::hash::{DefaultHasher, Hash, Hasher};
+use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread;
 use std::time::Duration;
@@ -10,8 +12,12 @@ use core_foundation::dictionary::{CFDictionary, CFDictionaryRef};
 use core_foundation::string::{CFString, CFStringRef};
 use core_graphics::event::{CGEvent, CGEventFlags, CGEventTapLocation};
 use core_graphics::event_source::{CGEventSource, CGEventSourceStateID};
-use objc2_app_kit::{NSPasteboard, NSPasteboardTypeString};
-use objc2_foundation::NSString;
+use objc2::runtime::Bool;
+use objc2::MainThreadMarker;
+#[cfg(feature = "app-store")]
+use objc2_app_kit::{NSWindow, NSWindowButton};
+use objc2_app_kit::{NSApplication, NSModalResponseOK, NSOpenPanel, NSPasteboard, NSPasteboardTypeString};
+use objc2_foundation::{NSData, NSString, NSURLBookmarkCreationOptions, NSURLBookmarkResolutionOptions, NSURL};
 
 #[link(name = "ApplicationServices", kind = "framework")]
 extern "C" {
@@ -100,4 +106,108 @@ pub fn send_paste() -> bool {
         }
     }
     true
+}
+
+// ------------------------------------------------------------------ フォルダの選択と、使う許可
+//
+// App Sandbox の中では、ユーザーがパネルで選んだフォルダにだけ触れる。その許可はパネルを出したこのプロセスに付き、
+// 後から起動した子（sidecar）も同じ許可で読み書きできる。再起動しても使えるよう、security-scoped bookmark に残す。
+// Sandbox の外（Developer ID 版）でも bookmark は害が無いので、同じ道を通す
+
+/// フォルダを選ぶパネルを出す。選ばれたら bookmark を `bookmarks` に残してパスを返す。取り消されたら None
+pub fn choose_folder(prompt: &str, bookmarks: &Path) -> Option<String> {
+    let mtm = MainThreadMarker::new()?;
+    let panel = NSOpenPanel::openPanel(mtm);
+    panel.setCanChooseDirectories(true);
+    panel.setCanChooseFiles(false);
+    panel.setCanCreateDirectories(true);
+    panel.setMessage(Some(&NSString::from_str(prompt)));
+    NSApplication::sharedApplication(mtm).activate();
+    if panel.runModal() != NSModalResponseOK {
+        return None;
+    }
+    let url = panel.URL()?;
+    let path = url.path()?.to_string();
+    if let Err(error) = save_bookmark(&url, &path, bookmarks) {
+        eprintln!("Could not keep access to {path}: {error}");
+    }
+    Some(path)
+}
+
+/// 前に選ばれたフォルダを、また使えるようにする。起動してすぐ、sidecar より先に呼ぶ
+pub fn restore_folder_access(bookmarks: &Path) {
+    let Ok(entries) = std::fs::read_dir(bookmarks) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        let Ok(bytes) = std::fs::read(entry.path()) else {
+            continue;
+        };
+        let data = NSData::with_bytes(&bytes);
+        let mut stale = Bool::NO;
+        let resolved = unsafe {
+            NSURL::URLByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error(
+                &data,
+                NSURLBookmarkResolutionOptions::WithSecurityScope,
+                None,
+                &mut stale,
+            )
+        };
+        let Ok(url) = resolved else {
+            // フォルダが消えたなど。もう使えない bookmark は捨てる
+            let _ = std::fs::remove_file(entry.path());
+            continue;
+        };
+        unsafe { url.startAccessingSecurityScopedResource() };
+        if stale.as_bool() {
+            if let Some(path) = url.path() {
+                let _ = save_bookmark(&url, &path.to_string(), bookmarks);
+            }
+        }
+    }
+}
+
+/// bookmark はフォルダごとに 1 ファイル。名前はパスのハッシュで、同じフォルダを選び直したら上書きする
+fn save_bookmark(url: &NSURL, path: &str, bookmarks: &Path) -> Result<(), String> {
+    let data = url
+        .bookmarkDataWithOptions_includingResourceValuesForKeys_relativeToURL_error(
+            NSURLBookmarkCreationOptions::WithSecurityScope,
+            None,
+            None,
+        )
+        .map_err(|error| error.localizedDescription().to_string())?;
+    let mut hasher = DefaultHasher::new();
+    path.hash(&mut hasher);
+    std::fs::create_dir_all(bookmarks).map_err(|e| e.to_string())?;
+    std::fs::write(bookmarks.join(format!("{:016x}", hasher.finish())), data.to_vec()).map_err(|e| e.to_string())
+}
+
+/// ウィンドウの左上の 3 つのボタンを隠す。App Store 版のクイックペーストは、枠ありのウィンドウで角を丸めるため
+#[cfg(feature = "app-store")]
+pub fn hide_window_buttons(window: &tauri::WebviewWindow) {
+    let Ok(pointer) = window.ns_window() else {
+        return;
+    };
+    let ns_window = unsafe { &*(pointer as *const NSWindow) };
+    for button in [NSWindowButton::CloseButton, NSWindowButton::MiniaturizeButton, NSWindowButton::ZoomButton] {
+        if let Some(button) = ns_window.standardWindowButton(button) {
+            button.setHidden(true);
+        }
+    }
+}
+
+/// ログインしたら起動するか。App Store 版は LaunchAgents に書けないので、SMAppService に頼む
+#[cfg(feature = "app-store")]
+pub fn set_open_at_login(enabled: bool) {
+    use objc2_service_management::SMAppService;
+    let service = unsafe { SMAppService::mainAppService() };
+    let result = if enabled {
+        unsafe { service.registerAndReturnError() }
+    } else {
+        unsafe { service.unregisterAndReturnError() }
+    };
+    // 入れ済みのものを入れ直すなど、すでに望みどおりのときも失敗が返る。困らないので知らせるだけにする
+    if let Err(error) = result {
+        eprintln!("Could not change the login item: {}", error.localizedDescription());
+    }
 }

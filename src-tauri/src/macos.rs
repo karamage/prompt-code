@@ -122,7 +122,9 @@ pub fn choose_folder(prompt: &str, bookmarks: &Path) -> Option<String> {
     panel.setCanChooseFiles(false);
     panel.setCanCreateDirectories(true);
     panel.setMessage(Some(&NSString::from_str(prompt)));
-    NSApplication::sharedApplication(mtm).activate();
+    // activate() は macOS 14 からなので、11 から使える古いほうを呼ぶ
+    #[allow(deprecated)]
+    NSApplication::sharedApplication(mtm).activateIgnoringOtherApps(true);
     if panel.runModal() != NSModalResponseOK {
         return None;
     }

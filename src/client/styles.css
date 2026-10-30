@@ -58,17 +58,17 @@
 
 /*
  * 面の明るさの段差だけで区切る。ボーダーは引かない。
- * 地はほとんど黒に近い藍の #030a16。同じ藍のまま明るさだけを上げて段を作る
+ * 地はほとんど黒に近い藍の #01050c。同じ藍のまま明るさだけを上げて段を作る
  */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg-side: #030a16;
-  --bg-list: #06101f;
-  --bg: #081628;
-  --bg-raised: #0d1f38;
-  --surface: #0f2340;
-  --surface-2: #0a1a30;
-  --surface-hover: #142b4b;
+  --bg-side: #01050c;
+  --bg-list: #071324;
+  --bg: #0c1d35;
+  --bg-raised: #112645;
+  --surface: #132a4c;
+  --surface-2: #0e2140;
+  --surface-hover: #193458;
   --fill: rgb(120 200 255 / 0.06);
   --fill-strong: rgb(120 200 255 / 0.11);
   --overlay-bg: rgb(1 6 14 / 0.72);
@@ -85,9 +85,9 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg-side: #e2eaf4;
-  --bg-list: #ecf1f8;
-  --bg: #f6f9fc;
+  --bg-side: #d5dfec;
+  --bg-list: #e6edf6;
+  --bg: #f9fbfd;
   --bg-raised: #ffffff;
   --surface: #ffffff;
   --surface-2: #e9eff7;

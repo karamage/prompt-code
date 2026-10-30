@@ -48,11 +48,11 @@ const PATHS = {
 export function Mark({ size = 24, blink = false }: { size?: number; blink?: boolean }) {
   return (
     <svg className="mark" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-      <rect width="24" height="24" rx="6.5" fill="#141414" />
+      <rect width="24" height="24" rx="6.5" fill="#0a1830" />
       <path
         d="M7 7.5 10.5 12 7 16.5"
         fill="none"
-        stroke="#e6e6e6"
+        stroke="#e6f3ff"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

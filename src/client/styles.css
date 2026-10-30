@@ -1,6 +1,6 @@
 /* ==========================================================================
    Prompt Code
-   夕暮れの藍を地に、変数だけをアプリコット色で灯す。
+   夜の管制室のような深い藍を地に、変数だけをシアンの光で灯す。
    書くときは Instrument Sans、読むときは Newsreader（セリフ）に持ち替える
    ========================================================================== */
 
@@ -50,79 +50,79 @@
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 
   /* 変数の色はアクセントを替えても変えない。このアプリの印 */
-  --var: #ffb38a;
-  --var-ink: #2a1408;
-  --var-soft: rgb(255 179 138 / 0.16);
-  --var-line: rgb(255 179 138 / 0.42);
+  --var: #2ee9ff;
+  --var-ink: #00121c;
+  --var-soft: rgb(46 233 255 / 0.13);
+  --var-line: rgb(46 233 255 / 0.45);
 }
 
 /*
  * 面の明るさの段差だけで区切る。ボーダーは引かない。
- * 地は純粋な黒をわずかに持ち上げた #050505。色味を持たない灰色だけで段を作る
+ * 地はほとんど黒に近い藍の #030a16。同じ藍のまま明るさだけを上げて段を作る
  */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg-side: #050505;
-  --bg-list: #0b0b0b;
-  --bg: #111111;
-  --bg-raised: #1b1b1b;
-  --surface: #1e1e1e;
-  --surface-2: #171717;
-  --surface-hover: #242424;
-  --fill: rgb(255 255 255 / 0.05);
-  --fill-strong: rgb(255 255 255 / 0.09);
-  --overlay-bg: rgb(0 0 0 / 0.66);
-  --line-strong: rgb(255 255 255 / 0.16);
-  --text: #ededed;
-  --text-2: #a3a3a3;
-  --text-3: #6b6b6b;
-  --danger: #ff8f8f;
-  --ok: #8fdcaa;
-  --shadow: 0 24px 64px -16px rgb(0 0 0 / 0.9), 0 4px 14px rgb(0 0 0 / 0.5);
-  --selection: rgb(255 255 255 / 0.16);
-  --code-bg: rgb(255 255 255 / 0.04);
+  --bg-side: #030a16;
+  --bg-list: #06101f;
+  --bg: #081628;
+  --bg-raised: #0d1f38;
+  --surface: #0f2340;
+  --surface-2: #0a1a30;
+  --surface-hover: #142b4b;
+  --fill: rgb(120 200 255 / 0.06);
+  --fill-strong: rgb(120 200 255 / 0.11);
+  --overlay-bg: rgb(1 6 14 / 0.72);
+  --line-strong: rgb(90 190 255 / 0.22);
+  --text: #e6f3ff;
+  --text-2: #9db4d3;
+  --text-3: #5f7898;
+  --danger: #ff4d6d;
+  --ok: #3dffb0;
+  --shadow: 0 24px 64px -16px rgb(0 4 12 / 0.9), 0 4px 14px rgb(0 4 12 / 0.5);
+  --selection: rgb(46 233 255 / 0.2);
+  --code-bg: rgb(46 233 255 / 0.05);
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg-side: #ececec;
-  --bg-list: #f3f3f3;
-  --bg: #fafafa;
+  --bg-side: #e2eaf4;
+  --bg-list: #ecf1f8;
+  --bg: #f6f9fc;
   --bg-raised: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f0f0f0;
-  --surface-hover: #e7e7e7;
-  --fill: rgb(0 0 0 / 0.045);
-  --fill-strong: rgb(0 0 0 / 0.08);
-  --overlay-bg: rgb(0 0 0 / 0.2);
-  --line-strong: rgb(0 0 0 / 0.16);
-  --text: #111111;
-  --text-2: #555555;
-  --text-3: #8a8a8a;
-  --danger: #c62d2d;
-  --ok: #1d7a45;
-  --shadow: 0 24px 64px -18px rgb(0 0 0 / 0.25), 0 4px 12px rgb(0 0 0 / 0.07);
-  --selection: rgb(0 0 0 / 0.1);
-  --code-bg: rgb(0 0 0 / 0.04);
-  --var: #b5531a;
+  --surface-2: #e9eff7;
+  --surface-hover: #dce5f0;
+  --fill: rgb(10 40 90 / 0.05);
+  --fill-strong: rgb(10 40 90 / 0.09);
+  --overlay-bg: rgb(3 10 22 / 0.24);
+  --line-strong: rgb(10 40 90 / 0.18);
+  --text: #0a1830;
+  --text-2: #44597a;
+  --text-3: #7d8fa8;
+  --danger: #d81b48;
+  --ok: #00875a;
+  --shadow: 0 24px 64px -18px rgb(3 20 50 / 0.25), 0 4px 12px rgb(3 20 50 / 0.07);
+  --selection: rgb(0 132 168 / 0.14);
+  --code-bg: rgb(10 40 90 / 0.04);
+  --var: #0084a8;
   --var-ink: #ffffff;
-  --var-soft: rgb(214 110 50 / 0.12);
-  --var-line: rgb(181 83 26 / 0.38);
+  --var-soft: rgb(0 132 168 / 0.1);
+  --var-line: rgb(0 132 168 / 0.36);
 }
 
-/* アクセント。mono は文字と同じ白か黒で、色は変数のアプリコットだけになる */
-:root[data-theme="dark"][data-accent="mono"] { --accent: #ededed; }
-:root[data-theme="dark"][data-accent="tide"] { --accent: #6fd3c8; }
-:root[data-theme="dark"][data-accent="moss"] { --accent: #b3d88a; }
-:root[data-theme="dark"][data-accent="gold"] { --accent: #e9c873; }
-:root[data-theme="dark"][data-accent="rose"] { --accent: #f2a0a8; }
-:root[data-theme="light"][data-accent="mono"] { --accent: #111111; }
-:root[data-theme="light"][data-accent="tide"] { --accent: #0b7469; }
-:root[data-theme="light"][data-accent="moss"] { --accent: #4b7a1c; }
-:root[data-theme="light"][data-accent="gold"] { --accent: #8a6300; }
-:root[data-theme="light"][data-accent="rose"] { --accent: #b3343f; }
+/* アクセント。mono は文字と同じ白か黒で、色は変数のシアンだけになる */
+:root[data-theme="dark"][data-accent="mono"] { --accent: #e6f3ff; }
+:root[data-theme="dark"][data-accent="violet"] { --accent: #8b7bff; }
+:root[data-theme="dark"][data-accent="sky"] { --accent: #6fb6ff; }
+:root[data-theme="dark"][data-accent="lime"] { --accent: #3dffb0; }
+:root[data-theme="dark"][data-accent="magenta"] { --accent: #ff5fa8; }
+:root[data-theme="light"][data-accent="mono"] { --accent: #0a1830; }
+:root[data-theme="light"][data-accent="violet"] { --accent: #5b48e0; }
+:root[data-theme="light"][data-accent="sky"] { --accent: #1f6fd6; }
+:root[data-theme="light"][data-accent="lime"] { --accent: #00875a; }
+:root[data-theme="light"][data-accent="magenta"] { --accent: #c2187a; }
 :root {
-  --accent-ink: #0a0a0a;
+  --accent-ink: #00121c;
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
   --accent-soft-strong: color-mix(in srgb, var(--accent) 26%, transparent);
 }
@@ -515,7 +515,8 @@ body.is-resizing * {
   display: block;
 }
 .mark-cursor {
-  fill: #ffb38a;
+  fill: #2ee9ff;
+  filter: drop-shadow(0 0 2px #2ee9ff);
 }
 .mark-cursor.is-blinking {
   animation: caret 1.1s steps(2, jump-none) infinite;
@@ -1380,7 +1381,7 @@ body.is-resizing * {
 .tok-comment { color: var(--text-3); font-style: italic; }
 .tok-variableName.tok-definition,
 .tok-typeName,
-.tok-className { color: color-mix(in srgb, #f2a0a8 70%, var(--text)); }
+.tok-className { color: color-mix(in srgb, #ff5fa8 70%, var(--text)); }
 .tok-propertyName { color: var(--text); }
 .tok-meta,
 .tok-punctuation { color: var(--text-2); }
@@ -2292,16 +2293,16 @@ body.is-resizing * {
 .swatch.is-on {
   box-shadow: 0 0 0 2px var(--bg-raised), 0 0 0 4px var(--text-2);
 }
-[data-theme="dark"] .swatch-mono { background: #ededed; }
-[data-theme="dark"] .swatch-tide { background: #6fd3c8; }
-[data-theme="dark"] .swatch-moss { background: #b3d88a; }
-[data-theme="dark"] .swatch-gold { background: #e9c873; }
-[data-theme="dark"] .swatch-rose { background: #f2a0a8; }
-[data-theme="light"] .swatch-mono { background: #111111; }
-[data-theme="light"] .swatch-tide { background: #0b7871; }
-[data-theme="light"] .swatch-moss { background: #4b7a1c; }
-[data-theme="light"] .swatch-gold { background: #8a6300; }
-[data-theme="light"] .swatch-rose { background: #b3343f; }
+[data-theme="dark"] .swatch-mono { background: #e6f3ff; }
+[data-theme="dark"] .swatch-violet { background: #8b7bff; }
+[data-theme="dark"] .swatch-sky { background: #6fb6ff; }
+[data-theme="dark"] .swatch-lime { background: #3dffb0; }
+[data-theme="dark"] .swatch-magenta { background: #ff5fa8; }
+[data-theme="light"] .swatch-mono { background: #0a1830; }
+[data-theme="light"] .swatch-violet { background: #5b48e0; }
+[data-theme="light"] .swatch-sky { background: #1f6fd6; }
+[data-theme="light"] .swatch-lime { background: #00875a; }
+[data-theme="light"] .swatch-magenta { background: #c2187a; }
 .range {
   display: flex;
   align-items: center;

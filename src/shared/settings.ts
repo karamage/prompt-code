@@ -1,7 +1,7 @@
 import { isLang, type Lang } from "./i18n.ts";
 
 export type Theme = "system" | "dark" | "light";
-export type Accent = "mono" | "tide" | "moss" | "gold" | "rose";
+export type Accent = "mono" | "violet" | "sky" | "lime" | "magenta";
 export type SortKey = "updated" | "created" | "title";
 
 export interface Settings {
@@ -30,7 +30,7 @@ export interface Settings {
   openAtLogin: boolean;
 }
 
-export const ACCENTS: readonly Accent[] = ["mono", "tide", "moss", "gold", "rose"];
+export const ACCENTS: readonly Accent[] = ["mono", "violet", "sky", "lime", "magenta"];
 export const THEMES: readonly Theme[] = ["system", "dark", "light"];
 const SORTS: readonly SortKey[] = ["updated", "created", "title"];
 
@@ -57,7 +57,7 @@ export function defaultSettings(): Settings {
   return {
     vaultPath: null,
     theme: "system",
-    accent: "mono",
+    accent: "violet",
     lang: null,
     editorFontSize: 15,
     readableWidth: true,

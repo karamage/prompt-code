@@ -16,7 +16,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=white)](https://bun.sh/)
 [![txiki.js](https://img.shields.io/badge/txiki.js-QuickJS-4B4B4B)](https://github.com/saghul/txiki.js)
 
-A Markdown editor and snippet manager for AI prompts, for macOS.
+A Markdown editor and prompt snippet manager for macOS. Write AI prompt templates with fill-in variables, keep them as plain `.md` files, and paste them into any app.
 
 Prompt Code takes the parts of Obsidian that make writing pleasant — plain Markdown files in a folder you own, `[[links]]`, backlinks, a graph, a command palette — and the parts of massCode that make reuse fast — folders, tags, favorites, one-click copy. On top of both it adds what prompts need: fill-in variables, reusable embedded fragments, and notes to yourself that never reach the model.
 

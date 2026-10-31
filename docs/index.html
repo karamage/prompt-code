@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prompt Code — a prompt editor for macOS</title>
-<meta name="description" content="A Markdown editor and snippet manager for AI prompts on macOS. Fill-in variables, reusable embeds, and quick paste from any app with ⌥⌘V. Plain .md files, fully local.">
+<title>Prompt Code — AI prompt templates and prompt snippet manager for macOS</title>
+<meta name="description" content="A prompt snippet manager for macOS. Write AI prompt templates with fill-in variables and reusable embeds, then paste them into any app with ⌥⌘V. Plain .md files, fully local.">
 <link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
 <link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
 <link rel="alternate" hreflang="zh-CN" href="https://karamage.github.io/prompt-code/zh-CN/">
@@ -13,8 +13,8 @@
 <link rel="alternate" hreflang="de" href="https://karamage.github.io/prompt-code/de/">
 <link rel="alternate" hreflang="fr" href="https://karamage.github.io/prompt-code/fr/">
 <link rel="alternate" hreflang="x-default" href="https://karamage.github.io/prompt-code/">
-<meta property="og:title" content="Prompt Code">
-<meta property="og:description" content="Write, organize and reuse AI prompts on your Mac. Plain Markdown files, fully local.">
+<meta property="og:title" content="Prompt Code — AI prompt templates for your Mac">
+<meta property="og:description" content="A prompt snippet manager for your Mac. Write, organize and reuse AI prompt templates as plain Markdown files, fully local.">
 <meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/og-en.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -60,7 +60,7 @@
       <img class="hero-icon" src="icon.svg" alt="">
       <p class="eyebrow">Prompt Code for macOS</p>
       <h1>Write a prompt once. Use it everywhere.</h1>
-      <p class="lede">A Markdown editor and snippet manager for AI prompts. Fill-in variables, reusable fragments, and a quick paste window that works in any app. Your prompts stay plain <code>.md</code> files on your Mac.</p>
+      <p class="lede">A Markdown editor and prompt snippet manager. Write AI prompt templates with fill-in variables and reusable fragments, and paste them from a quick paste window that works in any app. Your prompts stay plain <code>.md</code> files on your Mac.</p>
       <div class="cta">
         <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Download for Apple silicon</a>
         <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Download for Intel</a>
@@ -79,7 +79,7 @@
     <div class="wrap">
       <p class="label">01 / Prompt syntax</p>
       <h2>Prompts are templates,<br>not text you retype.</h2>
-      <p class="intro">Three small additions to Markdown turn a note into something you fill in and copy. Everything else is plain Markdown.</p>
+      <p class="intro">Three small additions to Markdown turn a note into an AI prompt template you fill in and copy. Everything else is plain Markdown.</p>
       <div class="syntax">
         <div class="card">
           <pre>Explain <span class="v">{{topic}}</span> to
@@ -128,7 +128,7 @@
     <div class="wrap">
       <p class="label">03 / Features</p>
       <h2>The good parts of a notes app<br>and a snippet manager.</h2>
-      <p class="intro">Links, backlinks, a graph and a command palette for writing. Folders, tags, favorites and one-click copy for reuse.</p>
+      <p class="intro">Links, backlinks, a graph and a command palette for writing. Folders, tags, favorites and one-click copy make it a prompt snippet manager.</p>
       <div class="grid">
         <div><h3>Links and tags</h3><p><code>[[Note]]</code> links with autocomplete, backlinks, <code>#tags</code> and a graph view. Renaming a note rewrites links to it.</p></div>
         <div><h3>Fast navigation</h3><p><kbd>⌘K</kbd> jumps to any note, <code>&gt;</code> runs commands, <kbd>⇧⌘F</kbd> searches the text of every note.</p></div>
@@ -201,6 +201,8 @@ bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
         <dd>No. Prompt Code has no account and no telemetry, and it makes no network requests. Its local server only listens on <code>127.0.0.1</code> and requires a token generated at launch.</dd>
         <dt>Can I use it with my Obsidian vault?</dt>
         <dd>It reads plain <code>.md</code> files with YAML frontmatter and <code>[[links]]</code>, so you can choose any folder of Markdown notes as the vault in Settings (<kbd>⌘,</kbd>).</dd>
+        <dt>How is it different from a general snippet manager?</dt>
+        <dd>A general snippet manager pastes fixed text. Prompt Code is built for AI prompt templates: variables with defaults and choices become fields you fill in before pasting, shared fragments are embedded when you copy, and notes to yourself are removed so the model never sees them.</dd>
         <dt>Which AI tools does it work with?</dt>
         <dd>Any of them. Prompt Code copies or pastes finished text, so it works with chat apps, IDEs, terminals and browsers alike.</dd>
         <dt>How much does it cost?</dt>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prompt Code — macOS のプロンプトエディタ</title>
-<meta name="description" content="AI へのプロンプトを書いて、整理して、使い回すための macOS アプリ。埋める変数、部品の埋め込み、どのアプリからでも ⌥⌘V で貼り付け。ただの .md ファイルで、すべて手元の Mac で動きます。">
+<title>Prompt Code — AI プロンプトのテンプレート管理・スニペット管理アプリ（macOS）</title>
+<meta name="description" content="AI へのプロンプトをテンプレートとして書いて、整理して、使い回すための macOS のプロンプト管理アプリ。埋める変数、部品の埋め込み、どのアプリからでも ⌥⌘V で貼り付け。ただの .md ファイルで、すべて手元の Mac で動きます。">
 <link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
 <link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
 <link rel="alternate" hreflang="zh-CN" href="https://karamage.github.io/prompt-code/zh-CN/">
@@ -13,8 +13,8 @@
 <link rel="alternate" hreflang="de" href="https://karamage.github.io/prompt-code/de/">
 <link rel="alternate" hreflang="fr" href="https://karamage.github.io/prompt-code/fr/">
 <link rel="alternate" hreflang="x-default" href="https://karamage.github.io/prompt-code/">
-<meta property="og:title" content="Prompt Code">
-<meta property="og:description" content="AI へのプロンプトを書いて、整理して、使い回すための macOS アプリ。">
+<meta property="og:title" content="Prompt Code — AI プロンプトのテンプレート管理">
+<meta property="og:description" content="AI へのプロンプトをテンプレートとして書いて、整理して、使い回すための macOS のプロンプト管理アプリ。">
 <meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/og-ja.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -60,7 +60,7 @@
       <img class="hero-icon" src="../icon.svg" alt="">
       <p class="eyebrow">Prompt Code for macOS</p>
       <h1><span class="nw">プロンプトを、</span><br><span class="nw">もう打ち直さない。</span></h1>
-      <p class="lede">AI へのプロンプトを書いて、整理して、使い回すための Markdown エディタです。埋める変数、使い回す部品、どのアプリからでも呼び出せる貼り付けウィンドウを備えています。プロンプトは Mac の中に、ただの <code>.md</code> ファイルとして残ります。</p>
+      <p class="lede">AI へのプロンプトをテンプレートとして書いて、整理して、使い回すための Markdown エディタです。埋める変数、使い回す部品、どのアプリからでも呼び出せる貼り付けウィンドウを備えています。プロンプトは Mac の中に、ただの <code>.md</code> ファイルとして残ります。</p>
       <div class="cta">
         <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple シリコン版をダウンロード</a>
         <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel 版をダウンロード</a>
@@ -79,7 +79,7 @@
     <div class="wrap">
       <p class="label">01 / プロンプトの書き方</p>
       <h2>毎回打ち直さず、<br>ひな形として持っておく。</h2>
-      <p class="intro">Markdown に 3 つの書き方を足すだけで、ノートが「埋めてコピーするもの」になります。それ以外はふつうの Markdown です。</p>
+      <p class="intro">Markdown に 3 つの書き方を足すだけで、ノートが「埋めてコピーするプロンプトテンプレート」になります。それ以外はふつうの Markdown です。</p>
       <div class="syntax">
         <div class="card">
           <pre><span class="v">{{テーマ}}</span>について
@@ -128,7 +128,7 @@
     <div class="wrap">
       <p class="label">03 / 機能</p>
       <h2>ノートアプリとスニペット管理の、<br>いいところを 1 つに。</h2>
-      <p class="intro">書くためのリンク、バックリンク、グラフ、コマンドパレット。使い回すためのフォルダ、タグ、お気に入り、ワンクリックのコピー。</p>
+      <p class="intro">書くためのリンク、バックリンク、グラフ、コマンドパレット。プロンプトのスニペット管理に使うフォルダ、タグ、お気に入り、ワンクリックのコピー。</p>
       <div class="grid">
         <div><h3>リンクとタグ</h3><p>補完つきの <code>[[ノート]]</code> リンク、バックリンク、<code>#タグ</code>、グラフ表示。ノートの名前を変えると、リンクも書き換わります。</p></div>
         <div><h3>すばやい移動</h3><p><kbd>⌘K</kbd> でノートを開き、<code>&gt;</code> でコマンドを実行し、<kbd>⇧⌘F</kbd> ですべてのノートの中身を検索します。</p></div>
@@ -201,6 +201,8 @@ bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
         <dd>ありません。アカウントも利用状況の送信も無く、ネットワークにも接続しません。内部のサーバーは <code>127.0.0.1</code> でだけ待ち受け、起動時に作るトークンが無いと応答しません。</dd>
         <dt>Obsidian の保管庫で使えますか？</dt>
         <dd>YAML の frontmatter と <code>[[リンク]]</code> を使ったただの <code>.md</code> ファイルを読むので、Markdown のノートが入ったフォルダなら、設定（<kbd>⌘,</kbd>）で保管庫に選べます。</dd>
+        <dt>ふつうのスニペット管理アプリとは何が違いますか？</dt>
+        <dd>ふつうのスニペット管理アプリは決まった文章を貼り付けます。Prompt Code は AI プロンプトのテンプレート向けに作っています。既定値や選択肢つきの変数は貼り付ける前に埋める入力欄になり、共通の部品はコピーするときに埋め込まれ、自分用のメモはモデルに送る前に取り除かれます。</dd>
         <dt>どの AI ツールで使えますか？</dt>
         <dd>どれでも使えます。できあがった文章をコピーするか貼り付けるだけなので、チャットアプリ、IDE、ターミナル、ブラウザを問いません。</dd>
         <dt>料金はかかりますか？</dt>

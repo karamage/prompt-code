@@ -4,6 +4,7 @@ import {
   Resizer,
   SettingsDialog,
   Toasts,
+  VaultAccessDialog,
 } from "./components/Chrome.tsx";
 import { Graph } from "./components/Graph.tsx";
 import { Guide } from "./components/Guide.tsx";
@@ -60,6 +61,7 @@ export function App() {
       {overlay === "settings" && <SettingsDialog />}
       {overlay === "guide" && <Guide />}
       <ConfirmDialog />
+      <VaultAccessDialog />
       <ContextMenu />
       <Toasts />
     </div>

@@ -201,6 +201,13 @@ const en = {
     deleteForever: (title: string) => `Delete “${title}” forever? This cannot be undone.`,
     cancel: "Cancel",
   },
+  vaultAccess: {
+    title: "Can’t open your vault",
+    body: (path: string) =>
+      `Prompt Code can no longer use ${path}. It may have been moved or renamed. Choose the folder again to keep working.`,
+    choose: "Choose folder…",
+    useDefault: "Use the default vault",
+  },
   picker: {
     placeholder: "Search history and prompts",
     history: "Clipboard",
@@ -479,6 +486,13 @@ const ja: Messages = {
     emptyTrash: "ゴミ箱のノートをすべて削除しますか？元に戻せません。",
     deleteForever: (title) => `「${title}」を完全に削除しますか？元に戻せません。`,
     cancel: "キャンセル",
+  },
+  vaultAccess: {
+    title: "保管庫を開けません",
+    body: (path) =>
+      `${path} を使えなくなりました。移動したか、名前を変えたのかもしれません。続けるには、フォルダを選び直してください。`,
+    choose: "フォルダを選ぶ…",
+    useDefault: "既定の保管庫を使う",
   },
   picker: {
     placeholder: "履歴とプロンプトを検索",

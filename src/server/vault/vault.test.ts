@@ -81,3 +81,40 @@ describe("checkRelativePath", () => {
   });
   test("accepts nested paths", () => expect(checkRelativePath("/a/b.md")).toBe("a/b.md"));
 });
+
+describe("a vault it cannot use", () => {
+  test("opens as unreadable when the folder cannot be listed", async () => {
+    const denied = new Vault(
+      {
+        ...bunFileSystem,
+        list: async () => {
+          throw new Error("EPERM: operation not permitted");
+        },
+      },
+      dir,
+    );
+    await denied.open();
+    expect(denied.index().readable).toBe(false);
+    expect(denied.index().notes).toEqual([]);
+    denied.close();
+  });
+
+  test("opens as unreadable when a missing folder cannot be created", async () => {
+    const denied = new Vault(
+      {
+        ...bunFileSystem,
+        makeDir: async () => {
+          throw new Error("EPERM: operation not permitted");
+        },
+      },
+      join(dir, "moved-away"),
+    );
+    await denied.open(() => ({ "Seed.md": "x" }));
+    expect(denied.index().readable).toBe(false);
+    denied.close();
+  });
+
+  test("a usable vault is readable", () => {
+    expect(vault.index().readable).toBe(true);
+  });
+});

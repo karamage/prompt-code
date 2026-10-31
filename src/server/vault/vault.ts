@@ -70,6 +70,7 @@ export class Vault {
   private notes = new Map<string, CachedNote>();
   private folders = new Set<string>();
   private version = 1;
+  private readable = true;
   private waiters: (() => void)[] = [];
   private unwatch: (() => void) | null = null;
   private pending = new Set<string>();
@@ -84,11 +85,20 @@ export class Vault {
     return relative === "" ? this.root : `${this.root}/${relative}`;
   }
 
-  /** 保管庫を読み込んで監視を始める。フォルダが無ければ作り、seed で最初のノートを置く */
+  /**
+   * 保管庫を読み込んで監視を始める。フォルダが無ければ作り、seed で最初のノートを置く。
+   * フォルダを作れない、あるいは読めないときは、読めない保管庫として開く（index の readable が false）。
+   * App Sandbox の中では、選んだフォルダが移動されたり、使う許可が失われたりするとこうなる
+   */
   async open(seed?: () => Record<string, string>): Promise<void> {
     const existing = await this.fs.stat(this.root);
     if (existing === null) {
-      await this.fs.makeDir(this.root);
+      try {
+        await this.fs.makeDir(this.root);
+      } catch {
+        this.readable = false;
+        return;
+      }
       if (seed !== undefined) {
         for (const [path, text] of Object.entries(seed())) {
           // eslint-disable-next-line no-await-in-loop -- 最初の 1 回だけ、数個のファイルを書く
@@ -100,6 +110,12 @@ export class Vault {
         ja: `保管庫の場所がフォルダではありません: ${this.root}`,
         en: `The vault location is not a folder: ${this.root}`,
       });
+    }
+    try {
+      await this.fs.list(this.root);
+    } catch {
+      this.readable = false;
+      return;
     }
     await this.scan("");
     try {
@@ -229,6 +245,7 @@ export class Vault {
       notes: [...this.notes.values()].map((note) => note.meta),
       folders: [...this.folders].sort((a, b) => a.localeCompare(b)),
       version: this.version,
+      readable: this.readable,
     };
   }
 

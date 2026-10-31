@@ -32,6 +32,11 @@ export interface VaultIndex {
   folders: string[];
   /** 変わるたびに増える。画面はこれで読み直すかを決める */
   version: number;
+  /**
+   * 保管庫のフォルダを読めるか。App Store 版で、選んだフォルダが移動された、
+   * あるいは使う許可が失われたときに false になる。画面はフォルダを選び直してもらう
+   */
+  readable: boolean;
 }
 
 export const NOTE_EXT = ".md";

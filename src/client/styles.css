@@ -2333,6 +2333,11 @@ body.is-resizing * {
   width: min(420px, 100%);
   padding: 22px 22px 18px;
 }
+.dialog.confirm h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
 .dialog.confirm p {
   margin: 0 0 20px;
   font-size: 14px;

@@ -478,6 +478,47 @@ export function ContextMenu() {
 
 // ---------------------------------------------------------------- 確認
 
+/**
+ * 保管庫のフォルダを読めないときに出す。App Store 版では、選んだフォルダを移動したり名前を変えたりすると、
+ * 使う許可が失われる。黙って空の保管庫に見せず、選び直してもらう
+ */
+export function VaultAccessDialog() {
+  const index = useApp((s) => s.index);
+  const vaultPath = useApp((s) => s.settings.vaultPath);
+  if (index === null || index.readable) return null;
+  const text = t().vaultAccess;
+  return (
+    <div className="overlay">
+      <div className="dialog confirm" role="alertdialog" aria-modal="true">
+        <h3>{text.title}</h3>
+        <p>{text.body(index.root)}</p>
+        <div className="dialog-actions">
+          {vaultPath !== null && (
+            <button
+              type="button"
+              className="ghost-button"
+              onClick={() => void updateSettings({ vaultPath: null })}
+            >
+              {text.useDefault}
+            </button>
+          )}
+          <button
+            type="button"
+            className="primary-button"
+            onClick={() =>
+              void api.chooseFolder().then((path) => {
+                if (path !== null) void updateSettings({ vaultPath: path });
+              })
+            }
+          >
+            {text.choose}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ConfirmDialog() {
   const confirm = useApp((s) => s.confirm);
   const ok = useRef<HTMLButtonElement>(null);

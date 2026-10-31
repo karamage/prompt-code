@@ -1,0 +1,157 @@
+<!doctype html>
+<!--
+  X や Product Hunt に貼る 10 秒の宣伝動画の元データ。1280x720 の画面を CSS アニメーションで動かす。
+  ?lang=en|ja で言語を切り替える。?t=秒 を付けると、その時刻で止めた絵を表示する（確認用）。
+
+  書き出しは、すべてのアニメーションを一時停止して currentTime を 1 コマずつ進めながら撮影し、
+  ffmpeg で MP4 にまとめる。window.seek(秒) がその時刻の絵を作る。
+-->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Caveat:wght@600&family=Noto+Sans+JP:wght@500;700;900&family=Yomogi&display=block" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden}
+body{font-family:Inter,"Noto Sans JP",sans-serif;background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#f1f3f7 60%,#e9ecf2 100%);color:#0b0f1a;position:relative}
+.scene{position:absolute;inset:0}
+.hand{position:absolute;font-family:Caveat,cursive;font-size:34px;color:#2563eb;white-space:nowrap}
+.ja .hand{font-family:Yomogi,cursive;font-size:26px}
+.hl{position:relative;display:inline-block}
+.hl::after{content:"";position:absolute;left:-6px;right:-6px;bottom:6px;height:24px;background:#22d3ee;opacity:.55;border-radius:6px;z-index:-1;transform-origin:left;animation:sweep .45s cubic-bezier(.6,0,.3,1) .95s both}
+.ja .hl::after{bottom:10px}
+
+/* 1: 見出し */
+#s1{animation:out .35s ease-in 2.45s both}
+#s1 .center{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center}
+#s1 h1{font-weight:900;font-size:104px;line-height:1;letter-spacing:-4px}
+.ja #s1 h1{font-size:84px;line-height:1.15;letter-spacing:-2px}
+#s1 h1 span.line{display:block;animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+#s1 h1 span.line:nth-child(2){animation-delay:.25s}
+#s1 h1 span.line:nth-child(1){animation-delay:.05s}
+#s1 .sub{margin-top:30px;font-size:24px;font-weight:500;color:#334155;animation:fade .5s ease 1.25s both}
+#s1 .icon{position:absolute;left:80px;top:70px;width:110px;height:110px;border-radius:28px;background:#fff;padding:8px;box-shadow:0 14px 30px rgba(15,23,42,.18);animation:pop .5s cubic-bezier(.3,1.6,.5,1) .4s both;--r:-8deg}
+#s1 .icon img{width:100%;height:100%;border-radius:22px}
+#s1 .note{right:110px;bottom:120px;animation:fade .4s ease 1.6s both;transform:rotate(-4deg)}
+
+/* 2: メイン画面。Use パネルへ寄って、変数の欄を示す */
+#s2{animation:in .3s ease 2.6s both}
+.card{position:absolute;border-radius:16px;overflow:hidden;background:#0d1a33 no-repeat;background-size:100% 100%;box-shadow:0 24px 60px rgba(15,23,42,.3),0 2px 6px rgba(15,23,42,.12);border:4px solid #fff}
+#main{left:160px;top:110px;width:960px;height:600px;transform-origin:0 0;animation:card-up .6s cubic-bezier(.2,.8,.2,1) 2.6s both,zoom .9s cubic-bezier(.6,0,.25,1) 3.75s forwards}
+.ring{position:absolute;border:3px solid #22d3ee;border-radius:7px;box-shadow:0 0 0 4px rgba(34,211,238,.25),0 0 22px rgba(34,211,238,.6)}
+#ring1{left:740px;top:73px;width:207px;height:30px;animation:ring .5s ease 4.55s both}
+#ring2{left:737px;top:117px;width:211px;height:43px;animation:ring .5s ease 4.95s both}
+.cap{position:absolute;left:50%;top:34px;transform:translateX(-50%);z-index:5;padding:12px 26px;border-radius:999px;background:#0b0f1a;color:#fff;font-size:30px;font-weight:800;letter-spacing:-.5px;white-space:nowrap;box-shadow:0 10px 30px rgba(15,23,42,.3)}
+.ja .cap{font-size:28px;letter-spacing:0}
+.cap code{font-family:"SF Mono",Menlo,monospace;color:#22d3ee;font-weight:700}
+#cap1{animation:cap-in .4s cubic-bezier(.2,.8,.2,1) 2.85s both,cap-out .25s ease-in 3.85s forwards}
+#cap2{animation:cap-in .4s cubic-bezier(.2,.8,.2,1) 4.2s both}
+
+/* 3: クイックペースト。⌥⌘V を押すと開く */
+#s3{animation:in .01s linear 5.85s both}
+#dim{position:absolute;inset:0;background:rgba(8,13,26,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:fade .35s ease 5.85s both}
+#quick{left:320px;top:212px;width:640px;height:404px;border-color:#1e2b47;animation:pop .45s cubic-bezier(.3,1.4,.5,1) 6.55s both;--r:0deg}
+#row{position:absolute;left:5px;top:53px;width:272px;height:31px;border-radius:9px;border:2px solid #22d3ee;box-shadow:0 0 18px rgba(34,211,238,.5);animation:ring .4s ease 7.25s both}
+#cap3{animation:cap-in .4s cubic-bezier(.2,.8,.2,1) 5.95s both;background:#fff;color:#0b0f1a}
+.keys{position:absolute;left:50%;top:116px;transform:translateX(-50%);display:flex;gap:14px;z-index:5}
+.key{width:76px;height:70px;border-radius:14px;background:linear-gradient(#fff,#e8ecf3);color:#0b0f1a;font-size:36px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 0 #9aa6bb,0 10px 20px rgba(0,0,0,.35);animation:pop .3s cubic-bezier(.3,1.6,.5,1) both,press .22s ease both}
+.key:nth-child(1){animation-delay:6.0s,6.35s}
+.key:nth-child(2){animation-delay:6.08s,6.38s}
+.key:nth-child(3){animation-delay:6.16s,6.41s}
+#s3 .note{color:#7dd3fc;left:330px;top:628px;transform:rotate(-2deg);animation:fade .4s ease 7.35s both}
+
+/* 4: 締め */
+#s4{background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#f1f3f7 60%,#e9ecf2 100%);animation:wipe .45s cubic-bezier(.6,0,.3,1) 8.3s both;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#s4 .icon{width:150px;height:150px;border-radius:38px;background:#fff;padding:10px;box-shadow:0 18px 40px rgba(15,23,42,.18);animation:pop .5s cubic-bezier(.3,1.6,.5,1) 8.55s both;--r:0deg}
+#s4 .icon img{width:100%;height:100%;border-radius:30px}
+#s4 h2{margin-top:30px;font-size:72px;font-weight:900;letter-spacing:-2.5px;animation:rise .5s cubic-bezier(.2,.8,.2,1) 8.7s both}
+#s4 .tag{margin-top:14px;font-size:26px;font-weight:600;color:#334155;animation:rise .5s cubic-bezier(.2,.8,.2,1) 8.85s both}
+#s4 .url{margin-top:26px;font-size:24px;font-weight:700;color:#2563eb;padding:10px 22px;border-radius:999px;background:#dbeafe;animation:rise .5s cubic-bezier(.2,.8,.2,1) 9.0s both}
+
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes in{from{opacity:0}to{opacity:1}}
+@keyframes out{from{opacity:1}to{opacity:0;transform:scale(.96)}}
+@keyframes sweep{from{transform:scaleX(0) rotate(-1.2deg)}to{transform:scaleX(1) rotate(-1.2deg)}}
+@keyframes pop{from{opacity:0;transform:scale(.6) rotate(var(--r))}to{opacity:1;transform:scale(1) rotate(var(--r))}}
+@keyframes card-up{from{opacity:0;transform:translateY(120px) scale(.94)}to{opacity:1;transform:none}}
+/* Use パネル（カード内の x=744〜960）が画面の右側いっぱいに来るよう 1.8 倍にする */
+@keyframes zoom{from{transform:none}to{transform:translate(-688px,-52px) scale(1.8)}}
+@keyframes ring{0%{opacity:0;transform:scale(1.25)}60%{opacity:1;transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes cap-in{from{opacity:0;transform:translate(-50%,-30px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes cap-out{to{opacity:0;transform:translate(-50%,-20px)}}
+@keyframes press{0%{transform:translateY(0)}50%{transform:translateY(5px);box-shadow:0 1px 0 #9aa6bb,0 4px 10px rgba(0,0,0,.35)}100%{transform:translateY(0)}}
+@keyframes wipe{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(80% at 50% 50%)}}
+</style></head><body>
+
+<div class="scene" id="s1">
+  <div class="icon"><img src="../icon.png"></div>
+  <div class="center">
+    <h1 data-t="title"></h1>
+    <p class="sub" data-t="sub"></p>
+  </div>
+  <div class="hand note" data-t="own"></div>
+</div>
+
+<div class="scene" id="s2">
+  <div class="card" id="main"><div class="ring" id="ring1"></div><div class="ring" id="ring2"></div></div>
+  <div class="cap" id="cap1" data-t="cap1"></div>
+  <div class="cap" id="cap2" data-t="cap2"></div>
+</div>
+
+<div class="scene" id="s3">
+  <div id="dim"></div>
+  <div class="cap" id="cap3" data-t="cap3"></div>
+  <div class="keys"><div class="key">⌥</div><div class="key">⌘</div><div class="key">V</div></div>
+  <div class="card" id="quick"><div id="row"></div></div>
+  <div class="hand note" data-t="enter"></div>
+</div>
+
+<div class="scene" id="s4">
+  <div class="icon"><img src="../icon.png"></div>
+  <h2>Prompt Code</h2>
+  <p class="tag" data-t="tag"></p>
+  <p class="url">karamage.github.io/prompt-code</p>
+</div>
+
+<script>
+const text = {
+  en: {
+    title: '<span class="line">Stop retyping</span><span class="line">your <span class="hl">prompts.</span></span>',
+    sub: "Markdown templates you fill in and paste anywhere.",
+    own: "plain .md files you own",
+    cap1: "Write templates with <code>{{variables}}</code>",
+    cap2: "Fill in the blanks",
+    cap3: "Paste from any app",
+    enter: "↑ hit ↵ to fill & paste",
+    tag: "Free & open source · for Mac",
+  },
+  ja: {
+    title: '<span class="line"><span class="hl">プロンプト</span>を、</span><span class="line">もう打ち直さない。</span>',
+    sub: "変数を埋めて、どのアプリにも貼り付けられる Markdown テンプレート。",
+    own: "自分のフォルダのただの .md ファイル",
+    cap1: "<code>{{変数}}</code> 入りのテンプレートを書く",
+    cap2: "空欄を埋めるだけ",
+    cap3: "どのアプリからでも呼び出せる",
+    enter: "↑ ↵ で埋めて貼り付け",
+    tag: "無料・オープンソース · Mac 用",
+  },
+};
+const params = new URLSearchParams(location.search);
+const lang = params.get("lang") in text ? params.get("lang") : "en";
+document.body.classList.add(lang);
+document.documentElement.lang = lang;
+for (const el of document.querySelectorAll("[data-t]")) el.innerHTML = text[lang][el.dataset.t];
+
+// 画面の撮影は英語と日本語の 2 種類だけある
+document.getElementById("main").style.backgroundImage = `url(../../docs/screenshots/main-${lang}.png)`;
+document.getElementById("quick").style.backgroundImage = `url(../../docs/screenshots/quick-paste-${lang}.png)`;
+
+// 指定した時刻の絵にする。書き出しのときは 1 コマごとにこれを呼ぶ
+window.seek = (sec) => {
+  for (const a of document.getAnimations()) {
+    a.pause();
+    a.currentTime = sec * 1000;
+  }
+};
+if (params.has("t")) seek(Number(params.get("t")));
+</script>
+</body></html>

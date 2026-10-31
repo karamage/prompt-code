@@ -1,6 +1,6 @@
 # Prompt Code
 
-<p align="center"><a href="https://karamage.github.io/prompt-code/ja/"><img src="docs/screenshots/promo-ja.png" alt="Prompt Code: プロンプトを、もう打ち直さない。変数を埋めて、どのアプリにも貼り付けられる Markdown テンプレート。"></a></p>
+<p align="center"><a href="https://karamage.github.io/prompt-code/ja/"><img src="docs/screenshots/promo-video-ja.gif" width="960" alt="10 秒でわかる Prompt Code：{{変数}} 入りのテンプレートを書き、空欄を埋めて、どのアプリからでも ⌥⌘V で呼び出して貼り付ける。"></a></p>
 
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)

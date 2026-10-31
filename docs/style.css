@@ -325,6 +325,20 @@ details pre {
 .faq dt { margin-top: 28px; font-weight: 600; }
 .faq dd { margin: 6px 0 0; color: var(--text-2); font-size: 15px; }
 
+/* privacy policy */
+.doc { padding: 72px 0 88px; }
+.doc .wrap { max-width: 760px; }
+.doc h1 { margin: 0; max-width: none; font-size: clamp(34px, 5vw, 48px); }
+:lang(ja) .doc h1 { font-size: clamp(26px, 4vw, 36px); }
+.doc .meta { margin: 8px 0 40px; }
+.doc h2 { margin: 48px 0 12px; font-size: 24px; }
+:lang(ja) .doc h2 { font-size: 22px; }
+.doc p, .doc li { color: var(--text-2); }
+.doc strong { color: var(--text); font-weight: 600; }
+.doc ul { margin: 0 0 12px; padding-left: 1.2em; }
+.doc li { margin-bottom: 8px; }
+.doc code { overflow-wrap: anywhere; }
+
 /* footer */
 .foot {
   padding: 40px 0 56px;

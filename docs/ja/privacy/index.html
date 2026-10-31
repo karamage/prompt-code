@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー — Prompt Code</title>
+<meta name="description" content="Prompt Code は利用者のデータを収集せず、外部にも送りません。">
+<link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/privacy/">
+<link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/privacy/">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="../"><img src="../../icon.svg" alt="">Prompt Code</a>
+    <nav class="nav">
+      <a class="gh" href="https://github.com/karamage/prompt-code">GitHub ↗</a>
+      <a class="lang" href="../../privacy/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="doc">
+  <div class="wrap">
+    <h1>プライバシーポリシー</h1>
+    <p class="meta">施行日 2026 年 10 月 31 日</p>
+
+    <p>Prompt Code（以下「本アプリ」）は、利用者の個人データを収集しません。本アプリが扱うデータはすべて利用者の Mac の中に保存され、開発者を含む第三者に送られることはありません。</p>
+
+    <h2>Mac の中に保存するデータ</h2>
+    <p>本アプリは、動作のために次のデータを利用者の Mac に保存します。</p>
+    <ul>
+      <li><strong>ノート</strong>：利用者が選んだ保管庫フォルダに、<code>.md</code> ファイルとして保存します。</li>
+      <li><strong>設定と画面の状態</strong>：テーマ、ショートカット、保管庫の場所、開いていたノートなどです。</li>
+      <li><strong>クリップボード履歴</strong>：コピーされた文字を直近 200 件まで保存します。パスワードマネージャなどが「履歴に残さない」印を付けたコピーは記録しません。履歴はメニューバーのメニューからいつでも消去できます。</li>
+    </ul>
+    <p>Mac App Store 版では、設定とクリップボード履歴は macOS がアプリごとに用意する領域（<code>~/Library/Containers/dev.prompt-code.desktop</code>）に置かれます。本アプリを削除すると、この領域も削除できます。ノートは保管庫フォルダに残ります。</p>
+
+    <h2>通信</h2>
+    <p>本アプリはインターネットに接続しません。アプリの内部では画面と保存処理が <code>127.0.0.1</code>（その Mac の中だけで使える接続先）で通信しますが、この通信は Mac の外には出ません。</p>
+
+    <h2>収集しないもの</h2>
+    <p>本アプリには、アカウント登録、利用状況の分析、広告、クラッシュレポートの送信といった仕組みはありません。開発者が利用者のノート、クリップボード履歴、利用状況を知ることはできません。</p>
+
+    <h2>アクセシビリティの許可</h2>
+    <p>クイックペーストで選んだ内容を、入力中のアプリに貼り付けるために使います。許可した場合も、本アプリが行うのは貼り付けのキー操作（<kbd>⌘V</kbd>）を送ることだけです。ほかのアプリの画面や入力内容は読み取りません。</p>
+
+    <h2>このポリシーの変更</h2>
+    <p>内容を変更するときは、このページを更新し、施行日を改めます。</p>
+
+    <h2>お問い合わせ</h2>
+    <p>このポリシーについての質問は、<a href="https://github.com/karamage/prompt-code/issues">GitHub の Issues</a> にお寄せください。</p>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="../"><img src="../../icon.svg" alt="">Prompt Code</a>
+    <span>書く → 埋める → 貼る</span>
+    <nav>
+      <a href="https://github.com/karamage/prompt-code">GitHub</a>
+      <a href="./">プライバシー</a>
+      <a href="../../privacy/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

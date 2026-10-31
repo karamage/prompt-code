@@ -1,5 +1,19 @@
 # Prompt Code
 
+[![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)
+[![License: MIT](https://img.shields.io/github/license/karamage/prompt-code)](LICENSE)
+![macOS 11+](https://img.shields.io/badge/macOS-11%2B-000000?logo=apple&logoColor=white)
+
+[![Tauri 2](https://img.shields.io/badge/Tauri-2-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/)
+[![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![CodeMirror 6](https://img.shields.io/badge/CodeMirror-6-D30707?logo=codemirror&logoColor=white)](https://codemirror.net/)
+[![Hono](https://img.shields.io/badge/Hono-E36002?logo=hono&logoColor=white)](https://hono.dev/)
+[![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=white)](https://bun.sh/)
+[![txiki.js](https://img.shields.io/badge/txiki.js-QuickJS-4B4B4B)](https://github.com/saghul/txiki.js)
+
 AI へのプロンプトを書いて、整理して、使い回すための macOS アプリです。Markdown エディタとスニペット管理を兼ねています。
 
 Obsidian からは、書くことの気持ちよさを支える部分を取り入れました。自分のフォルダに置くただの Markdown ファイル、`[[リンク]]`、バックリンク、グラフ、コマンドパレットです。massCode からは、使い回しを速くする部分を取り入れました。フォルダ、タグ、お気に入り、ワンクリックでのコピーです。そのうえで、プロンプトに要るものを足しています。埋める変数、使い回す部品の埋め込み、モデルには送らない自分用のメモです。

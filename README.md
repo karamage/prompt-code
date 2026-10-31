@@ -1,5 +1,7 @@
 # Prompt Code
 
+<p align="center"><a href="https://karamage.github.io/prompt-code/"><img src="docs/screenshots/promo-en.png" alt="Prompt Code: stop retyping your prompts. Markdown templates with variables you fill in and paste anywhere."></a></p>
+
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/karamage/prompt-code)](LICENSE)

@@ -1,0 +1,121 @@
+<!doctype html>
+<!--
+  README と Web サイト、Product Hunt で使う宣伝用画像の元データ。
+  docs/screenshots/ のスクリーンショットから一部を切り出して並べる。
+  ?lang=en|ja で言語を、?kind=hero|og で大きさを切り替える。
+    hero: 1270x760（README と Product Hunt のギャラリー用）
+    og:   1270x667（SNS で共有したときのカード用。1.91:1）
+
+  書き出し（2 倍の解像度で PNG にする）:
+    chrome --headless=new --hide-scrollbars --force-device-scale-factor=2 \
+      --window-size=1270,760 --virtual-time-budget=5000 \
+      --screenshot=docs/screenshots/promo-en.png "file://$PWD/assets/promo/promo.html?lang=en&kind=hero"
+  og のときは --window-size=1270,667 にする。
+-->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800;900&family=Caveat:wght@600&family=Noto+Sans+JP:wght@500;900&family=Yomogi&display=block" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1270px;height:760px;overflow:hidden}
+body.og{height:667px}
+body{font-family:Inter,"Noto Sans JP",sans-serif;background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#f1f3f7 60%,#e9ecf2 100%);position:relative;color:#0b0f1a}
+.card{position:absolute;border-radius:18px;overflow:hidden;background:#0d1a33 no-repeat;box-shadow:0 18px 40px rgba(15,23,42,.22),0 2px 6px rgba(15,23,42,.12);border:4px solid #fff}
+.hand{position:absolute;font-family:Caveat,cursive;font-size:30px;color:#2563eb;white-space:nowrap}
+.ja .hand{font-family:Yomogi,cursive;font-size:24px}
+svg.arrow{position:absolute;overflow:visible}
+svg.arrow path{stroke:#2563eb;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.center{position:absolute;left:0;right:0;top:50%;transform:translateY(-42%);text-align:center}
+h1{font-weight:900;font-size:92px;line-height:.98;letter-spacing:-3.5px}
+.ja h1{font-size:76px;line-height:1.12;letter-spacing:-2px}
+.og h1{font-size:82px}
+.og.ja h1{font-size:68px}
+.hl{position:relative;display:inline-block}
+.hl::after{content:"";position:absolute;left:-6px;right:-6px;bottom:4px;height:22px;background:#22d3ee;opacity:.55;border-radius:6px;z-index:-1;transform:rotate(-1.2deg)}
+.sub{margin-top:26px;font-size:21px;font-weight:500;color:#334155}
+.og .sub{margin-top:20px}
+.foot{margin-top:24px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:17px;color:#64748b}
+.foot img{width:26px;height:26px;border-radius:6px}
+.foot b{color:#0b0f1a;font-weight:800}
+.badge{position:absolute;width:132px;height:132px;border-radius:50%;background:#fde047;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:900;line-height:1.02;box-shadow:0 10px 24px rgba(15,23,42,.18);transform:rotate(12deg)}
+.badge .big{font-size:34px;letter-spacing:-1px}
+.badge .small{font-size:13px;letter-spacing:.5px;margin-top:3px}
+.ja .badge .big{font-size:36px}
+.ja .badge .small{font-size:14px;letter-spacing:0;margin-top:5px}
+.icon{position:absolute;left:58px;top:40px;width:104px;height:104px;border-radius:26px;background:#fff;padding:8px;box-shadow:0 14px 30px rgba(15,23,42,.18);transform:rotate(-7deg)}
+.icon img{width:100%;height:100%;border-radius:20px}
+/* og は縦が短いので、右下のカードを下へずらして URL と重ならないようにする */
+.og #quick{bottom:-170px !important;left:930px !important}
+.og #paste-note{bottom:62px !important;right:440px !important}
+.og #paste-arrow{bottom:80px !important;left:850px !important}
+</style></head><body>
+
+<div class="icon"><img src="../icon.png"></div>
+<div class="hand" data-t="own" style="left:175px;top:92px;transform:rotate(-4deg)"></div>
+
+<!-- data-crop は元画像での x,y,幅,高さ。カードの幅に合わせて縮小して切り出す。 -->
+<div class="card" data-src="main" data-crop="475,713,583,381" style="left:-60px;top:250px;width:300px;transform:rotate(-3deg)"></div>
+<div class="card" data-src="main" data-crop="1138,374,990,380" style="left:-40px;bottom:-60px;width:430px;transform:rotate(2.5deg)"></div>
+
+<div class="card" data-src="main" data-crop="2218,22,648,453" style="left:930px;top:-30px;width:330px;transform:rotate(4deg)"></div>
+<div class="hand" data-t="fill" style="right:440px;top:58px;transform:rotate(-3deg)"></div>
+<svg class="arrow" style="left:860px;top:52px" width="70" height="40"><path d="M2 30 C 25 34, 45 20, 62 8"/><path d="M50 6 L63 7 L58 19"/></svg>
+<div class="badge" style="left:1110px;top:220px"><div class="big" data-t="free"></div><div class="small" data-t="oss"></div></div>
+
+<div class="card" data-src="main" data-crop="2229,1685,626,82" style="left:1010px;top:390px;width:300px;border-radius:14px;transform:rotate(-3deg)"></div>
+
+<div class="card" id="quick" data-src="quick" data-crop="0,0,670,560" style="left:880px;bottom:-55px;width:350px;transform:rotate(-4deg)"></div>
+<div class="hand" id="paste-note" data-t="paste" style="right:465px;bottom:130px;transform:rotate(-5deg)"></div>
+<svg class="arrow" id="paste-arrow" style="left:820px;bottom:150px" width="60" height="50"><path d="M4 40 C 22 38, 38 26, 48 10"/><path d="M38 12 L49 8 L52 20"/></svg>
+
+<div class="center">
+  <h1 data-t="title"></h1>
+  <p class="sub" data-t="sub"></p>
+  <div class="foot"><img src="../icon.png"><b>Prompt Code</b><span data-t="url"></span></div>
+</div>
+
+<script>
+const text = {
+  en: {
+    own: "plain .md files you own",
+    fill: "fill in the blanks",
+    paste: "⌥⌘V from any app",
+    free: "FREE",
+    oss: "&amp; OPEN<br>SOURCE",
+    title: 'Stop retyping<br>your <span class="hl">prompts.</span>',
+    sub: "Markdown templates with variables you fill in and paste anywhere.",
+    url: "karamage.github.io/prompt-code · for Mac",
+  },
+  ja: {
+    own: "自分のフォルダのただの .md ファイル",
+    fill: "空欄を埋めるだけ",
+    paste: "どのアプリでも ⌥⌘V",
+    free: "無料",
+    oss: "オープン<br>ソース",
+    title: '<span class="hl">プロンプト</span>を、<br>もう打ち直さない。',
+    sub: "変数を埋めて、どのアプリにも貼り付けられる Markdown テンプレート。",
+    url: "karamage.github.io/prompt-code · Mac 用",
+  },
+};
+const params = new URLSearchParams(location.search);
+const lang = params.get("lang") === "ja" ? "ja" : "en";
+document.body.classList.add(lang, params.get("kind") === "og" ? "og" : "hero");
+document.documentElement.lang = lang;
+for (const el of document.querySelectorAll("[data-t]")) el.innerHTML = text[lang][el.dataset.t];
+
+// スクリーンショットは 2 倍の解像度なので、元画像の大きさをそのまま使って縮小率を出す。
+const shots = {
+  main: { src: `../../docs/screenshots/main-${lang}.png`, w: 2880, h: 1800 },
+  quick: { src: `../../docs/screenshots/quick-paste-${lang}.png`, w: 1520, h: 960 },
+};
+for (const card of document.querySelectorAll(".card")) {
+  const shot = shots[card.dataset.src];
+  const [x, y, w, h] = card.dataset.crop.split(",").map(Number);
+  const inner = parseFloat(card.style.width) - 8;
+  const scale = inner / w;
+  card.style.height = `${h * scale + 8}px`;
+  card.style.backgroundImage = `url(${shot.src})`;
+  card.style.backgroundSize = `${shot.w * scale}px ${shot.h * scale}px`;
+  card.style.backgroundPosition = `${-x * scale}px ${-y * scale}px`;
+}
+</script>
+</body></html>

@@ -1,5 +1,7 @@
 # Prompt Code
 
+<p align="center"><a href="https://karamage.github.io/prompt-code/zh-CN/"><img src="docs/screenshots/promo-en.png" alt="Prompt Code：不再重复输入提示词。带变量的 Markdown 模板，填好即可粘贴到任何地方。"></a></p>
+
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/karamage/prompt-code)](LICENSE)

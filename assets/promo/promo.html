@@ -2,26 +2,33 @@
 <!--
   README と Web サイト、Product Hunt で使う宣伝用画像の元データ。
   docs/screenshots/ のスクリーンショットから一部を切り出して並べる。
-  ?lang=en|ja で言語を、?kind=hero|og で大きさを切り替える。
-    hero: 1270x760（README と Product Hunt のギャラリー用）
-    og:   1270x667（SNS で共有したときのカード用。1.91:1）
+  ?lang=en|ja|zh-CN|ko|es|de|fr で言語を、?kind=hero|og|appstore で大きさを切り替える。
+    hero:     1270x760（README と Product Hunt のギャラリー用）
+    og:       1270x667（SNS で共有したときのカード用。1.91:1）
+    appstore: 1280x800（Mac App Store のスクリーンショット用。2.25 倍で 2880x1800 にする）
+      審査では価格に触れる表現が通らないので、「無料」のバッジをローカル完結の話に替え、URL も外す。
 
   書き出し（2 倍の解像度で PNG にする）:
     chrome --headless=new --hide-scrollbars --force-device-scale-factor=2 \
       --window-size=1270,760 --virtual-time-budget=5000 \
       --screenshot=docs/screenshots/promo-en.png "file://$PWD/assets/promo/promo.html?lang=en&kind=hero"
-  og のときは --window-size=1270,667 にする。
+  og のときは --window-size=1270,667、appstore のときは --window-size=1280,800 --force-device-scale-factor=2.25 にする。
 -->
 <html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800;900&family=Caveat:wght@600&family=Noto+Sans+JP:wght@500;900&family=Yomogi&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800;900&family=Caveat:wght@600&family=Noto+Sans+JP:wght@500;900&family=Yomogi&family=Noto+Sans+SC:wght@500;900&family=Long+Cang&family=Noto+Sans+KR:wght@500;900&family=Gaegu:wght@700&display=block" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1270px;height:760px;overflow:hidden}
 body.og{height:667px}
+html:has(body.appstore),body.appstore{width:1280px;height:800px}
 body{font-family:Inter,"Noto Sans JP",sans-serif;background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#f1f3f7 60%,#e9ecf2 100%);position:relative;color:#0b0f1a}
 .card{position:absolute;border-radius:18px;overflow:hidden;background:#0d1a33 no-repeat;box-shadow:0 18px 40px rgba(15,23,42,.22),0 2px 6px rgba(15,23,42,.12);border:4px solid #fff}
 .hand{position:absolute;font-family:Caveat,cursive;font-size:30px;color:#2563eb;white-space:nowrap}
 .ja .hand{font-family:Yomogi,cursive;font-size:24px}
+.zh-CN{font-family:Inter,"Noto Sans SC",sans-serif}
+.zh-CN .hand{font-family:"Long Cang",cursive;font-size:32px}
+.ko{font-family:Inter,"Noto Sans KR",sans-serif}
+.ko .hand{font-family:Gaegu,cursive;font-size:28px}
 svg.arrow{position:absolute;overflow:visible}
 svg.arrow path{stroke:#2563eb;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .center{position:absolute;left:0;right:0;top:50%;transform:translateY(-42%);text-align:center}
@@ -29,6 +36,12 @@ h1{font-weight:900;font-size:92px;line-height:.98;letter-spacing:-3.5px}
 .ja h1{font-size:76px;line-height:1.12;letter-spacing:-2px}
 .og h1{font-size:82px}
 .og.ja h1{font-size:68px}
+/* 見出しが長い言語は、左右のカードにかからない幅まで縮める */
+.zh-CN h1,.ko h1{font-size:70px;line-height:1.1;letter-spacing:-2px}
+.es h1,.de h1,.fr h1{font-size:76px}
+.og.zh-CN h1,.og.ko h1{font-size:62px}
+.og.es h1,.og.de h1,.og.fr h1{font-size:68px}
+.og.es .sub,.og.de .sub{font-size:19px}
 .hl{position:relative;display:inline-block}
 .hl::after{content:"";position:absolute;left:-6px;right:-6px;bottom:4px;height:22px;background:#22d3ee;opacity:.55;border-radius:6px;z-index:-1;transform:rotate(-1.2deg)}
 .sub{margin-top:26px;font-size:21px;font-weight:500;color:#334155}
@@ -39,8 +52,15 @@ h1{font-weight:900;font-size:92px;line-height:.98;letter-spacing:-3.5px}
 .badge{position:absolute;width:132px;height:132px;border-radius:50%;background:#fde047;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:900;line-height:1.02;box-shadow:0 10px 24px rgba(15,23,42,.18);transform:rotate(12deg)}
 .badge .big{font-size:34px;letter-spacing:-1px}
 .badge .small{font-size:13px;letter-spacing:.5px;margin-top:3px}
-.ja .badge .big{font-size:36px}
-.ja .badge .small{font-size:14px;letter-spacing:0;margin-top:5px}
+.ja .badge .big,.zh-CN .badge .big,.ko .badge .big{font-size:36px}
+.ja .badge .small,.zh-CN .badge .small,.ko .badge .small{font-size:14px;letter-spacing:0;margin-top:5px}
+.es .badge .big,.de .badge .big{font-size:28px}
+.fr .badge .big{font-size:22px}
+.zh-CN .badge .small{font-size:18px}
+.appstore .badge .big{font-size:30px}
+.appstore .badge .small{font-size:11px}
+.appstore.ja .badge .big{font-size:27px}
+.appstore.ja .badge .small{font-size:12px}
 .icon{position:absolute;left:58px;top:40px;width:104px;height:104px;border-radius:26px;background:#fff;padding:8px;box-shadow:0 14px 30px rgba(15,23,42,.18);transform:rotate(-7deg)}
 .icon img{width:100%;height:100%;border-radius:20px}
 /* og は縦が短いので、右下のカードを下へずらして URL と重ならないようにする */
@@ -84,6 +104,8 @@ const text = {
     title: 'Stop retyping<br>your <span class="hl">prompts.</span>',
     sub: "Markdown templates with variables you fill in and paste anywhere.",
     url: "karamage.github.io/prompt-code · for Mac",
+    localBig: "LOCAL",
+    localSmall: "NO ACCOUNT<br>NO TRACKING",
   },
   ja: {
     own: "自分のフォルダのただの .md ファイル",
@@ -94,18 +116,77 @@ const text = {
     title: '<span class="hl">プロンプト</span>を、<br>もう打ち直さない。',
     sub: "変数を埋めて、どのアプリにも貼り付けられる Markdown テンプレート。",
     url: "karamage.github.io/prompt-code · Mac 用",
+    localBig: "ローカル",
+    localSmall: "アカウント不要<br>外部送信なし",
+  },
+  "zh-CN": {
+    own: "属于你自己的纯 .md 文件",
+    fill: "填空就行",
+    paste: "在任何应用里 ⌥⌘V",
+    free: "免费",
+    oss: "开源",
+    title: '别再重复输入<br><span class="hl">提示词</span>。',
+    sub: "带变量的 Markdown 模板，填好即可粘贴到任何地方。",
+    url: "karamage.github.io/prompt-code · 适用于 Mac",
+  },
+  ko: {
+    own: "내 폴더에 있는 평범한 .md 파일",
+    fill: "빈칸만 채우면 끝",
+    paste: "어느 앱에서나 ⌥⌘V",
+    free: "무료",
+    oss: "오픈 소스",
+    title: '<span class="hl">프롬프트</span>를<br>다시 입력하지 마세요.',
+    sub: "변수를 채워 어디에나 붙여넣는 Markdown 템플릿.",
+    url: "karamage.github.io/prompt-code · Mac용",
+  },
+  es: {
+    own: "archivos .md normales, tuyos",
+    fill: "rellena los huecos",
+    paste: "⌥⌘V desde cualquier app",
+    free: "GRATIS",
+    oss: "Y DE CÓDIGO<br>ABIERTO",
+    title: 'Deja de reescribir<br>tus <span class="hl">prompts.</span>',
+    sub: "Plantillas Markdown con variables que rellenas y pegas en cualquier sitio.",
+    url: "karamage.github.io/prompt-code · para Mac",
+  },
+  de: {
+    own: "einfache .md-Dateien, die dir gehören",
+    fill: "Lücken ausfüllen",
+    paste: "⌥⌘V in jeder App",
+    free: "GRATIS",
+    oss: "&amp; OPEN<br>SOURCE",
+    title: 'Prompts nie wieder<br><span class="hl">abtippen.</span>',
+    sub: "Markdown-Vorlagen mit Variablen, die du ausfüllst und überall einfügst.",
+    url: "karamage.github.io/prompt-code · für Mac",
+  },
+  fr: {
+    own: "de simples fichiers .md, à vous",
+    fill: "remplissez les blancs",
+    paste: "⌥⌘V depuis n’importe quelle app",
+    free: "GRATUIT",
+    oss: "&amp; OPEN<br>SOURCE",
+    title: 'Arrêtez de retaper<br>vos <span class="hl">prompts.</span>',
+    sub: "Des modèles Markdown à variables, à remplir et coller n’importe où.",
+    url: "karamage.github.io/prompt-code · pour Mac",
   },
 };
 const params = new URLSearchParams(location.search);
-const lang = params.get("lang") === "ja" ? "ja" : "en";
-document.body.classList.add(lang, params.get("kind") === "og" ? "og" : "hero");
+const lang = params.get("lang") in text ? params.get("lang") : "en";
+const kind = ["og", "appstore"].includes(params.get("kind")) ? params.get("kind") : "hero";
+document.body.classList.add(lang, kind);
 document.documentElement.lang = lang;
+// App Store は英語と日本語だけ。ほかの言語の文言はまだ用意していない
+if (kind === "appstore") {
+  Object.assign(text[lang], { free: text[lang].localBig, oss: text[lang].localSmall, url: "" });
+}
 for (const el of document.querySelectorAll("[data-t]")) el.innerHTML = text[lang][el.dataset.t];
 
 // スクリーンショットは 2 倍の解像度なので、元画像の大きさをそのまま使って縮小率を出す。
+// 画面の撮影は英語と日本語だけなので、ほかの言語は Web サイトと同じく英語の画面を使う。
+const shotLang = lang === "ja" ? "ja" : "en";
 const shots = {
-  main: { src: `../../docs/screenshots/main-${lang}.png`, w: 2880, h: 1800 },
-  quick: { src: `../../docs/screenshots/quick-paste-${lang}.png`, w: 1520, h: 960 },
+  main: { src: `../../docs/screenshots/main-${shotLang}.png`, w: 2880, h: 1800 },
+  quick: { src: `../../docs/screenshots/quick-paste-${shotLang}.png`, w: 1520, h: 960 },
 };
 for (const card of document.querySelectorAll(".card")) {
   const shot = shots[card.dataset.src];

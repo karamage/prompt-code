@@ -1,6 +1,6 @@
 # Prompt Code
 
-<p align="center"><a href="https://karamage.github.io/prompt-code/ko/"><img src="docs/screenshots/promo-en.png" alt="Prompt Code: 프롬프트를 더 이상 다시 입력하지 마세요. 변수를 채워 어디에나 붙여넣는 Markdown 템플릿."></a></p>
+<p align="center"><a href="https://karamage.github.io/prompt-code/ko/"><img src="docs/screenshots/promo-ko.png" alt="Prompt Code: 프롬프트를 더 이상 다시 입력하지 마세요. 변수를 채워 어디에나 붙여넣는 Markdown 템플릿."></a></p>
 
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)

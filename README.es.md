@@ -1,6 +1,6 @@
 # Prompt Code
 
-<p align="center"><a href="https://karamage.github.io/prompt-code/es/"><img src="docs/screenshots/promo-en.png" alt="Prompt Code: deja de reescribir tus prompts. Plantillas Markdown con variables que rellenas y pegas en cualquier sitio."></a></p>
+<p align="center"><a href="https://karamage.github.io/prompt-code/es/"><img src="docs/screenshots/promo-es.png" alt="Prompt Code: deja de reescribir tus prompts. Plantillas Markdown con variables que rellenas y pegas en cualquier sitio."></a></p>
 
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)

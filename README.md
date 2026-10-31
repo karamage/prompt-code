@@ -1,6 +1,6 @@
 # Prompt Code
 
-<p align="center"><a href="https://karamage.github.io/prompt-code/"><img src="docs/screenshots/promo-en.png" alt="Prompt Code: stop retyping your prompts. Markdown templates with variables you fill in and paste anywhere."></a></p>
+<p align="center"><a href="https://karamage.github.io/prompt-code/"><img src="docs/screenshots/promo-video-en.gif" width="960" alt="Prompt Code in 10 seconds: write templates with variables, fill in the blanks, and paste from any app with Option-Command-V."></a></p>
 
 [![CI](https://github.com/karamage/prompt-code/actions/workflows/ci.yml/badge.svg)](https://github.com/karamage/prompt-code/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/karamage/prompt-code)](https://github.com/karamage/prompt-code/releases/latest)

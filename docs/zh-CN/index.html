@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Code — macOS 上的提示词编辑器</title>
+<meta name="description" content="一款用于编写、整理和复用 AI 提示词的 macOS Markdown 编辑器与代码片段管理器。支持填写变量、可复用的嵌入片段，在任意应用中按 ⌥⌘V 快速粘贴。纯 .md 文件，完全本地运行。">
+<link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
+<link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
+<link rel="alternate" hreflang="zh-CN" href="https://karamage.github.io/prompt-code/zh-CN/">
+<link rel="alternate" hreflang="ko" href="https://karamage.github.io/prompt-code/ko/">
+<link rel="alternate" hreflang="es" href="https://karamage.github.io/prompt-code/es/">
+<link rel="alternate" hreflang="de" href="https://karamage.github.io/prompt-code/de/">
+<link rel="alternate" hreflang="fr" href="https://karamage.github.io/prompt-code/fr/">
+<link rel="alternate" hreflang="x-default" href="https://karamage.github.io/prompt-code/">
+<meta property="og:title" content="Prompt Code">
+<meta property="og:description" content="在 Mac 上编写、整理和复用 AI 提示词。纯 Markdown 文件，完全本地运行。">
+<meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/main-en.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<link rel="stylesheet" href="../style.css">
+<script src="../download.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <nav class="nav">
+      <a href="#features">功能</a>
+      <a href="#keys">快捷键</a>
+      <a href="#faq">常见问题</a>
+      <a class="gh" href="https://github.com/karamage/prompt-code">GitHub ↗</a>
+      <details class="lang">
+        <summary aria-label="语言">简体中文</summary>
+        <ul>
+          <li><a href="../" hreflang="en" lang="en">English</a></li>
+          <li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li>
+          <li><a href="../zh-CN/" hreflang="zh-CN" lang="zh-CN" aria-current="page">简体中文</a></li>
+          <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+          <li><a href="../es/" hreflang="es" lang="es">Español</a></li>
+          <li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li>
+          <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap">
+      <img class="hero-icon" src="../icon.svg" alt="">
+      <p class="eyebrow">Prompt Code for macOS</p>
+      <h1>提示词写一次，<br>随处都能用。</h1>
+      <p class="lede">一款面向 AI 提示词的 Markdown 编辑器和代码片段管理器。支持填写变量、可复用的片段，以及在任意应用中都能唤出的快速粘贴窗口。你的提示词始终是 Mac 上的普通 <code>.md</code> 文件。</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">下载 Apple 芯片版</a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">下载 Intel 版</a>
+      </div>
+      <p class="meta"><span data-version>最新版本</span> · macOS 11 或更高版本 · 已签名并通过公证 · 免费开源（MIT）</p>
+      <div class="shot">
+        <img src="../screenshots/main-en.png" width="2880" height="1800" alt="Prompt Code：笔记列表、包含变量的提示词，以及显示最终提示词的“使用”面板">
+      </div>
+    </div>
+  </div>
+
+  <section id="syntax">
+    <div class="wrap">
+      <p class="label">01 / 提示词语法</p>
+      <h2>提示词是模板，<br>不必每次重新输入。</h2>
+      <p class="intro">在 Markdown 上加三点小扩展，笔记就变成可以填写、复制的模板。其余部分都是普通的 Markdown。</p>
+      <div class="syntax">
+        <div class="card">
+          <pre>用<span class="v">{{tone: friendly | formal}}</span>的语气
+向<span class="v">{{audience: engineers}}</span>
+解释<span class="v">{{topic}}</span>。</pre>
+          <h3>变量</h3>
+          <p>可以是普通字段、带默认值的字段，或一组选项。“使用”面板会把它们变成输入框，并在你输入时实时显示最终的提示词。按 <kbd>⌘↵</kbd> 即可复制。</p>
+        </div>
+        <div class="card">
+          <pre>请审查这个拉取请求。
+
+<span class="v">![[回答格式]]</span></pre>
+          <h3>嵌入</h3>
+          <p>把角色设定或输出格式要求放在一篇笔记里，然后嵌入到任意提示词中。复制时会自动展开。</p>
+        </div>
+        <div class="card">
+          <pre>总结这次会议。
+<span class="m">&lt;!-- 先给出会议记录
+     效果更好 --&gt;</span></pre>
+          <h3>给自己的备注</h3>
+          <p>HTML 注释会保留在文件中，复制时会被移除，模型永远看不到它们。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quick-paste">
+    <div class="wrap split">
+      <div>
+        <p class="label">02 / 快速粘贴</p>
+        <h2>无论在哪个应用里输入，<br>提示词都在手边。</h2>
+        <p class="intro" style="margin-bottom:0">在任意位置按下 <kbd>⌥⌘V</kbd>，会弹出一个小窗口，显示剪贴板历史和你的提示词。选中一项，它就会被粘贴到你正在输入的地方。</p>
+        <ul class="points">
+          <li><strong>先填写再粘贴。</strong>含有变量的提示词可以直接在窗口里填入值，然后再粘贴。</li>
+          <li><strong>菜单栏中的剪贴板历史。</strong>保留最近 200 条复制内容。密码管理器标记为隐藏的内容永远不会被记录。</li>
+          <li><strong>全程键盘操作。</strong><kbd>↵</kbd> 粘贴，<kbd>⌘↵</kbd> 仅复制，<kbd>⌘1</kbd>–<kbd>⌘9</kbd> 粘贴对应的行。</li>
+        </ul>
+      </div>
+      <div class="shot">
+        <img src="../screenshots/quick-paste-en.png" alt="快速粘贴：在任意应用中选择提示词，并粘贴到正在输入的位置" width="1520" height="960" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="label">03 / 功能</p>
+      <h2>兼具笔记应用<br>和片段管理器的长处。</h2>
+      <p class="intro">写作时有链接、反向链接、关系图和命令面板；复用时有文件夹、标签、收藏和一键复制。</p>
+      <div class="grid">
+        <div><h3>链接与标签</h3><p>支持自动补全的 <code>[[笔记]]</code> 链接、反向链接、<code>#标签</code> 和关系图视图。重命名笔记时，指向它的链接会自动更新。</p></div>
+        <div><h3>快速跳转</h3><p><kbd>⌘K</kbd> 跳转到任意笔记，输入 <code>&gt;</code> 执行命令，<kbd>⇧⌘F</kbd> 搜索所有笔记的正文。</p></div>
+        <div><h3>文件保持原样</h3><p>笔记库就是一个存放带 YAML frontmatter 的 <code>.md</code> 文件的文件夹。用任何应用编辑，改动都会实时显示。</p></div>
+        <div><h3>编写与阅读</h3><p>代码块带语法高亮的 Markdown 编辑器，按 <kbd>⌘E</kbd> 可切换到阅读视图。</p></div>
+        <div><h3>数据不离开你的 Mac</h3><p>无需账号，没有遥测，不发出任何网络请求。删除的笔记会移到笔记库内的 <code>.trash/</code>。</p></div>
+        <div><h3>小巧且原生</h3><p>磁盘占用约 12 MB。基于系统 WebKit，使用 Tauri 构建。支持浅色和深色主题、五种强调色。应用界面支持英语和日语。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keys">
+    <div class="wrap">
+      <p class="label">04 / 快捷键</p>
+      <h2>手指不离键盘。</h2>
+      <div class="keys-cols">
+        <table class="keys">
+          <tr><td><kbd>⌥⌘V</kbd>（任意位置）</td><td>快速粘贴（可在设置中修改）</td></tr>
+          <tr><td><kbd>⌘K</kbd></td><td>跳转到笔记，输入 <code>&gt;</code> 执行命令</td></tr>
+          <tr><td><kbd>⌘N</kbd> / <kbd>⇧⌘N</kbd></td><td>新建笔记 / 新建文件夹</td></tr>
+          <tr><td><kbd>⇧⌘F</kbd></td><td>搜索所有笔记</td></tr>
+          <tr><td><kbd>⌘↵</kbd></td><td>填写变量；在面板中则为复制</td></tr>
+          <tr><td><kbd>⇧⌘C</kbd></td><td>以当前值复制</td></tr>
+        </table>
+        <table class="keys">
+          <tr><td><kbd>⌘E</kbd></td><td>在编写和阅读之间切换</td></tr>
+          <tr><td><kbd>⌘\</kbd></td><td>隐藏或显示侧边栏</td></tr>
+          <tr><td><kbd>⌘G</kbd></td><td>关系图</td></tr>
+          <tr><td><kbd>⌘D</kbd></td><td>复制笔记</td></tr>
+          <tr><td><kbd>⌘⌫</kbd></td><td>将笔记移到废纸篓（可在提示中撤销）</td></tr>
+          <tr><td><kbd>⌘,</kbd></td><td>设置</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="download">
+    <div class="wrap">
+      <p class="label">05 / 下载</p>
+      <h2>获取 Prompt Code。</h2>
+      <p class="intro">选择适合你 Mac 的 DMG，打开后把 Prompt Code 拖到“应用程序”文件夹。首次启动时会显示一份简短的指南。</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple 芯片 <small>M1 及更新机型</small></a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel</a>
+      </div>
+      <p class="meta"><span data-version>最新版本</span> · <a href="https://github.com/karamage/prompt-code/releases">所有版本与校验和</a></p>
+      <ul class="notes">
+        <li>使用 Developer ID 签名并经过 Apple 公证，打开时不会出现警告。需要 macOS 11 或更高版本。</li>
+        <li>要粘贴到其他应用，macOS 会请求你在“系统设置 › 隐私与安全性 › 辅助功能”中允许 Prompt Code。未授权时，快速粘贴仍会帮你复制文本，你可以用 <kbd>⌘V</kbd> 自行粘贴。</li>
+        <li>关闭窗口后，Prompt Code 会留在菜单栏中。可从菜单栏菜单或按 <kbd>⌘Q</kbd> 退出。</li>
+      </ul>
+      <details>
+        <summary>从源代码构建</summary>
+        <pre>git clone https://github.com/karamage/prompt-code.git
+cd prompt-code
+bun install
+bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
+      </details>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="label">06 / 常见问题</p>
+      <h2>常见问题。</h2>
+      <dl class="faq">
+        <dt>我的提示词保存在哪里？</dt>
+        <dd>保存在一个存放 Markdown 文件的文件夹中，默认是 <code>~/PromptCode</code>，也可以在设置中选择其他文件夹。你可以像对待其他文件夹一样备份、同步它，或用 git 管理。</dd>
+        <dt>它会把我的提示词发送到别处吗？</dt>
+        <dd>不会。Prompt Code 没有账号和遥测，也不发出任何网络请求。它的本地服务器只监听 <code>127.0.0.1</code>，并且需要启动时生成的令牌。</dd>
+        <dt>可以和 Obsidian 的笔记库一起用吗？</dt>
+        <dd>它读取带 YAML frontmatter 和 <code>[[链接]]</code> 的普通 <code>.md</code> 文件，所以你可以在设置（<kbd>⌘,</kbd>）中把任何 Markdown 笔记文件夹选为笔记库。</dd>
+        <dt>支持哪些 AI 工具？</dt>
+        <dd>全部都支持。Prompt Code 复制或粘贴的是最终文本，因此无论是聊天应用、IDE、终端还是浏览器都能使用。</dd>
+        <dt>需要付费吗？</dt>
+        <dd>完全免费。它基于 MIT 许可证开源。</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <span>编写 → 填写 → 粘贴</span>
+    <nav>
+      <a href="https://github.com/karamage/prompt-code">GitHub</a>
+      <a href="https://github.com/karamage/prompt-code/blob/main/LICENSE">MIT License</a>
+      <a href="privacy/">隐私</a>
+    </nav>
+    <nav class="langs" aria-label="语言">
+      <a href="../" hreflang="en" lang="en">English</a>
+      <a href="../ja/" hreflang="ja" lang="ja">日本語</a>
+      <a href="../ko/" hreflang="ko" lang="ko">한국어</a>
+      <a href="../es/" hreflang="es" lang="es">Español</a>
+      <a href="../de/" hreflang="de" lang="de">Deutsch</a>
+      <a href="../fr/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

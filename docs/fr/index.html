@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Code — un éditeur de prompts pour macOS</title>
+<meta name="description" content="Un éditeur Markdown et gestionnaire d’extraits pour les prompts d’IA sur macOS. Variables à remplir, fragments réutilisables et collage rapide depuis n’importe quelle app avec ⌥⌘V. De simples fichiers .md, entièrement en local.">
+<link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
+<link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
+<link rel="alternate" hreflang="zh-CN" href="https://karamage.github.io/prompt-code/zh-CN/">
+<link rel="alternate" hreflang="ko" href="https://karamage.github.io/prompt-code/ko/">
+<link rel="alternate" hreflang="es" href="https://karamage.github.io/prompt-code/es/">
+<link rel="alternate" hreflang="de" href="https://karamage.github.io/prompt-code/de/">
+<link rel="alternate" hreflang="fr" href="https://karamage.github.io/prompt-code/fr/">
+<link rel="alternate" hreflang="x-default" href="https://karamage.github.io/prompt-code/">
+<meta property="og:title" content="Prompt Code">
+<meta property="og:description" content="Écrivez, organisez et réutilisez vos prompts d’IA sur votre Mac. De simples fichiers Markdown, entièrement en local.">
+<meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/main-en.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<link rel="stylesheet" href="../style.css">
+<script src="../download.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <nav class="nav">
+      <a href="#features">Fonctions</a>
+      <a href="#keys">Raccourcis</a>
+      <a href="#faq">FAQ</a>
+      <a class="gh" href="https://github.com/karamage/prompt-code">GitHub ↗</a>
+      <details class="lang">
+        <summary aria-label="Langue">Français</summary>
+        <ul>
+          <li><a href="../" hreflang="en" lang="en">English</a></li>
+          <li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li>
+          <li><a href="../zh-CN/" hreflang="zh-CN" lang="zh-CN">简体中文</a></li>
+          <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+          <li><a href="../es/" hreflang="es" lang="es">Español</a></li>
+          <li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li>
+          <li><a href="../fr/" hreflang="fr" lang="fr" aria-current="page">Français</a></li>
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap">
+      <img class="hero-icon" src="../icon.svg" alt="">
+      <p class="eyebrow">Prompt Code for macOS</p>
+      <h1>Écrivez un prompt une fois. Utilisez-le partout.</h1>
+      <p class="lede">Un éditeur Markdown et gestionnaire d’extraits pour les prompts d’IA. Variables à remplir, fragments réutilisables et une fenêtre de collage rapide qui fonctionne dans n’importe quelle app. Vos prompts restent de simples fichiers <code>.md</code> sur votre Mac.</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Télécharger pour Apple silicon</a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Télécharger pour Intel</a>
+      </div>
+      <p class="meta"><span data-version>Dernière version</span> · macOS 11 ou ultérieur · Signée et notarisée · Gratuite et open source (MIT)</p>
+      <div class="shot">
+        <img src="../screenshots/main-en.png" width="2880" height="1800" alt="Prompt Code : la liste des notes, un prompt avec des variables et le panneau Utiliser affichant le prompt final">
+      </div>
+    </div>
+  </div>
+
+  <section id="syntax">
+    <div class="wrap">
+      <p class="label">01 / Syntaxe des prompts</p>
+      <h2>Les prompts sont des modèles,<br>pas du texte à retaper.</h2>
+      <p class="intro">Trois petits ajouts à Markdown transforment une note en quelque chose que l’on remplit et que l’on copie. Tout le reste est du Markdown ordinaire.</p>
+      <div class="syntax">
+        <div class="card">
+          <pre>Explique <span class="v">{{topic}}</span> à
+<span class="v">{{audience: engineers}}</span> sur un
+ton <span class="v">{{tone: friendly | formal}}</span>.</pre>
+          <h3>Variables</h3>
+          <p>Champs simples, valeurs par défaut ou liste de choix. Le panneau Utiliser les transforme en champs de saisie et affiche le prompt final au fil de la frappe. <kbd>⌘↵</kbd> le copie.</p>
+        </div>
+        <div class="card">
+          <pre>Relis cette pull request.
+
+<span class="v">![[Format de réponse]]</span></pre>
+          <h3>Intégrations</h3>
+          <p>Gardez un persona ou un format de sortie dans une note et intégrez-le dans n’importe quel prompt. Il est inséré au moment de la copie.</p>
+        </div>
+        <div class="card">
+          <pre>Résume la réunion.
+<span class="m">&lt;!-- marche mieux avec
+     la transcription d’abord --&gt;</span></pre>
+          <h3>Notes pour vous</h3>
+          <p>Les commentaires HTML restent dans le fichier et sont retirés à la copie : le modèle ne les voit jamais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quick-paste">
+    <div class="wrap split">
+      <div>
+        <p class="label">02 / Collage rapide</p>
+        <h2>Vos prompts, dans l’app où vous êtes en train d’écrire.</h2>
+        <p class="intro" style="margin-bottom:0">Appuyez sur <kbd>⌥⌘V</kbd> où que vous soyez. Une petite fenêtre affiche l’historique du presse-papiers et vos prompts. Choisissez-en un, il est collé là où vous écriviez.</p>
+        <ul class="points">
+          <li><strong>Remplir d’abord.</strong> Pour les prompts avec variables, saisissez les valeurs directement dans la fenêtre avant de coller.</li>
+          <li><strong>Historique du presse-papiers dans la barre des menus.</strong> Conserve les 200 dernières copies. Les copies que les gestionnaires de mots de passe marquent comme masquées ne sont jamais enregistrées.</li>
+          <li><strong>Tout au clavier.</strong> <kbd>↵</kbd> colle, <kbd>⌘↵</kbd> copie seulement, <kbd>⌘1</kbd>–<kbd>⌘9</kbd> collent une ligne.</li>
+        </ul>
+      </div>
+      <div class="shot">
+        <img src="../screenshots/quick-paste-en.png" alt="Collage rapide : choisir un prompt depuis n’importe quelle app et le coller là où vous écriviez" width="1520" height="960" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="label">03 / Fonctions</p>
+      <h2>Le meilleur d’une app de notes<br>et d’un gestionnaire d’extraits.</h2>
+      <p class="intro">Liens, rétroliens, graphe et palette de commandes pour écrire. Dossiers, tags, favoris et copie en un clic pour réutiliser.</p>
+      <div class="grid">
+        <div><h3>Liens et tags</h3><p>Liens <code>[[Note]]</code> avec autocomplétion, rétroliens, <code>#tags</code> et vue en graphe. Renommer une note met à jour les liens qui y mènent.</p></div>
+        <div><h3>Navigation rapide</h3><p><kbd>⌘K</kbd> ouvre n’importe quelle note, <code>&gt;</code> lance des commandes, <kbd>⇧⌘F</kbd> cherche dans le texte de toutes les notes.</p></div>
+        <div><h3>Vos fichiers, tels quels</h3><p>Un coffre est un dossier de fichiers <code>.md</code> avec un frontmatter YAML. Modifiez-les dans n’importe quelle app, les changements apparaissent aussitôt.</p></div>
+        <div><h3>Écrire et lire</h3><p>Un éditeur Markdown avec coloration des blocs de code, et une vue de lecture accessible avec <kbd>⌘E</kbd>.</p></div>
+        <div><h3>Rien ne quitte votre Mac</h3><p>Pas de compte, pas de télémétrie, aucune requête réseau. Les notes supprimées vont dans <code>.trash/</code> à l’intérieur du coffre.</p></div>
+        <div><h3>Légère et native</h3><p>Environ 12 Mo sur le disque. Construite avec Tauri sur le WebKit du système. Thèmes clair et sombre, cinq couleurs d’accent. L’interface de l’app est en anglais et en japonais.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keys">
+    <div class="wrap">
+      <p class="label">04 / Raccourcis</p>
+      <h2>Toujours sous vos doigts.</h2>
+      <div class="keys-cols">
+        <table class="keys">
+          <tr><td><kbd>⌥⌘V</kbd> partout</td><td>Collage rapide (modifiable dans les Réglages)</td></tr>
+          <tr><td><kbd>⌘K</kbd></td><td>Aller à une note, <code>&gt;</code> pour les commandes</td></tr>
+          <tr><td><kbd>⌘N</kbd> / <kbd>⇧⌘N</kbd></td><td>Nouvelle note / nouveau dossier</td></tr>
+          <tr><td><kbd>⇧⌘F</kbd></td><td>Chercher dans toutes les notes</td></tr>
+          <tr><td><kbd>⌘↵</kbd></td><td>Remplir les variables ; dans le panneau, copier</td></tr>
+          <tr><td><kbd>⇧⌘C</kbd></td><td>Copier avec les valeurs actuelles</td></tr>
+        </table>
+        <table class="keys">
+          <tr><td><kbd>⌘E</kbd></td><td>Basculer entre écriture et lecture</td></tr>
+          <tr><td><kbd>⌘\</kbd></td><td>Masquer ou afficher les barres latérales</td></tr>
+          <tr><td><kbd>⌘G</kbd></td><td>Graphe</td></tr>
+          <tr><td><kbd>⌘D</kbd></td><td>Dupliquer la note</td></tr>
+          <tr><td><kbd>⌘⌫</kbd></td><td>Mettre la note à la corbeille (annulable depuis la notification)</td></tr>
+          <tr><td><kbd>⌘,</kbd></td><td>Réglages</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="download">
+    <div class="wrap">
+      <p class="label">05 / Téléchargement</p>
+      <h2>Obtenir Prompt Code.</h2>
+      <p class="intro">Choisissez le DMG adapté à votre Mac, ouvrez-le et faites glisser Prompt Code dans Applications. Un court guide s’ouvre au premier lancement.</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple silicon <small>M1 et ultérieurs</small></a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel</a>
+      </div>
+      <p class="meta"><span data-version>Dernière version</span> · <a href="https://github.com/karamage/prompt-code/releases">Toutes les versions et sommes de contrôle</a></p>
+      <ul class="notes">
+        <li>Signée avec un Developer ID et notarisée par Apple : elle s’ouvre sans avertissement. Nécessite macOS 11 ou ultérieur.</li>
+        <li>Pour coller dans d’autres apps, macOS vous demande d’autoriser Prompt Code dans Réglages Système › Confidentialité et sécurité › Accessibilité. Sans cette autorisation, le collage rapide copie tout de même le texte, que vous collez avec <kbd>⌘V</kbd>.</li>
+        <li>Fermer la fenêtre laisse Prompt Code dans la barre des menus. Quittez-la depuis le menu de la barre des menus ou avec <kbd>⌘Q</kbd>.</li>
+      </ul>
+      <details>
+        <summary>Compiler depuis les sources</summary>
+        <pre>git clone https://github.com/karamage/prompt-code.git
+cd prompt-code
+bun install
+bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
+      </details>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="label">06 / FAQ</p>
+      <h2>Questions.</h2>
+      <dl class="faq">
+        <dt>Où sont stockés mes prompts ?</dt>
+        <dd>Dans un dossier de fichiers Markdown, <code>~/PromptCode</code> par défaut ; vous pouvez en choisir un autre dans les Réglages. Sauvegardez-le, synchronisez-le ou mettez-le dans git comme n’importe quel dossier.</dd>
+        <dt>Mes prompts sont-ils envoyés quelque part ?</dt>
+        <dd>Non. Prompt Code n’a ni compte ni télémétrie et n’effectue aucune requête réseau. Son serveur local n’écoute que sur <code>127.0.0.1</code> et exige un jeton généré au lancement.</dd>
+        <dt>Puis-je l’utiliser avec mon coffre Obsidian ?</dt>
+        <dd>Elle lit de simples fichiers <code>.md</code> avec frontmatter YAML et <code>[[liens]]</code> : vous pouvez donc choisir comme coffre n’importe quel dossier de notes Markdown dans les Réglages (<kbd>⌘,</kbd>).</dd>
+        <dt>Avec quels outils d’IA fonctionne-t-elle ?</dt>
+        <dd>Avec tous. Prompt Code copie ou colle le texte final : il fonctionne aussi bien avec les apps de chat, les IDE, les terminaux que les navigateurs.</dd>
+        <dt>Combien ça coûte ?</dt>
+        <dd>Rien. C’est un logiciel open source sous licence MIT.</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <span>Écrire → remplir → coller</span>
+    <nav>
+      <a href="https://github.com/karamage/prompt-code">GitHub</a>
+      <a href="https://github.com/karamage/prompt-code/blob/main/LICENSE">MIT License</a>
+      <a href="privacy/">Confidentialité</a>
+    </nav>
+    <nav class="langs" aria-label="Langue">
+      <a href="../" hreflang="en" lang="en">English</a>
+      <a href="../ja/" hreflang="ja" lang="ja">日本語</a>
+      <a href="../zh-CN/" hreflang="zh-CN" lang="zh-CN">简体中文</a>
+      <a href="../ko/" hreflang="ko" lang="ko">한국어</a>
+      <a href="../es/" hreflang="es" lang="es">Español</a>
+      <a href="../de/" hreflang="de" lang="de">Deutsch</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

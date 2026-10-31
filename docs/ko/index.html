@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Code — macOS용 프롬프트 에디터</title>
+<meta name="description" content="AI 프롬프트를 작성하고, 정리하고, 재사용하기 위한 macOS용 Markdown 에디터 겸 스니펫 관리자. 채워 넣는 변수, 재사용할 수 있는 임베드, 어느 앱에서든 ⌥⌘V로 빠르게 붙여넣기. 평범한 .md 파일로, 모두 내 Mac에서 동작합니다.">
+<link rel="alternate" hreflang="en" href="https://karamage.github.io/prompt-code/">
+<link rel="alternate" hreflang="ja" href="https://karamage.github.io/prompt-code/ja/">
+<link rel="alternate" hreflang="zh-CN" href="https://karamage.github.io/prompt-code/zh-CN/">
+<link rel="alternate" hreflang="ko" href="https://karamage.github.io/prompt-code/ko/">
+<link rel="alternate" hreflang="es" href="https://karamage.github.io/prompt-code/es/">
+<link rel="alternate" hreflang="de" href="https://karamage.github.io/prompt-code/de/">
+<link rel="alternate" hreflang="fr" href="https://karamage.github.io/prompt-code/fr/">
+<link rel="alternate" hreflang="x-default" href="https://karamage.github.io/prompt-code/">
+<meta property="og:title" content="Prompt Code">
+<meta property="og:description" content="Mac에서 AI 프롬프트를 작성하고, 정리하고, 재사용하세요. 평범한 Markdown 파일로, 모두 로컬에서 동작합니다.">
+<meta property="og:image" content="https://karamage.github.io/prompt-code/screenshots/main-en.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400&family=Newsreader:opsz,wght@6..72,500&display=swap">
+<link rel="stylesheet" href="../style.css">
+<script src="../download.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <nav class="nav">
+      <a href="#features">기능</a>
+      <a href="#keys">단축키</a>
+      <a href="#faq">자주 묻는 질문</a>
+      <a class="gh" href="https://github.com/karamage/prompt-code">GitHub ↗</a>
+      <details class="lang">
+        <summary aria-label="언어">한국어</summary>
+        <ul>
+          <li><a href="../" hreflang="en" lang="en">English</a></li>
+          <li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li>
+          <li><a href="../zh-CN/" hreflang="zh-CN" lang="zh-CN">简体中文</a></li>
+          <li><a href="../ko/" hreflang="ko" lang="ko" aria-current="page">한국어</a></li>
+          <li><a href="../es/" hreflang="es" lang="es">Español</a></li>
+          <li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li>
+          <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap">
+      <img class="hero-icon" src="../icon.svg" alt="">
+      <p class="eyebrow">Prompt Code for macOS</p>
+      <h1>프롬프트는 한 번 쓰고,<br>어디서든 씁니다.</h1>
+      <p class="lede">AI 프롬프트를 위한 Markdown 에디터 겸 스니펫 관리자입니다. 채워 넣는 변수, 재사용하는 조각, 어느 앱에서든 불러올 수 있는 빠른 붙여넣기 창을 갖추고 있습니다. 프롬프트는 Mac 안에 평범한 <code>.md</code> 파일로 남습니다.</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple 실리콘용 다운로드</a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel용 다운로드</a>
+      </div>
+      <p class="meta"><span data-version>최신 릴리스</span> · macOS 11 이상 · 서명 및 공증 완료 · 무료 오픈 소스(MIT)</p>
+      <div class="shot">
+        <img src="../screenshots/main-en.png" width="2880" height="1800" alt="Prompt Code: 노트 목록, 변수가 들어간 프롬프트, 완성된 프롬프트를 보여 주는 사용 패널">
+      </div>
+    </div>
+  </div>
+
+  <section id="syntax">
+    <div class="wrap">
+      <p class="label">01 / 프롬프트 문법</p>
+      <h2>프롬프트는 템플릿입니다.<br>매번 다시 칠 필요가 없습니다.</h2>
+      <p class="intro">Markdown에 작은 확장 세 가지를 더하면 노트가 채워서 복사하는 템플릿이 됩니다. 나머지는 모두 평범한 Markdown입니다.</p>
+      <div class="syntax">
+        <div class="card">
+          <pre><span class="v">{{audience: engineers}}</span>에게
+<span class="v">{{topic}}</span>을(를)
+<span class="v">{{tone: friendly | formal}}</span> 말투로 설명해 줘.</pre>
+          <h3>변수</h3>
+          <p>일반 입력란, 기본값, 선택지 목록을 쓸 수 있습니다. 사용 패널이 이를 입력란으로 바꾸고, 입력하는 동안 완성된 프롬프트를 보여 줍니다. <kbd>⌘↵</kbd>로 복사합니다.</p>
+        </div>
+        <div class="card">
+          <pre>이 풀 리퀘스트를 리뷰해 줘.
+
+<span class="v">![[답변 형식]]</span></pre>
+          <h3>임베드</h3>
+          <p>페르소나나 출력 형식 규칙을 노트 하나에 두고, 어떤 프롬프트에든 끌어옵니다. 복사할 때 내용이 채워집니다.</p>
+        </div>
+        <div class="card">
+          <pre>회의 내용을 요약해 줘.
+<span class="m">&lt;!-- 회의록을 먼저 주면
+     결과가 더 좋다 --&gt;</span></pre>
+          <h3>나를 위한 메모</h3>
+          <p>HTML 주석은 파일에 남고 복사할 때 제거되므로, 모델에는 절대 보이지 않습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quick-paste">
+    <div class="wrap split">
+      <div>
+        <p class="label">02 / 빠른 붙여넣기</p>
+        <h2>어떤 앱에서 입력하든<br>프롬프트가 바로 곁에.</h2>
+        <p class="intro" style="margin-bottom:0">어디서든 <kbd>⌥⌘V</kbd>를 누르세요. 작은 창에 클립보드 기록과 프롬프트가 나타납니다. 하나를 고르면 입력하던 자리에 붙여넣어집니다.</p>
+        <ul class="points">
+          <li><strong>먼저 채우고 붙여넣기.</strong> 변수가 있는 프롬프트는 붙여넣기 전에 그 자리에서 값을 입력할 수 있습니다.</li>
+          <li><strong>메뉴 막대의 클립보드 기록.</strong> 최근 200개의 복사 내용을 보관합니다. 암호 관리자가 숨김으로 표시한 복사 내용은 기록하지 않습니다.</li>
+          <li><strong>처음부터 끝까지 키보드로.</strong> <kbd>↵</kbd>는 붙여넣기, <kbd>⌘↵</kbd>는 복사만, <kbd>⌘1</kbd>–<kbd>⌘9</kbd>는 해당 행을 붙여넣습니다.</li>
+        </ul>
+      </div>
+      <div class="shot">
+        <img src="../screenshots/quick-paste-en.png" alt="빠른 붙여넣기: 어느 앱에서든 프롬프트를 골라 입력하던 자리에 붙여넣기" width="1520" height="960" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="label">03 / 기능</p>
+      <h2>노트 앱과 스니펫 관리자의<br>좋은 점만 모았습니다.</h2>
+      <p class="intro">쓰기 위한 링크, 백링크, 그래프, 명령 팔레트. 재사용을 위한 폴더, 태그, 즐겨찾기, 원클릭 복사.</p>
+      <div class="grid">
+        <div><h3>링크와 태그</h3><p>자동 완성되는 <code>[[노트]]</code> 링크, 백링크, <code>#태그</code>, 그래프 보기. 노트 이름을 바꾸면 그 노트를 가리키는 링크도 함께 바뀝니다.</p></div>
+        <div><h3>빠른 이동</h3><p><kbd>⌘K</kbd>로 어떤 노트로든 이동하고, <code>&gt;</code>로 명령을 실행하며, <kbd>⇧⌘F</kbd>로 모든 노트의 본문을 검색합니다.</p></div>
+        <div><h3>파일은 있는 그대로</h3><p>보관소는 YAML frontmatter가 붙은 <code>.md</code> 파일이 담긴 폴더입니다. 어떤 앱으로 편집해도 변경 사항이 바로 반영됩니다.</p></div>
+        <div><h3>쓰기와 읽기</h3><p>코드 블록이 강조 표시되는 Markdown 에디터와, <kbd>⌘E</kbd>로 전환하는 읽기 보기.</p></div>
+        <div><h3>Mac 밖으로 나가는 것은 없습니다</h3><p>계정도, 원격 측정도, 네트워크 요청도 없습니다. 삭제한 노트는 보관소 안의 <code>.trash/</code>로 이동합니다.</p></div>
+        <div><h3>작고 네이티브</h3><p>디스크 용량 약 12 MB. 시스템 WebKit 위에서 Tauri로 만들었습니다. 라이트·다크 테마와 다섯 가지 강조 색상. 앱 화면은 영어와 일본어를 지원합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keys">
+    <div class="wrap">
+      <p class="label">04 / 단축키</p>
+      <h2>손가락 아래에 두었습니다.</h2>
+      <div class="keys-cols">
+        <table class="keys">
+          <tr><td><kbd>⌥⌘V</kbd> (어디서든)</td><td>빠른 붙여넣기 (설정에서 변경)</td></tr>
+          <tr><td><kbd>⌘K</kbd></td><td>노트로 이동, <code>&gt;</code>로 명령</td></tr>
+          <tr><td><kbd>⌘N</kbd> / <kbd>⇧⌘N</kbd></td><td>새 노트 / 새 폴더</td></tr>
+          <tr><td><kbd>⇧⌘F</kbd></td><td>모든 노트 검색</td></tr>
+          <tr><td><kbd>⌘↵</kbd></td><td>변수 채우기, 패널 안에서는 복사</td></tr>
+          <tr><td><kbd>⇧⌘C</kbd></td><td>현재 값으로 복사</td></tr>
+        </table>
+        <table class="keys">
+          <tr><td><kbd>⌘E</kbd></td><td>쓰기와 읽기 전환</td></tr>
+          <tr><td><kbd>⌘\</kbd></td><td>사이드바 숨기기 또는 보기</td></tr>
+          <tr><td><kbd>⌘G</kbd></td><td>그래프</td></tr>
+          <tr><td><kbd>⌘D</kbd></td><td>노트 복제</td></tr>
+          <tr><td><kbd>⌘⌫</kbd></td><td>노트를 휴지통으로 이동 (알림에서 실행 취소)</td></tr>
+          <tr><td><kbd>⌘,</kbd></td><td>설정</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="download">
+    <div class="wrap">
+      <p class="label">05 / 다운로드</p>
+      <h2>Prompt Code 받기.</h2>
+      <p class="intro">내 Mac에 맞는 DMG를 골라 열고, Prompt Code를 응용 프로그램 폴더로 드래그하세요. 처음 실행하면 짧은 안내가 열립니다.</p>
+      <div class="cta">
+        <a class="btn btn-primary" data-arch="arm64" href="https://github.com/karamage/prompt-code/releases/latest">Apple 실리콘 <small>M1 이후</small></a>
+        <a class="btn btn-ghost" data-arch="x64" href="https://github.com/karamage/prompt-code/releases/latest">Intel</a>
+      </div>
+      <p class="meta"><span data-version>최신 릴리스</span> · <a href="https://github.com/karamage/prompt-code/releases">모든 릴리스와 체크섬</a></p>
+      <ul class="notes">
+        <li>Developer ID로 서명하고 Apple의 공증을 받았으므로 경고 없이 열립니다. macOS 11 이상이 필요합니다.</li>
+        <li>다른 앱에 붙여넣으려면 macOS가 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서 Prompt Code를 허용하라고 요청합니다. 허용하지 않아도 빠른 붙여넣기가 텍스트를 복사해 주므로 <kbd>⌘V</kbd>로 직접 붙여넣을 수 있습니다.</li>
+        <li>창을 닫아도 Prompt Code는 메뉴 막대에 남습니다. 메뉴 막대 메뉴나 <kbd>⌘Q</kbd>로 종료하세요.</li>
+      </ul>
+      <details>
+        <summary>소스에서 빌드하기</summary>
+        <pre>git clone https://github.com/karamage/prompt-code.git
+cd prompt-code
+bun install
+bun run app:build   # → src-tauri/target/release/bundle/macos/</pre>
+      </details>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="label">06 / 자주 묻는 질문</p>
+      <h2>질문.</h2>
+      <dl class="faq">
+        <dt>프롬프트는 어디에 저장되나요?</dt>
+        <dd>Markdown 파일이 담긴 폴더에 저장됩니다. 기본값은 <code>~/PromptCode</code>이며 설정에서 다른 폴더를 고를 수 있습니다. 다른 폴더와 마찬가지로 백업하거나, 동기화하거나, git으로 관리할 수 있습니다.</dd>
+        <dt>프롬프트를 어딘가로 보내나요?</dt>
+        <dd>아니요. Prompt Code에는 계정도 원격 측정도 없고, 네트워크 요청도 하지 않습니다. 로컬 서버는 <code>127.0.0.1</code>에서만 대기하며, 실행할 때 생성되는 토큰이 있어야 접근할 수 있습니다.</dd>
+        <dt>Obsidian 보관소와 함께 쓸 수 있나요?</dt>
+        <dd>YAML frontmatter와 <code>[[링크]]</code>가 들어간 평범한 <code>.md</code> 파일을 읽으므로, 설정(<kbd>⌘,</kbd>)에서 Markdown 노트가 담긴 어떤 폴더든 보관소로 고를 수 있습니다.</dd>
+        <dt>어떤 AI 도구와 함께 쓸 수 있나요?</dt>
+        <dd>모두 됩니다. Prompt Code는 완성된 텍스트를 복사하거나 붙여넣으므로 채팅 앱, IDE, 터미널, 브라우저 어디서나 쓸 수 있습니다.</dd>
+        <dt>가격은 얼마인가요?</dt>
+        <dd>무료입니다. MIT 라이선스의 오픈 소스입니다.</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="logo" href="./"><img src="../icon.svg" alt="">Prompt Code</a>
+    <span>쓰기 → 채우기 → 붙여넣기</span>
+    <nav>
+      <a href="https://github.com/karamage/prompt-code">GitHub</a>
+      <a href="https://github.com/karamage/prompt-code/blob/main/LICENSE">MIT License</a>
+      <a href="privacy/">개인정보</a>
+    </nav>
+    <nav class="langs" aria-label="언어">
+      <a href="../" hreflang="en" lang="en">English</a>
+      <a href="../ja/" hreflang="ja" lang="ja">日本語</a>
+      <a href="../zh-CN/" hreflang="zh-CN" lang="zh-CN">简体中文</a>
+      <a href="../es/" hreflang="es" lang="es">Español</a>
+      <a href="../de/" hreflang="de" lang="de">Deutsch</a>
+      <a href="../fr/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

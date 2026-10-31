@@ -18,7 +18,9 @@ AI へのプロンプトを書いて、整理して、使い回すための macO
 
 Obsidian からは、書くことの気持ちよさを支える部分を取り入れました。自分のフォルダに置くただの Markdown ファイル、`[[リンク]]`、バックリンク、グラフ、コマンドパレットです。massCode からは、使い回しを速くする部分を取り入れました。フォルダ、タグ、お気に入り、ワンクリックでのコピーです。そのうえで、プロンプトに要るものを足しています。埋める変数、使い回す部品の埋め込み、モデルには送らない自分用のメモです。
 
-[Web サイト](https://karamage.github.io/prompt-code/ja/) · [ダウンロード](https://github.com/karamage/prompt-code/releases/latest) · [English README](README.md)
+[Web サイト](https://karamage.github.io/prompt-code/ja/) · [ダウンロード](https://github.com/karamage/prompt-code/releases/latest)
+
+[English](README.md) · 日本語 · [简体中文](README.zh-CN.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md) · [Français](README.fr.md)
 
 ![Prompt Code の画面。ノートの一覧、変数を含むプロンプト、できあがったプロンプトを見せる「使う」パネル](docs/screenshots/main-ja.png)
 
